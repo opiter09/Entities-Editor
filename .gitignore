@@ -5,3 +5,4 @@ menuExample.lua
 scroll.lua
 sqlTool.lua
 *.exe
+*.bin
