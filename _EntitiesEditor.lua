@@ -74,29 +74,29 @@ local function saveCallback(w)
 	for i = 0, 181 do
 		local a = unitTable[i + 1]
 		local base = i * 124 + 5
-		reading = string.sub(reading, 1, base + 4) .. ThisLittleHexIsPayback(a.ID) .. string.sub(reading, base + 7, string.len(reading))
-		reading = string.sub(reading, 1, base + 12) .. ThisLittleHexIsPayback(a.Speed) .. string.sub(reading, base + 15, string.len(reading))
-		reading = string.sub(reading, 1, base + 23) .. IllHexYou(a.LandFlag) .. string.sub(reading, base + 25, string.len(reading))
-		reading = string.sub(reading, 1, base + 24) .. IllHexYou(a.WaterFlag) .. string.sub(reading, base + 26, string.len(reading))		
-		reading = string.sub(reading, 1, base + 92) .. IllHexYou(a.Type) .. string.sub(reading, base + 94, string.len(reading))
-		reading = string.sub(reading, 1, base + 94) .. ThisLittleHexIsPayback(a.BuildCost) .. string.sub(reading, base + 97, string.len(reading))
-		reading = string.sub(reading, 1, base + 96) .. ThisLittleHexIsPayback(a.BuildTime) .. string.sub(reading, base + 99, string.len(reading))
-		reading = string.sub(reading, 1, base + 98) .. ThisLittleHexIsPayback(a.Health) .. string.sub(reading, base + 101, string.len(reading))
-		reading = string.sub(reading, 1, base + 100) .. ThisLittleHexIsPayback(a.Mana) .. string.sub(reading, base + 103, string.len(reading))
-		reading = string.sub(reading, 1, base + 102) .. ThisLittleHexIsPayback(a.ProjectileID) .. string.sub(reading, base + 105, string.len(reading))
-		reading = string.sub(reading, 1, base + 104) .. ThisLittleHexIsPayback(a.AttackMin) .. string.sub(reading, base + 107, string.len(reading))
+		reading = string.sub(reading, 1, base + 5) .. ThisLittleHexIsPayback(a.ID) .. string.sub(reading, base + 8, string.len(reading))
+		reading = string.sub(reading, 1, base + 13) .. ThisLittleHexIsPayback(a.Speed) .. string.sub(reading, base + 16, string.len(reading))
+		reading = string.sub(reading, 1, base + 24) .. IllHexYou(a.LandFlag) .. string.sub(reading, base + 26, string.len(reading))
+		reading = string.sub(reading, 1, base + 25) .. IllHexYou(a.WaterFlag) .. string.sub(reading, base + 27, string.len(reading))		
+		reading = string.sub(reading, 1, base + 93) .. IllHexYou(a.Type) .. string.sub(reading, base + 95, string.len(reading))
+		reading = string.sub(reading, 1, base + 95) .. ThisLittleHexIsPayback(a.BuildCost) .. string.sub(reading, base + 98, string.len(reading))
+		reading = string.sub(reading, 1, base + 97) .. ThisLittleHexIsPayback(a.BuildTime) .. string.sub(reading, base + 100, string.len(reading))
+		reading = string.sub(reading, 1, base + 99) .. ThisLittleHexIsPayback(a.Health) .. string.sub(reading, base + 102, string.len(reading))
+		reading = string.sub(reading, 1, base + 101) .. ThisLittleHexIsPayback(a.Mana) .. string.sub(reading, base + 104, string.len(reading))
+		reading = string.sub(reading, 1, base + 103) .. ThisLittleHexIsPayback(a.ProjectileID) .. string.sub(reading, base + 106, string.len(reading))
+		reading = string.sub(reading, 1, base + 105) .. ThisLittleHexIsPayback(a.AttackMin) .. string.sub(reading, base + 108, string.len(reading))
 		local diff = math.max(a.AttackMax - a.AttackMin, 0)
-		reading = string.sub(reading, 1, base + 106) .. ThisLittleHexIsPayback(diff) .. string.sub(reading, base + 109, string.len(reading))
+		reading = string.sub(reading, 1, base + 107) .. ThisLittleHexIsPayback(diff) .. string.sub(reading, base + 110, string.len(reading))
 		for j = 1, 5 do
-			reading = string.sub(reading, 1, base + 113 + j) .. IllHexYou(a.Powers[j]) .. string.sub(reading, base + 115 + j, string.len(reading))
+			reading = string.sub(reading, 1, base + 114 + j) .. IllHexYou(a.Powers[j]) .. string.sub(reading, base + 116 + j, string.len(reading))
 		end
 	end
 	for i = 0, 26 do
 		local a = projectileTable[i + 1]
 		local base = i * 117 + 22577
-		reading = string.sub(reading, 1, base - 1) .. ThisLittleHexIsPayback(a.ID) .. string.sub(reading, base + 2, string.len(reading))
-		reading = string.sub(reading, 1, base + 103) .. ThisLittleHexIsPayback(a.DamageMin) .. ThisLittleHexIsPayback(a.DamageMax) ..
-		ThisLittleHexIsPayback(a.DamageMin) .. ThisLittleHexIsPayback(a.DamageMax) .. string.sub(reading, base + 112, string.len(reading))
+		reading = string.sub(reading, 1, base) .. ThisLittleHexIsPayback(a.ID) .. string.sub(reading, base + 3, string.len(reading))
+		reading = string.sub(reading, 1, base + 104) .. ThisLittleHexIsPayback(a.DamageMin) .. ThisLittleHexIsPayback(a.DamageMax) ..
+		ThisLittleHexIsPayback(a.DamageMin) .. ThisLittleHexIsPayback(a.DamageMax) .. string.sub(reading, base + 113, string.len(reading))
 	end
 	out:close()
 	out = assert(io.open("testD.bin", "wb"))
@@ -177,33 +177,34 @@ end]]--
 for i = 0, 181 do 
 	local a = {}
 	local base = i * 124 + 5
-	a.ID = NothingICantHandle(base + 5, base + 6)
-	a.Speed = NothingICantHandle(base + 13, base + 14)
-	a.LandFlag = NothingICantHandle(base + 24)
-	a.WaterFlag = NothingICantHandle(base + 25)
-	a.Type = NothingICantHandle(base + 93)
-	a.BuildCost = NothingICantHandle(base + 95, base + 96)
-	a.BuildTime = NothingICantHandle(base + 97, base + 98)
-	a.Health = NothingICantHandle(base + 99, base + 100)
-	a.Mana = NothingICantHandle(base + 101, base + 102)
-	a.ProjectileID = NothingICantHandle(base + 103, base + 104)
-	a.AttackMin = NothingICantHandle(base + 105, base + 106)
-	a.AttackMax = a.AttackMin + NothingICantHandle(base + 107, base + 108)
+	a.ID = NothingICantHandle(base + 6, base + 7)
+	a.Speed = NothingICantHandle(base + 14, base + 15)
+	a.LandFlag = NothingICantHandle(base + 25)
+	a.WaterFlag = NothingICantHandle(base + 26)
+	a.Type = NothingICantHandle(base + 94)
+	a.BuildCost = NothingICantHandle(base + 96, base + 97)
+	a.BuildTime = NothingICantHandle(base + 98, base + 99)
+	a.Health = NothingICantHandle(base + 100, base + 101)
+	a.Mana = NothingICantHandle(base + 102, base + 103)
+	a.ProjectileID = NothingICantHandle(base + 104, base + 105)
+	a.AttackMin = NothingICantHandle(base + 106, base + 107)
+	a.AttackMax = a.AttackMin + NothingICantHandle(base + 108, base + 109)
 	a.Powers = {
-		NothingICantHandle(base + 115),
 		NothingICantHandle(base + 116),
 		NothingICantHandle(base + 117),
 		NothingICantHandle(base + 118),
-		NothingICantHandle(base + 119)
+		NothingICantHandle(base + 119),
+		NothingICantHandle(base + 120)
 	}
 	unitTable[i + 1] = a
+	print(a.ID)
 end
 for i = 0, 26 do
 	local a = {}
 	local base = i * 117 + 22577
-	a.ID = NothingICantHandle(base, base + 1)
-	a.DamageMin = NothingICantHandle(base + 104, base + 105)
-	a.DamageMax = NothingICantHandle(base + 106, base + 107)
+	a.ID = NothingICantHandle(base + 1, base + 2)
+	a.DamageMin = NothingICantHandle(base + 105, base + 106)
+	a.DamageMax = NothingICantHandle(base + 107, base + 108)
 	projectileTable[i + 1] = a
 end
 
