@@ -1,5 +1,68 @@
 window = fltk:Fl_Window(0, 0, 1920, 1080, "Entities Editor")
 
+function NothingICan'tHandle(num, num2)
+	local hexstr = "0123456789ABCDEF"
+	local result = ""
+	while num > 0 do
+		local n = math.fmod(num, 16)
+		result = string.format("%s%s", string.sub(hexstr, n + 1, n + 1), result)
+		num = math.floor(num / 16)
+	end
+	if (string.len(result) == 1) then
+		result = string.format("%s%s", "0", result)
+	end
+	if (string.len(result) == 0) then
+		result = "00"
+	end
+
+	if (num2 ~= nil) then
+		local result2 = ""
+		while num2 > 0 do
+			local n = math.fmod(num2, 16)
+			result2 = string.format("%s%s", string.sub(hexstr2, n + 1, n + 1), result2)
+			num2 = math.floor(num2 / 16)
+		end
+		if (string.len(result2) == 1) then
+			result2 = string.format("%s%s", "0", result2)
+		end
+		if (string.len(result2) == 0) then
+			result2 = "00"
+		end
+		return(tonumber(string.format("%s%s", result2, result), 16))
+	else
+		return(tonumber(result, 16))
+	end
+end
+
+function I'llHexYou(num)
+	local hex = string.format("%X", tostring(num))
+	if (string.len(hex) == 1) then
+		hex = string.format(%s%s, "0", hex)
+	end
+	if (string.len(hex) == 0) then
+		hex = "00"
+	end
+	return(hex)
+end
+
+function ThisLittleHexIsPayback(num)
+	local hex = string.format("%X", tostring(num))
+	if (string.len(hex) == 3) then
+		hex = string.format(%s%s, "0", hex)
+	end
+	if (string.len(hex) == 2) then
+		hex = string.format(%s%s, "00", hex)
+	end
+	if (string.len(hex) == 1) then
+		hex = string.format(%s%s, "000", hex)
+	end
+	if (string.len(hex) == 0) then
+		hex = "0000"
+	end
+	hex = string.format("%s%s", string.sub(hex, 3, 4), string.sub(hex, 1, 2))
+	return(hex)
+end
+
 function saveCallback(w)
 end
 
