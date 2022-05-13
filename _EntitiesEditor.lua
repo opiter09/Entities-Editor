@@ -74,7 +74,12 @@ local function saveCallback(w)
 		reading = string.sub(reading, 1, base + 8) .. ThisLittleHexIsPayback(a.ID) .. string.sub(reading, base + 11, string.len(reading))
 		reading = string.sub(reading, 1, base + 16) .. ThisLittleHexIsPayback(a.Speed) .. string.sub(reading, base + 19, string.len(reading))
 		reading = string.sub(reading, 1, base + 26) .. IllHexYou(a.LandFlag) .. string.sub(reading, base + 28, string.len(reading))
-		reading = string.sub(reading, 1, base + 27) .. IllHexYou(a.WaterFlag) .. string.sub(reading, base + 29, string.len(reading))		
+		reading = string.sub(reading, 1, base + 27) .. IllHexYou(a.WaterFlag) .. string.sub(reading, base + 29, string.len(reading))	
+		if (a.LandFlag == 0) or (a.WaterFlag == 0) then
+			reading = string.sub(reading, 1, base + 28) .. string.char(0x00, 0x01, 0x00) .. string.sub(reading, base + 32, string.len(reading))
+		else
+			reading = string.sub(reading, 1, base + 28) .. string.char(0x01, 0x00, 0x01) .. string.sub(reading, base + 32, string.len(reading))
+		end
 		reading = string.sub(reading, 1, base + 96) .. IllHexYou(a.Type) .. string.sub(reading, base + 98, string.len(reading))
 		reading = string.sub(reading, 1, base + 98) .. ThisLittleHexIsPayback(a.BuildCost) .. string.sub(reading, base + 101, string.len(reading))
 		reading = string.sub(reading, 1, base + 100) .. ThisLittleHexIsPayback(a.BuildTime) .. string.sub(reading, base + 103, string.len(reading))
