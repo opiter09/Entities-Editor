@@ -445,7 +445,7 @@ menuBar:add("Buildings/Tower 2", nil, switchCallback, "Tower 2")
 menuBar:add("Buildings/Tower 3", nil, switchCallback, "Tower 3")
 menuBar:add("Projectiles", nil, switchCallback, "Projectiles")
 
-local function quit_callback(object)
+local function quit_callback(w)
 	window:hide()
 end
 local quitButton = fltk:Fl_Button(1485, 0, 50, 25, "Exit")
@@ -485,6 +485,10 @@ for i = 0, 26 do
 	projectileTable[i + 1] = a
 	--print(a.ID)
 end
+
+local offScreen = fltk:Fl_Button(1685, 0, 50, 25, "Exit")
+offScreen:callback(switchCallback, "Main Heroes")
+offScreen:do_callback()
 
 window:show()
 Fl:run()

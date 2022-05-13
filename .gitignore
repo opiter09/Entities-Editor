@@ -7,3 +7,4 @@ sqlTool.lua
 *.exe
 *.bin
 *.nds
+drawSleepTest.lua
