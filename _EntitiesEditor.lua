@@ -73,12 +73,16 @@ local function saveCallback(w)
 		local base = i * 124
 		reading = string.sub(reading, 1, base + 8) .. ThisLittleHexIsPayback(a.ID) .. string.sub(reading, base + 11, string.len(reading))
 		reading = string.sub(reading, 1, base + 16) .. ThisLittleHexIsPayback(a.Speed) .. string.sub(reading, base + 19, string.len(reading))
-		reading = string.sub(reading, 1, base + 26) .. IllHexYou(a.LandFlag) .. string.sub(reading, base + 28, string.len(reading))
-		reading = string.sub(reading, 1, base + 27) .. IllHexYou(a.WaterFlag) .. string.sub(reading, base + 29, string.len(reading))	
-		if (a.LandFlag == 0) or (a.WaterFlag == 0) then
-			reading = string.sub(reading, 1, base + 28) .. string.char(0x00, 0x01, 0x00) .. string.sub(reading, base + 32, string.len(reading))
-		else
-			reading = string.sub(reading, 1, base + 28) .. string.char(0x01, 0x00, 0x01) .. string.sub(reading, base + 32, string.len(reading))
+		reading = string.sub(reading, 1, base + 27) .. IllHexYou(a.LandFlag) .. string.sub(reading, base + 29, string.len(reading))
+		reading = string.sub(reading, 1, base + 28) .. IllHexYou(a.WaterFlag) .. string.sub(reading, base + 30, string.len(reading))	
+		if ((a.LandFlag == 0) or (a.WaterFlag == 0)) and (a.Speed ~= 65535) then
+			if (string.sub(reading, base + 30, base + 32) == string.char(0x00, 0x01, 0x00)) or (string.sub(reading, base + 30, base + 32) == string.char(0x01, 0x00, 0x01)) then
+				reading = string.sub(reading, 1, base + 29) .. string.char(0x00, 0x01, 0x00) .. string.sub(reading, base + 33, string.len(reading))
+			end
+		elseif (a.LandFlag == 1) and (a.WaterFlag == 1) and (a.Speed ~= 65535) then
+			if (string.sub(reading, base + 30, base + 32) == string.char(0x00, 0x01, 0x00)) or (string.sub(reading, base + 30, base + 32) == string.char(0x01, 0x00, 0x01)) then
+				reading = string.sub(reading, 1, base + 29) .. string.char(0x01, 0x00, 0x01) .. string.sub(reading, base + 33, string.len(reading))
+			end
 		end
 		reading = string.sub(reading, 1, base + 96) .. IllHexYou(a.Type) .. string.sub(reading, base + 98, string.len(reading))
 		reading = string.sub(reading, 1, base + 98) .. ThisLittleHexIsPayback(a.BuildCost) .. string.sub(reading, base + 101, string.len(reading))
@@ -181,8 +185,8 @@ for i = 0, 181 do
 	local base = i * 124
 	a.ID = NothingICantHandle(base + 9, base + 10)
 	a.Speed = NothingICantHandle(base + 17, base + 18)
-	a.LandFlag = NothingICantHandle(base + 27)
-	a.WaterFlag = NothingICantHandle(base + 28)
+	a.LandFlag = NothingICantHandle(base + 28)
+	a.WaterFlag = NothingICantHandle(base + 29)
 	a.Type = NothingICantHandle(base + 97)
 	a.BuildCost = NothingICantHandle(base + 99, base + 100)
 	a.BuildTime = NothingICantHandle(base + 101, base + 102)
