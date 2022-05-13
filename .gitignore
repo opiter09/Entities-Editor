@@ -6,3 +6,4 @@ scroll.lua
 sqlTool.lua
 *.exe
 *.bin
+*.nds
