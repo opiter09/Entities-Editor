@@ -119,9 +119,9 @@ local function displayProjectiles()
 		local b = {}
 
 		fltk.fl_rectf(100, 20 * (i + 2), 15, 15)
-		fltk.fl_draw(internalTable[i], 20, 20 * (i + 2))
+		fltk.fl_draw(internalTable[i], 20, 20 * (i - 13))
 		
-		b.DamageMin = fltk:Fl_Value_Input(120, 20 * (i + 2), 15, 15, "Damage Min")
+		b.DamageMin = fltk:Fl_Value_Input(120, 20 * (i - 13), 15, 15, "Damage Min")
 		b.DamageMin:labelsize(14)
 		b.DamageMin:textsize(14)
 		b.DamageMin:align(1)
@@ -130,7 +130,7 @@ local function displayProjectiles()
 		b.DamageMin:step(5)
 		b.DamageMin:value(a.DamageMin)
 		
-		b.DamageMax = fltk:Fl_Value_Input(140, 20 * (i + 2), 15, 15, "Damage Max")
+		b.DamageMax = fltk:Fl_Value_Input(140, 20 * (i - 13), 15, 15, "Damage Max")
 		b.DamageMax:labelsize(14)
 		b.DamageMax:textsize(14)
 		b.DamageMax:align(1)
