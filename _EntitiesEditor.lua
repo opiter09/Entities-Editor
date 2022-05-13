@@ -107,6 +107,8 @@ local function saveCallback(w)
 	out:close()
 	out = assert(io.open("testD.bin", "wb"))
 	out:write(reading)
+	out:close()
+	fltk.fl_message("Save Complete!")
 end
 
 local menuBar = fltk:Fl_Menu_Bar(0, 0, 550, 25)
