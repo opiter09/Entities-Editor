@@ -118,7 +118,7 @@ local function displayProjectiles()
 		local a = projectileTable[i]
 		local b = {}
 
-		fltk.fl_rectf(100, 20 * (i + 2), 15, 15)
+		fltk.fl_rectf(100, 20 * (i - 13), 15, 15)
 		fltk.fl_draw(internalTable[i], 20, 20 * (i - 13))
 		
 		b.DamageMin = fltk:Fl_Value_Input(120, 20 * (i - 13), 15, 15, "Damage Min")
