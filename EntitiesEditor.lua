@@ -165,7 +165,7 @@ local function ThisLittleHexIsPayback(num)
 	return(hex)
 end
 
-local speedTable = { "341 (1)", "375 (2)", "410(2)", "444 (2)", "478 (3)", "546 (3)", "614 (3)", "683 (4)", "819 (5)", "853 (5)", "NONE" }
+local speedTable = { "341 (1)", "375 (2)", "410 (2)", "444 (2)", "478 (3)", "546 (3)", "614 (3)", "683 (4)", "819 (5)", "853 (5)", "NONE" }
 local widgetTable = {}
 local switchType = 0
 
