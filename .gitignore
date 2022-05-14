@@ -8,3 +8,5 @@ sqlTool.lua
 *.bin
 *.nds
 drawSleepTest.lua
+LegoBattles.sav
+*.txt

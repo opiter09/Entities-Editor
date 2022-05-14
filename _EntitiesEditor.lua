@@ -9,11 +9,11 @@ text = string.sub(text, 1824087, 1825766)
 local nameTable = {}
 local iterator = 1
 for i = 1, string.len(text) do
-	if (string.sub(text, i, i) == string.char(0x00)) and (iterator > 1) then
-		if (i == 1) or (string.sub(text, i - 1, i - 1) ~= string.char(0x00)) then
+	if (string.byte(string.sub(text, i, i)) == 0) then
+		if (nameTable[1] ~= nil) and (string.byte(string.sub(text, i - 1, i - 1)) ~= 0) then
 			iterator = iterator + 1
 		end
-	elseif (string.sub(text, i, i) ~= string.char(0x00)) then
+	elseif (string.byte(string.sub(text, i, i)) ~= 0) then
 		if (nameTable[iterator] == nil) then
 			nameTable[iterator] = ""
 		end
@@ -21,7 +21,76 @@ for i = 1, string.len(text) do
 	end
 end
 rom:close()
-	
+--for i = 1, #nameTable do
+	--print(string.format("%s", nameTable[i]))
+--end
+--print(table.maxn(nameTable))
+--castle, mill, mine, farm, barracks, factory, t1, t2, t3, ship
+missingTable = {
+	[4] = "[K] Builder",
+	[11] = "Castle",
+	[13] = "[K] Mine",
+	[14] = "Farm",
+	[15] = "[K] Barracks",
+	[16] = "Special Factory",
+	[17] = "[K] Tower I",
+	[23] = "[W] Builder",
+	[30] = "[W] Transport Ship",
+	[33] = "[W] Mine",
+	[37] = "[W] Tower I",
+	[38] = "[W] Tower II",
+	[39] = "[W] Tower III",
+	[40] = "[W] Shipyard",
+	[49] = "[P] Builder",
+	[57] = "[P] Lumber Shack",
+	[62] = "[P] Tower I",
+	[63] = "[P] Tower II",
+	[64] = "[P] Tower III",
+	[65] = "[P] Shipyard",
+	[68] = "[I] Builder",
+	[80] = "[I] Tower I",
+	[81] = "[I] Tower II",
+	[82] = "[I] Tower II",
+	[83] = "[I] Shipyard",
+	[93] = "[E] Builder",
+	[104] = "[E] Barracks",
+	[106] = "[E] Tower I",
+	[107] = "[E] Tower II",
+	[108] = "[E] Tower III",
+	[109] = "[E] Shipyard",
+	[112] = "[A] Builder",
+	[120] = "[A] Harvester",
+	[121] = "[A] Well Cap",
+	[128] = "[A] Shipyard"
+}
+for k, v in pairs(missingTable) do
+	table.insert(nameTable, k, v)
+end
+nameTable[12] = "[K] Lumber Mill"
+nameTable[18] = "[K] Tower II"
+nameTable[19] = "[K] Tower III"
+nameTable[32] = "[W] Lumber Shack"
+nameTable[101] = "[E] Harvester"
+nameTable[102] = "[E] Well Cap"
+
+local temp = {}
+for i = 1, 128 do
+	temp[i] = nameTable[i]
+end
+nameTable = temp
+
+local newNames = { "BridgeSmallH", "BridgeSmallV", "BridgeMediumH", "BridgeMediumV", "BridgeLargeH", "BridgeLargeV", "GateH", "GateV",
+	"Space Police Captain", "Space Police", "Space Police Cruiser", "Space Police Base", "Space Criminal Leader", "Space Criminal",
+	"Space Criminal Hotrod", "Space Criminal Base", "Falvour", "Robot", "Color", "Crashed Supply Pod", "Crashed Mothership", "Meteorite",
+	"Crashed Alien Transport", "Ancient Structure", "King Kahuka", "Islander", "Tiki Golem", "Islander Temple", "Ninja Master", "Ninja",
+	"Ninja Flying Ship", "Ninja Temple", "Moneky", "Trader Ship", "Shark", "Shipwreck Water", "Shipwreck Beach", "Forgotten Islander Temple",
+	"AbandonedImperialOutpost", "Dwarf King", "Dwarf", "Dwarf Glider", "Dwarf Hall", "Troll King", "Troll", "Troll Blimp", "Troll Hall",
+	"Wolf", "Stonehenge", "Cairn", "Church", "Ruined Tower", "Ruined Castle", "Forestman", "Ghost", "Sheriff", "Conquistador", "Agent Chase",
+	"Classic Space", "Santa" }
+for i = 1, #newNames do
+	table.insert(nameTable, #nameTable, newNames[i])
+end
+print(table.maxn(nameTable))
 
 local function NothingICantHandle(inp, inp2)
 	local inputFile = assert(io.open("testD.bin", "rb"))
@@ -238,8 +307,8 @@ local function switchCallback(w)
 			b.Speed:textsize(14)
 			theTable = { "341 (1)", "375 (2)", "410(2)", "444 (2)", "478 (3)", "546 (3)", "614 (3)", "683 (4)", "819 (5)", "853 (5)" }
 			for j = 1, #theTable do
-				b.Speed:add(theTable[i])
-				if (a.Speed == tonumber(string.sub(theTable[i], 1, 3))) then
+				b.Speed:add(theTable[j])
+				if (a.Speed == tonumber(string.sub(theTable[j], 1, 3))) then
 					theValue = theTable[i]
 				end
 			end
@@ -251,7 +320,7 @@ local function switchCallback(w)
 			b.LandFlag:textsize(14)
 			theTable = { "Off (0)", "On (1)" }
 			for j = 1, #theTable do
-				b.LandFlag:add(theTable[i])
+				b.LandFlag:add(theTable[j])
 			end
 			theValue = theTable[a.LandFlag + 1]
 			b.LandFlag:value(theValue)
@@ -262,7 +331,7 @@ local function switchCallback(w)
 			b.WaterFlag:textsize(14)
 			theTable = { "Off (0)", "On (1)" }
 			for j = 1, #theTable do
-				b.WaterFlag:add(theTable[i])
+				b.WaterFlag:add(theTable[j])
 			end
 			theValue = theTable[a.WaterFlag + 1]
 			b.WaterFlag:value(theValue)
@@ -275,7 +344,7 @@ local function switchCallback(w)
 				"Castle", "Lumber Mill", "Mine", "Farm", "Barracks", "Factory", "Tower I", "Tower II",
 				"Tower III", "Shipyard" }
 			for j = 1, #theTable do
-				b.Type:add(theTable[i])
+				b.Type:add(theTable[j])
 			end
 			theValue = theTable[a.Type + 1]
 			b.Type:value(theValue)
@@ -320,7 +389,7 @@ local function switchCallback(w)
 			"Fireball", "ImperialShot", "PirateShot", "TPirateShot", "ICannonBall", "PCannonBall", "Elaser", "ALaster", "TLaser",
 			"PlasmaBall", "LaserCannon", "ProjectileSpell", "AirBallistaBolt", "AirFireball", "AirLaster", "Sharkbite", "Gift", "ProjectileNoEffect" }
 			for j = 1, #theTable do
-				b.ProjectileID:add(theTable[i])
+				b.ProjectileID:add(theTable[j])
 			end
 			theValue = theTable[a.ProjectileID - 181]
 			b.ProjectileID:value(theValue)
