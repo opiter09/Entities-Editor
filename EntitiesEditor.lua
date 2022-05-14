@@ -374,9 +374,9 @@ local function switchCallback(w)
 	switchType = w:user_data()
 	
 	if (thisWindow == 1) then
-		windowII = fltk:Fl_Double_Window(0, 0, 1920, 1080, "Entities Editor")
+		windowII = fltk:Fl_Double_Window(0, 0, 4000, 3000, "Entities Editor")
 	elseif (thisWindow == 2) then
-		window = fltk:Fl_Double_Window(0, 0, 1920, 1080, "Entities Editor")
+		window = fltk:Fl_Double_Window(0, 0, 4000, 3000, "Entities Editor")
 	end
 	local menuBar = fltk:Fl_Menu_Bar(0, 0, 550, 25)
 
