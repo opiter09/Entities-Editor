@@ -1,4 +1,5 @@
-local window = fltk:Fl_Window(0, 0, 1920, 1080, "Entities Editor")
+local window = fltk:Fl_Double_Window(0, 0, 1920, 1080, "Entities Editor")
+local thisWindow = 1
 local unitTable = {}
 local projectileTable = {}
 
@@ -90,7 +91,7 @@ local newNames = { "BridgeSmallH", "BridgeSmallV", "BridgeMediumH", "BridgeMediu
 for i = 1, #newNames do
 	table.insert(nameTable, #nameTable, newNames[i])
 end
-print(table.maxn(nameTable))
+--print(table.maxn(nameTable))
 
 local function NothingICantHandle(inp, inp2)
 	local inputFile = assert(io.open("testD.bin", "rb"))
@@ -149,14 +150,77 @@ local function ThisLittleHexIsPayback(num)
 	return(hex)
 end
 
+local function saveCallback(w)
+	if (table.maxn(tempPeople) ~= 0) then
+		for i = 1, #tempPeople do
+			if (switchType ~= "Projectiles") then
+				unitTable[tempPeople[i].ID + 1] = tempPeople[i]
+			else
+				projectileTable[tempPeople[i].ID - 181] = tempPeople[i]
+			end
+		end
+	end
+
+	local out = assert(io.open("testD.bin", "rb"))
+	local reading = out:read("*all")
+	for i = 0, 181 do
+		local a = unitTable[i + 1]
+		local base = i * 124
+		reading = string.sub(reading, 1, base + 8) .. ThisLittleHexIsPayback(a.ID) .. string.sub(reading, base + 11, string.len(reading))
+		reading = string.sub(reading, 1, base + 16) .. ThisLittleHexIsPayback(a.Speed) .. string.sub(reading, base + 19, string.len(reading))
+		reading = string.sub(reading, 1, base + 27) .. IllHexYou(a.LandFlag) .. string.sub(reading, base + 29, string.len(reading))
+		reading = string.sub(reading, 1, base + 28) .. IllHexYou(a.WaterFlag) .. string.sub(reading, base + 30, string.len(reading))	
+		if ((a.LandFlag == 0) or (a.WaterFlag == 0)) and (a.Speed ~= 65535) then
+			if (string.sub(reading, base + 30, base + 32) == string.char(0x00, 0x01, 0x00)) or (string.sub(reading, base + 30, base + 32) == string.char(0x01, 0x00, 0x01)) then
+				reading = string.sub(reading, 1, base + 29) .. string.char(0x00, 0x01, 0x00) .. string.sub(reading, base + 33, string.len(reading))
+			end
+		elseif (a.LandFlag == 1) and (a.WaterFlag == 1) and (a.Speed ~= 65535) then
+			if (string.sub(reading, base + 30, base + 32) == string.char(0x00, 0x01, 0x00)) or (string.sub(reading, base + 30, base + 32) == string.char(0x01, 0x00, 0x01)) then
+				reading = string.sub(reading, 1, base + 29) .. string.char(0x01, 0x00, 0x01) .. string.sub(reading, base + 33, string.len(reading))
+			end
+		end
+		reading = string.sub(reading, 1, base + 96) .. IllHexYou(a.Type) .. string.sub(reading, base + 98, string.len(reading))
+		reading = string.sub(reading, 1, base + 98) .. ThisLittleHexIsPayback(a.BuildCost) .. string.sub(reading, base + 101, string.len(reading))
+		reading = string.sub(reading, 1, base + 100) .. ThisLittleHexIsPayback(a.BuildTime) .. string.sub(reading, base + 103, string.len(reading))
+		reading = string.sub(reading, 1, base + 102) .. ThisLittleHexIsPayback(a.Health) .. string.sub(reading, base + 105, string.len(reading))
+		reading = string.sub(reading, 1, base + 104) .. ThisLittleHexIsPayback(a.Mana) .. string.sub(reading, base + 107, string.len(reading))
+		reading = string.sub(reading, 1, base + 106) .. ThisLittleHexIsPayback(a.ProjectileID) .. string.sub(reading, base + 109, string.len(reading))
+		reading = string.sub(reading, 1, base + 108) .. ThisLittleHexIsPayback(a.AttackMin) .. string.sub(reading, base + 111, string.len(reading))
+		local diff = math.max(a.AttackMax - a.AttackMin, 0)
+		reading = string.sub(reading, 1, base + 110) .. ThisLittleHexIsPayback(diff) .. string.sub(reading, base + 113, string.len(reading))
+		for j = 1, 5 do
+			reading = string.sub(reading, 1, base + 117 + j) .. IllHexYou(a.Powers[j]) .. string.sub(reading, base + 119 + j, string.len(reading))
+		end
+	end
+	for i = 0, 26 do
+		local a = projectileTable[i + 1]
+		local base = i * 116
+		reading = string.sub(reading, 1, base + 22576) .. ThisLittleHexIsPayback(a.ID) .. string.sub(reading, base + 22579, string.len(reading))
+		reading = string.sub(reading, 1, base + 22680) .. ThisLittleHexIsPayback(a.DamageMin) .. ThisLittleHexIsPayback(a.DamageMax) ..
+		ThisLittleHexIsPayback(a.DamageMin) .. ThisLittleHexIsPayback(a.DamageMax) .. string.sub(reading, base + 22689, string.len(reading))
+	end
+	out:close()
+	out = assert(io.open("testD.bin", "wb"))
+	out:write(reading)
+	out:close()
+	fltk.fl_message("Save Complete!")
+end
+
+local function quit_callback(w)
+	Fl:stop()
+end
+
 local widgetTable = {}
+local windowII
 
 local function displayProjectiles()
 	local internalTable = { "Arrow", "CrossbowBolt", "TBolt", "TBoulder", "TFireball", "BallistaBolt", "SiegeBolt", "Boulder", "OgreBoulder", 
 		"Fireball", "ImperialShot", "PirateShot", "TPirateShot", "ICannonBall", "PCannonBall", "Elaser", "ALaster", "TLaser",
 		"PlasmaBall", "LaserCannon", "ProjectileSpell", "AirBallistaBolt", "AirFireball", "AirLaster", "Sharkbite", "Gift", "ProjectileNoEffect" }
-		
-	for i = 1, 15 do
+	
+	print("Here")
+
+	for i = 1, 14 do
 		local a = projectileTable[i]
 		local b = {}
 		
@@ -170,7 +234,6 @@ local function displayProjectiles()
 		b.DamageMin:maximum(65535)
 		b.DamageMin:step(5)
 		b.DamageMin:value(a.DamageMin)
-		b.DamageMin:show()
 		
 		b.DamageMax = fltk:Fl_Value_Input(60, 20 * (i + 2), 15, 15, "Damage Max")
 		b.DamageMax:labelsize(14)
@@ -179,18 +242,17 @@ local function displayProjectiles()
 		b.DamageMax:maximum(65535)
 		b.DamageMax:step(5)
 		b.DamageMax:value(a.DamageMax)
-		b.DamageMax:show()
 		
 		widgetTable[i] = b
 	end
-	for i = 16, 27 do
+	for i = 15, 27 do
 		local a = projectileTable[i]
 		local b = {}
 
-		fltk.fl_rectf(100, 20 * (i - 13), 15, 15)
+		fltk.fl_rectf(100, 20 * (i - 12), 15, 15)
 		fltk.fl_draw(internalTable[i], 20, 20 * (i - 13))
 		
-		b.DamageMin = fltk:Fl_Value_Input(120, 20 * (i - 13), 15, 15, "Damage Min")
+		b.DamageMin = fltk:Fl_Value_Input(120, 20 * (i - 12), 15, 15, "Damage Min")
 		b.DamageMin:labelsize(14)
 		b.DamageMin:textsize(14)
 		b.DamageMin:align(1)
@@ -199,7 +261,7 @@ local function displayProjectiles()
 		b.DamageMin:step(5)
 		b.DamageMin:value(a.DamageMin)
 		
-		b.DamageMax = fltk:Fl_Value_Input(140, 20 * (i - 13), 15, 15, "Damage Max")
+		b.DamageMax = fltk:Fl_Value_Input(140, 20 * (i - 12), 15, 15, "Damage Max")
 		b.DamageMax:labelsize(14)
 		b.DamageMax:textsize(14)
 		b.DamageMax:align(1)
@@ -210,7 +272,16 @@ local function displayProjectiles()
 		
 		widgetTable[i] = b
 	end
-	window:redraw()
+	if (thisWindow == 1) then
+		windowII:show()
+		window:hide()
+		thisWindow = 2
+		return
+	elseif (thisWindow == 2) then
+		window:show()
+		windowII:hide()
+		thisWindow = 1
+	end
 end
 
 local switchType = 0
@@ -245,14 +316,48 @@ local function switchCallback(w)
 		["Shipyard"] = 16,
 		["Tower 1"] = 13,
 		["Tower 2"] = 14,
-		["Tower 3"] = 15
+		["Tower 3"] = 15,
 	}
 	switchType = w:user_data()
-	--print(switchType)
+	
+	if (thisWindow == 1) then
+		windowII = fltk:Fl_Double_Window(0, 0, 1920, 1080, "Entities Editor")
+	elseif (thisWindow == 2) then
+		window = fltk:Fl_Double_Window(0, 0, 1920, 1080, "Entities Editor")
+	end
+	local menuBar = fltk:Fl_Menu_Bar(0, 0, 550, 25)
+
+	menuBar:add("Save", nil, saveCallback)
+	menuBar:add("Heroes/Main Factions", nil, switchCallback, "Main Factions")
+	menuBar:add("Heroes/Side Factions", nil, switchCallback, "Side Factions")
+	menuBar:add("Builders", nil, switchCallback, "Builders")
+	menuBar:add("Barracks/Melee", nil, switchCallback, "Melee")
+	menuBar:add("Barracks/Ranged", nil, switchCallback, "Ranged")
+	menuBar:add("Barracks/Mounted", nil, switchCallback, "Mounted")
+	menuBar:add("Special/Tier 1", nil, switchCallback, "Tier 1")
+	menuBar:add("Special/Tier 2", nil, switchCallback, "Tier 2")
+	menuBar:add("Special/Tier 3", nil, switchCallback, "Tier 3")
+	menuBar:add("Transport", nil, switchCallback, "Transport")
+	menuBar:add("Buildings/Castle", nil, switchCallback, "Castle")
+	menuBar:add("Buildings/Farm", nil, switchCallback, "Farm")
+	menuBar:add("Buildings/Lumber Mill", nil, switchCallback, "Lumber Mill")
+	menuBar:add("Buildings/Mine", nil, switchCallback, "Mine")
+	menuBar:add("Buildings/Barracks", nil, switchCallback, "Barracks")
+	menuBar:add("Buildings/Factory", nil, switchCallback, "Factory")
+	menuBar:add("Buildings/Shipyard", nil, switchCallback, "Shipyard")
+	menuBar:add("Buildings/Tower 1", nil, switchCallback, "Tower 1")
+	menuBar:add("Buildings/Tower 2", nil, switchCallback, "Tower 2")
+	menuBar:add("Buildings/Tower 3", nil, switchCallback, "Tower 3")
+	menuBar:add("Projectiles", nil, switchCallback, "Projectiles")
+	
+	local quitButton = fltk:Fl_Button(1485, 0, 50, 25, "Exit")
+	quitButton:callback(quit_callback)
+
 	if (switchType == "Projectiles") then
 		displayProjectiles()
 		return
 	end
+
 	tempPeople = {}
 	for i = 1, 182 do
 		if (unitTable[i].Type == typeMapping[switchType]) then
@@ -429,96 +534,18 @@ local function switchCallback(w)
 			
 			widgetTable[i] = b
 		end
-		window:redraw()
+	end
+	if (thisWindow == 1) then
+		windowII:show()
+		window:hide()
+		thisWindow = 2
+		return
+	elseif (thisWindow == 2) then
+		window:show()
+		windowII:hide()
+		thisWindow = 1
 	end
 end
-
-local function saveCallback(w)
-	if (table.maxn(tempPeople) ~= 0) then
-		for i = 1, #tempPeople do
-			if (switchType ~= "Projectiles") then
-				unitTable[tempPeople[i].ID + 1] = tempPeople[i]
-			else
-				projectileTable[tempPeople[i].ID - 181] = tempPeople[i]
-			end
-		end
-	end
-
-	local out = assert(io.open("testD.bin", "rb"))
-	local reading = out:read("*all")
-	for i = 0, 181 do
-		local a = unitTable[i + 1]
-		local base = i * 124
-		reading = string.sub(reading, 1, base + 8) .. ThisLittleHexIsPayback(a.ID) .. string.sub(reading, base + 11, string.len(reading))
-		reading = string.sub(reading, 1, base + 16) .. ThisLittleHexIsPayback(a.Speed) .. string.sub(reading, base + 19, string.len(reading))
-		reading = string.sub(reading, 1, base + 27) .. IllHexYou(a.LandFlag) .. string.sub(reading, base + 29, string.len(reading))
-		reading = string.sub(reading, 1, base + 28) .. IllHexYou(a.WaterFlag) .. string.sub(reading, base + 30, string.len(reading))	
-		if ((a.LandFlag == 0) or (a.WaterFlag == 0)) and (a.Speed ~= 65535) then
-			if (string.sub(reading, base + 30, base + 32) == string.char(0x00, 0x01, 0x00)) or (string.sub(reading, base + 30, base + 32) == string.char(0x01, 0x00, 0x01)) then
-				reading = string.sub(reading, 1, base + 29) .. string.char(0x00, 0x01, 0x00) .. string.sub(reading, base + 33, string.len(reading))
-			end
-		elseif (a.LandFlag == 1) and (a.WaterFlag == 1) and (a.Speed ~= 65535) then
-			if (string.sub(reading, base + 30, base + 32) == string.char(0x00, 0x01, 0x00)) or (string.sub(reading, base + 30, base + 32) == string.char(0x01, 0x00, 0x01)) then
-				reading = string.sub(reading, 1, base + 29) .. string.char(0x01, 0x00, 0x01) .. string.sub(reading, base + 33, string.len(reading))
-			end
-		end
-		reading = string.sub(reading, 1, base + 96) .. IllHexYou(a.Type) .. string.sub(reading, base + 98, string.len(reading))
-		reading = string.sub(reading, 1, base + 98) .. ThisLittleHexIsPayback(a.BuildCost) .. string.sub(reading, base + 101, string.len(reading))
-		reading = string.sub(reading, 1, base + 100) .. ThisLittleHexIsPayback(a.BuildTime) .. string.sub(reading, base + 103, string.len(reading))
-		reading = string.sub(reading, 1, base + 102) .. ThisLittleHexIsPayback(a.Health) .. string.sub(reading, base + 105, string.len(reading))
-		reading = string.sub(reading, 1, base + 104) .. ThisLittleHexIsPayback(a.Mana) .. string.sub(reading, base + 107, string.len(reading))
-		reading = string.sub(reading, 1, base + 106) .. ThisLittleHexIsPayback(a.ProjectileID) .. string.sub(reading, base + 109, string.len(reading))
-		reading = string.sub(reading, 1, base + 108) .. ThisLittleHexIsPayback(a.AttackMin) .. string.sub(reading, base + 111, string.len(reading))
-		local diff = math.max(a.AttackMax - a.AttackMin, 0)
-		reading = string.sub(reading, 1, base + 110) .. ThisLittleHexIsPayback(diff) .. string.sub(reading, base + 113, string.len(reading))
-		for j = 1, 5 do
-			reading = string.sub(reading, 1, base + 117 + j) .. IllHexYou(a.Powers[j]) .. string.sub(reading, base + 119 + j, string.len(reading))
-		end
-	end
-	for i = 0, 26 do
-		local a = projectileTable[i + 1]
-		local base = i * 116
-		reading = string.sub(reading, 1, base + 22576) .. ThisLittleHexIsPayback(a.ID) .. string.sub(reading, base + 22579, string.len(reading))
-		reading = string.sub(reading, 1, base + 22680) .. ThisLittleHexIsPayback(a.DamageMin) .. ThisLittleHexIsPayback(a.DamageMax) ..
-		ThisLittleHexIsPayback(a.DamageMin) .. ThisLittleHexIsPayback(a.DamageMax) .. string.sub(reading, base + 22689, string.len(reading))
-	end
-	out:close()
-	out = assert(io.open("testD.bin", "wb"))
-	out:write(reading)
-	out:close()
-	fltk.fl_message("Save Complete!")
-end
-
-local menuBar = fltk:Fl_Menu_Bar(0, 0, 550, 25)
-
-menuBar:add("Save", nil, saveCallback)
-menuBar:add("Heroes/Main Factions", nil, switchCallback, "Main Factions")
-menuBar:add("Heroes/Side Factions", nil, switchCallback, "Side Factions")
-menuBar:add("Builders", nil, switchCallback, "Builders")
-menuBar:add("Barracks/Melee", nil, switchCallback, "Melee")
-menuBar:add("Barracks/Ranged", nil, switchCallback, "Ranged")
-menuBar:add("Barracks/Mounted", nil, switchCallback, "Mounted")
-menuBar:add("Special/Tier 1", nil, switchCallback, "Tier 1")
-menuBar:add("Special/Tier 2", nil, switchCallback, "Tier 2")
-menuBar:add("Special/Tier 3", nil, switchCallback, "Tier 3")
-menuBar:add("Transport", nil, switchCallback, "Transport")
-menuBar:add("Buildings/Castle", nil, switchCallback, "Castle")
-menuBar:add("Buildings/Farm", nil, switchCallback, "Farm")
-menuBar:add("Buildings/Lumber Mill", nil, switchCallback, "Lumber Mill")
-menuBar:add("Buildings/Mine", nil, switchCallback, "Mine")
-menuBar:add("Buildings/Barracks", nil, switchCallback, "Barracks")
-menuBar:add("Buildings/Factory", nil, switchCallback, "Factory")
-menuBar:add("Buildings/Shipyard", nil, switchCallback, "Shipyard")
-menuBar:add("Buildings/Tower 1", nil, switchCallback, "Tower 1")
-menuBar:add("Buildings/Tower 2", nil, switchCallback, "Tower 2")
-menuBar:add("Buildings/Tower 3", nil, switchCallback, "Tower 3")
-menuBar:add("Projectiles", nil, switchCallback, "Projectiles")
-
-local function quit_callback(w)
-	window:hide()
-end
-local quitButton = fltk:Fl_Button(1485, 0, 50, 25, "Exit")
-quitButton:callback(quit_callback)
 
 for i = 0, 181 do 
 	local a = {}
@@ -546,18 +573,41 @@ for i = 0, 181 do
 	--print(a.ID)
 end
 for i = 0, 26 do
-	local a = {}
+	projectileTable[i + 1] = {}
 	local base = i * 116
-	a.ID = NothingICantHandle(base + 22577, base + 22578)
-	a.DamageMin = NothingICantHandle(base + 22681, base + 22682)
-	a.DamageMax = NothingICantHandle(base + 22683, base + 22684)
-	projectileTable[i + 1] = a
+	projectileTable[i + 1].ID = NothingICantHandle(base + 22577, base + 22578)
+	projectileTable[i + 1].DamageMin = NothingICantHandle(base + 22681, base + 22682)
+	projectileTable[i + 1].DamageMax = NothingICantHandle(base + 22683, base + 22684)
 	--print(a.ID)
 end
 
-local offScreen = fltk:Fl_Button(1685, 0, 50, 25, "Exit")
-offScreen:callback(switchCallback, "Main Heroes")
-offScreen:do_callback()
+local menuBar = fltk:Fl_Menu_Bar(0, 0, 550, 25)
 
+menuBar:add("Save", nil, saveCallback)
+menuBar:add("Heroes/Main Factions", nil, switchCallback, "Main Factions")
+menuBar:add("Heroes/Side Factions", nil, switchCallback, "Side Factions")
+menuBar:add("Builders", nil, switchCallback, "Builders")
+menuBar:add("Barracks/Melee", nil, switchCallback, "Melee")
+menuBar:add("Barracks/Ranged", nil, switchCallback, "Ranged")
+menuBar:add("Barracks/Mounted", nil, switchCallback, "Mounted")
+menuBar:add("Special/Tier 1", nil, switchCallback, "Tier 1")
+menuBar:add("Special/Tier 2", nil, switchCallback, "Tier 2")
+menuBar:add("Special/Tier 3", nil, switchCallback, "Tier 3")
+menuBar:add("Transport", nil, switchCallback, "Transport")
+menuBar:add("Buildings/Castle", nil, switchCallback, "Castle")
+menuBar:add("Buildings/Farm", nil, switchCallback, "Farm")
+menuBar:add("Buildings/Lumber Mill", nil, switchCallback, "Lumber Mill")
+menuBar:add("Buildings/Mine", nil, switchCallback, "Mine")
+menuBar:add("Buildings/Barracks", nil, switchCallback, "Barracks")
+menuBar:add("Buildings/Factory", nil, switchCallback, "Factory")
+menuBar:add("Buildings/Shipyard", nil, switchCallback, "Shipyard")
+menuBar:add("Buildings/Tower 1", nil, switchCallback, "Tower 1")
+menuBar:add("Buildings/Tower 2", nil, switchCallback, "Tower 2")
+menuBar:add("Buildings/Tower 3", nil, switchCallback, "Tower 3")
+menuBar:add("Projectiles", nil, switchCallback, "Projectiles")
+
+local quitButton = fltk:Fl_Button(1485, 0, 50, 25, "Exit")
+quitButton:callback(quit_callback)
+	
 window:show()
 Fl:run()
