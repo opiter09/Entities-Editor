@@ -88,12 +88,12 @@ for i = 1, #nameTable do
 end
 nameTable = temp
 
-local newNames = { "BridgeSmallH", "BridgeSmallV", "BridgeMediumH", "BridgeMediumV", "BridgeLargeH", "BridgeLargeV", "GateH", "GateV",
+local newNames = { "Wall", "BridgeSmallH", "BridgeSmallV", "BridgeMediumH", "BridgeMediumV", "BridgeLargeH", "BridgeLargeV", "GateH", "GateV",
 	"Space Police Captain", "Space Police", "Space Police Cruiser", "Space Police Base", "Space Criminal Leader", "Space Criminal",
 	"Space Criminal Hotrod", "Space Criminal Base", "Falvour", "Robot", "Color", "Crashed Supply Pod", "Crashed Mothership", "Meteorite",
 	"Crashed Alien Transport", "Ancient Structure", "King Kahuka", "Islander", "Tiki Golem", "Islander Temple", "Ninja Master", "Ninja",
 	"Ninja Flying Ship", "Ninja Temple", "Moneky", "Trader Ship", "Shark", "Shipwreck Water", "Shipwreck Beach", "Forgotten Islander Temple",
-	"AbandonedImperialOutpost", "Dwarf King", "Dwarf", "Dwarf Glider", "Dwarf Hall", "Troll King", "Troll", "Troll Blimp", "Troll Hall",
+	"AbandonedImperialOutpost", "Hermitage", "Dwarf King", "Dwarf", "Dwarf Glider", "Dwarf Hall", "Troll King", "Troll", "Troll Blimp", "Troll Hall",
 	"Wolf", "Stonehenge", "Cairn", "Church", "Ruined Tower", "Ruined Castle", "Forestman", "Ghost", "Sheriff", "Conquistador", "Agent Chase",
 	"Classic Space", "Santa" }
 for i = 1, #newNames do
