@@ -399,9 +399,9 @@ local function switchCallback(w)
 			local b = {}
 			local theValue = "???"
 			local theTable = {}
-			local button = fltk:Fl_Button(40, 30 * (i + 2), 100, 25, nameTable[a.ID + 1])
+			local button = fltk:Fl_Button(30, 30 * (i + 2), 100, 25, nameTable[a.ID + 1])
 			
-			b.Speed = fltk:Fl_Choice(200, 30 * (i + 2), 50, 25, "Speed")
+			b.Speed = fltk:Fl_Choice(185, 30 * (i + 2), 75, 25, "Speed")
 			b.Speed:down_box(fltk.FL_BORDER_BOX)
 			b.Speed:labelsize(14)
 			b.Speed:textsize(14)
