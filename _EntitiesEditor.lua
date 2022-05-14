@@ -407,7 +407,7 @@ local function switchCallback(w)
 		end
 	elseif (switchType == "Tier 2") then
 		for k, v in pairs(tempPeople) do
-			if ((math.fmod(math.abs(v.ID - 7), 20)) == 0) then
+			if ((math.fmod(math.abs(v.ID - 7), 20)) == 0) or (v.ID > 122) then
 				holding[#holding + 1] = v
 			end
 			tempPeople = holding
