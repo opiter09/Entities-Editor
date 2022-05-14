@@ -167,6 +167,7 @@ end
 
 local speedTable = { "341 (1)", "375 (2)", "410(2)", "444 (2)", "478 (3)", "546 (3)", "614 (3)", "683 (4)", "819 (5)", "853 (5)", "NONE" }
 local widgetTable = {}
+local switchType = 0
 
 local function saveCallback(w)
 	local internalTable = { "Arrow", "CrossbowBolt", "TBolt", "TBoulder", "TFireball", "BallistaBolt", "SiegeBolt", "Boulder", "OgreBoulder", 
@@ -204,13 +205,12 @@ local function saveCallback(w)
 						value.Power5 = v.Power5:value()
 					end
 				end
-			else
-				for key, value in pairs(projectileTable) do
-					if (v.ID == value.ID) then
-						value.DamageMin = v.DamageMin:value()
-						value.DamageMax = v.DamageMax:value()
-					end
-				end
+			end
+		end
+		if (switchType == "Projectiles") then
+			for i = 1, 27 do
+				projectileTable[i].DamageMin = widgetTable[i].DamageMin:value()
+				projectileTable[i].DamageMax = widgetTable[i].DamageMax:value()
 			end
 		end
 	end
@@ -249,7 +249,6 @@ local function saveCallback(w)
 	for i = 0, 26 do
 		local a = projectileTable[i + 1]
 		local base = i * 116
-		reading = string.sub(reading, 1, base + 22576) .. ThisLittleHexIsPayback(a.ID) .. string.sub(reading, base + 22579, string.len(reading))
 		reading = string.sub(reading, 1, base + 22680) .. ThisLittleHexIsPayback(a.DamageMin) .. ThisLittleHexIsPayback(a.DamageMax) ..
 		ThisLittleHexIsPayback(a.DamageMin) .. ThisLittleHexIsPayback(a.DamageMax) .. string.sub(reading, base + 22689, string.len(reading))
 	end
@@ -337,7 +336,6 @@ local function displayProjectiles()
 	end
 end
 
-local switchType = 0
 local tempPeople = {}
 local function switchCallback(w)
 	widgetTable = {}
@@ -640,13 +638,6 @@ for i = 0, 181 do
 	a.Power4 = NothingICantHandle(base + 122)
 	a.Power5 = NothingICantHandle(base + 123)
 	unitTable[i + 1] = a
-	if (i == 0) then
-		print(a.Power1)
-		print(a.Power2)
-		print(a.Power3)
-		print(a.Power4)
-		print(a.Power5)
-	end
 end
 for i = 0, 26 do
 	projectileTable[i + 1] = {}
