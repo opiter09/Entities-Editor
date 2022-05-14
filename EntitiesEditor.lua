@@ -87,6 +87,15 @@ nameTable[105] = "[E] Harvester"
 nameTable[106] = "[E] Well Cap"
 nameTable[130] = "Spire I"
 
+local conqName
+if (nameTable[60] == "Storehouse") then
+	nameTable[94] = "Gemma"
+	nameTable[95] = "Biff"
+	conqName = "Ancient Wolf"
+else
+	conqName = "Conquistador"
+end
+
 local temp = {}
 for i = 1, #nameTable do
 	if (i < 41) or ((i > 46) and (i < 87)) or ((i > 93) and (i < 134)) then
@@ -101,7 +110,7 @@ local newNames = { "Wall", "BridgeSmallH", "BridgeSmallV", "BridgeMediumH", "Bri
 	"CrashedTransport", "AncientStructure", "King Kahuka", "Islander", "Tiki Golem", "Islander Temple", "Ninja Master", "Ninja",
 	"Ninja Flying Ship", "Ninja Temple", "Moneky", "TraderShip", "Shark", "ShipwreckWater", "ShipwreckBeach", "ForgottenTemple",
 	"AbandonedOutpost", "Hermitage", "Dwarf King", "Dwarf", "Dwarf Glider", "Dwarf Hall", "Troll King", "Troll", "Troll Blimp", "Troll Hall",
-	"Wolf", "Stonehenge", "Cairn", "Church", "RuinedTower", "RuinedCastle", "Forestman", "Ghost", "Sheriff", "Conquistador", "Agent Chase",
+	"Wolf", "Stonehenge", "Cairn", "Church", "RuinedTower", "RuinedCastle", "Forestman", "Ghost", "Sheriff", conqName, "Agent Chase",
 	"Classic Space", "Santa" }
 for i = 1, #newNames do
 	table.insert(nameTable, #nameTable + 1, newNames[i])
