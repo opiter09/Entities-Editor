@@ -97,7 +97,7 @@ local newNames = { "Wall", "BridgeSmallH", "BridgeSmallV", "BridgeMediumH", "Bri
 	"Wolf", "Stonehenge", "Cairn", "Church", "Ruined Tower", "Ruined Castle", "Forestman", "Ghost", "Sheriff", "Conquistador", "Agent Chase",
 	"Classic Space", "Santa" }
 for i = 1, #newNames do
-	table.insert(nameTable, #nameTable, newNames[i])
+	table.insert(nameTable, #nameTable + 1, newNames[i])
 end
 --print(table.maxn(nameTable))
 
