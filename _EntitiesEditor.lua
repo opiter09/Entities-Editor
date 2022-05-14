@@ -43,26 +43,31 @@ missingTable = {
 	[39] = "[W] Tower III",
 	[40] = "[W] Shipyard",
 	[49] = "[P] Builder",
-	[57] = "[P] Lumber Shack",
-	[62] = "[P] Tower I",
-	[63] = "[P] Tower II",
-	[64] = "[P] Tower III",
-	[65] = "[P] Shipyard",
-	[68] = "[I] Builder",
-	[80] = "[I] Tower I",
-	[81] = "[I] Tower II",
-	[82] = "[I] Tower II",
-	[83] = "[I] Shipyard",
-	[93] = "[E] Builder",
-	[104] = "[E] Barracks",
-	[106] = "[E] Tower I",
-	[107] = "[E] Tower II",
-	[108] = "[E] Tower III",
-	[109] = "[E] Shipyard",
-	[112] = "[A] Builder",
-	[120] = "[A] Harvester",
-	[121] = "[A] Well Cap",
-	[128] = "[A] Shipyard"
+	[56] = "[P] Transport Ship",
+	[58] = "[P] Lumber Shack",
+	[63] = "[P] Tower I",
+	[64] = "[P] Tower II",
+	[65] = "[P] Tower III",
+	[66] = "[P] Shipyard",
+	[69] = "[I] Builder",
+	[74] = "[I] Battleship",
+	[76] = "[I] Transport Ship",
+	[83] = "[I] Tower I",
+	[84] = "[I] Tower II",
+	[85] = "[I] Tower II",
+	[86] = "[I] Shipyard",
+	[97] = "[E] Builder",
+	[103] = "[E] Transport Ship",
+	[108] = "[E] Barracks",
+	[110] = "[E] Tower I",
+	[111] = "[E] Tower II",
+	[112] = "[E] Tower III",
+	[113] = "[E] Shipyard",
+	[114] = "[A] Builder",
+	[123] = "[A] Transport Ship",
+	[125] = "[A] Harvester",
+	[126] = "[A] Well Cap",
+	[133] = "[A] Shipyard"
 }
 for k, v in pairs(missingTable) do
 	table.insert(nameTable, k, v)
@@ -71,12 +76,15 @@ nameTable[12] = "[K] Lumber Mill"
 nameTable[18] = "[K] Tower II"
 nameTable[19] = "[K] Tower III"
 nameTable[32] = "[W] Lumber Shack"
-nameTable[101] = "[E] Harvester"
-nameTable[102] = "[E] Well Cap"
+nameTable[54] = "[P] Battleship"
+nameTable[105] = "[E] Harvester"
+nameTable[106] = "[E] Well Cap"
 
 local temp = {}
-for i = 1, 128 do
-	temp[i] = nameTable[i]
+for i = 1, #nameTable do
+	if (i < 41) or ((i > 46) and (i < 87)) or ((i > 93) and (i < 134)) then
+		temp[#temp + 1] = nameTable[i]
+	end
 end
 nameTable = temp
 
@@ -91,7 +99,7 @@ local newNames = { "BridgeSmallH", "BridgeSmallV", "BridgeMediumH", "BridgeMediu
 for i = 1, #newNames do
 	table.insert(nameTable, #nameTable, newNames[i])
 end
---print(table.maxn(nameTable))
+print(table.maxn(nameTable))
 
 local function NothingICantHandle(inp, inp2)
 	local inputFile = assert(io.open("testD.bin", "rb"))
@@ -215,8 +223,8 @@ local windowII
 
 local function displayProjectiles()
 	local internalTable = { "Arrow", "CrossbowBolt", "TBolt", "TBoulder", "TFireball", "BallistaBolt", "SiegeBolt", "Boulder", "OgreBoulder", 
-		"Fireball", "ImperialShot", "PirateShot", "TPirateShot", "ICannonBall", "PCannonBall", "Elaser", "ALaster", "TLaser",
-		"PlasmaBall", "LaserCannon", "ProjectileSpell", "AirBallistaBolt", "AirFireball", "AirLaster", "Sharkbite", "Gift", "ProjNoEffect" }
+		"Fireball", "ImperialShot", "PirateShot", "TPirateShot", "ICannonBall", "PCannonBall", "Elaser", "ALaser", "TLaser",
+		"PlasmaBall", "LaserCannon", "ProjectileSpell", "AirBallistaBolt", "AirFireball", "AirLaser", "Sharkbite", "Gift", "ProjNoEffect" }
 
 	for i = 1, 14 do
 		local a = projectileTable[i]
@@ -358,38 +366,47 @@ local function switchCallback(w)
 	tempPeople = {}
 	for i = 1, 182 do
 		if (unitTable[i].Type == typeMapping[switchType]) then
-			tempPeople[#tempPeople + 1] = unitTable[i]
+			if (unitTable[i].BuildCost > 1) then
+				tempPeople[#tempPeople + 1] = unitTable[i]
+			end
 		end
 	end
 	table.sort(tempPeople, function(k1, k2) return k1.ID < k2.ID end)
 
-	if (switchType == "Main Heroes") then
-		for i = 13, #tempPeople do
-			table.remove(tempPeople, i)
-		end
-	elseif (switchType == "Side Heroes") then
+	local holding = {}
+	if (switchType == "Main Factions") then
 		for i = 1, 12 do
-			table.remove(tempPeople, i)
+			holding[#holding + 1] = tempPeople[i]
 		end
+		tempPeople = holding
+	elseif (switchType == "Side Factions") then
+		for i = 13, 25 do
+			holding[#holding + 1] = tempPeople[i]
+		end
+		tempPeople = holding
 	end
 
+	holding = {}
 	if (switchType == "Tier 1") then
 		for i = 1, #tempPeople do
-			if ((math.fmod(math.abs(tempPeople[i].ID - 6), 17)) ~= 0) then
-				table.remove(tempPeople[i])
+			if ((math.fmod(math.abs(tempPeople[i].ID - 6), 17)) == 0) then
+				holding[#holding + 1] = tempPeople[i]
 			end
+			tempPeople = holding
 		end
 	elseif (switchType == "Tier 2") then
 		for i = 1, #tempPeople do
-			if ((math.fmod(math.abs(tempPeople[i].ID - 7), 17)) ~= 0) and (tempPeople[i].ID < 94) then
-				table.remove(tempPeople[i])
+			if ((math.fmod(math.abs(tempPeople[i].ID - 7), 17)) == 0) or (tempPeople[i].ID >= 94) then
+				holding[#holding + 1] = tempPeople[i]
 			end
+			tempPeople = holding
 		end
 	elseif (switchType == "Tier 3") then
 		for i = 1, #tempPeople do
 			if ((math.fmod(math.abs(tempPeople[i].ID - 8), 17)) ~= 0) then
-				table.remove(tempPeople[i])
+				holding[#holding + 1] = tempPeople[i]
 			end
+			tempPeople = holding
 		end
 	end
 	
@@ -409,11 +426,11 @@ local function switchCallback(w)
 			for j = 1, #theTable do
 				b.Speed:add(theTable[j])
 				if (a.Speed == tonumber(string.sub(theTable[j], 1, 3))) then
-					theValue = theTable[i]
+					theValue = j - 1
 				end
 			end
 			if (a.Speed == 65535) then
-				theValue = "NONE"
+				theValue = 10
 			end
 			b.Speed:value(theValue)
 			
@@ -425,8 +442,7 @@ local function switchCallback(w)
 			for j = 1, #theTable do
 				b.LandFlag:add(theTable[j])
 			end
-			theValue = theTable[a.LandFlag + 1]
-			b.LandFlag:value(theValue)
+			b.LandFlag:value(a.LandFlag)
 			
 			b.WaterFlag = fltk:Fl_Choice(400, 30 * (i + 2), 50, 25, "Water")
 			b.WaterFlag:down_box(fltk.FL_BORDER_BOX)
@@ -436,8 +452,7 @@ local function switchCallback(w)
 			for j = 1, #theTable do
 				b.WaterFlag:add(theTable[j])
 			end
-			theValue = theTable[a.WaterFlag + 1]
-			b.WaterFlag:value(theValue)
+			b.WaterFlag:value(a.WaterFlag)
 			
 			b.Type = fltk:Fl_Choice(500, 30 * (i + 2), 75, 25, "Type")
 			b.Type:down_box(fltk.FL_BORDER_BOX)
@@ -449,8 +464,7 @@ local function switchCallback(w)
 			for j = 1, #theTable do
 				b.Type:add(theTable[j])
 			end
-			theValue = theTable[a.Type + 1]
-			b.Type:value(theValue)
+			b.Type:value(a.Type)
 			
 			b.BuildCost = fltk:Fl_Value_Input(625, 30 * (i + 2), 50, 25, "B Cost")
 			b.BuildCost:labelsize(14)
@@ -489,17 +503,16 @@ local function switchCallback(w)
 			b.ProjectileID:labelsize(14)
 			b.ProjectileID:textsize(14)
 			theTable = { "Arrow", "CrossbowBolt", "TBolt", "TBoulder", "TFireball", "BallistaBolt", "SiegeBolt", "Boulder", "OgreBoulder", 
-			"Fireball", "ImperialShot", "PirateShot", "TPirateShot", "ICannonBall", "PCannonBall", "Elaser", "ALaster", "TLaser",
-			"PlasmaBall", "LaserCannon", "ProjectileSpell", "AirBallistaBolt", "AirFireball", "AirLaster", "Sharkbite", "Gift", "ProjectileNoEffect", "NONE"}
+			"Fireball", "ImperialShot", "PirateShot", "TPirateShot", "ICannonBall", "PCannonBall", "Elaser", "ALaser", "TLaser",
+			"PlasmaBall", "LaserCannon", "ProjectileSpell", "AirBallistaBolt", "AirFireball", "AirLaser", "Sharkbite", "Gift", "ProjectileNoEffect", "NONE"}
 			for j = 1, #theTable do
 				b.ProjectileID:add(theTable[j])
 			end
-			theValue = theTable[a.ProjectileID - 181]
+			b.ProjectileID:value(a.ProjectileID - 182)
 			if (a.ProjectileID == 65535) then
-				theValue = "NONE"
+				b.ProjectileID:value(27)
 			end
-			b.ProjectileID:value(theValue)
-			
+
 			b.AttackMin = fltk:Fl_Value_Input(1175, 30 * (i + 2), 50, 25, "Attack Min")
 			b.AttackMin:labelsize(14)
 			b.AttackMin:textsize(14)
@@ -529,8 +542,7 @@ local function switchCallback(w)
 				for k = 1, #theTable do
 					b[string.format("Power%s", j)]:add(theTable[k])
 				end
-				theValue = theTable[a.Powers[j] + 1]
-				b[string.format("Power%s", j)]:value(theValue)
+				b[string.format("Power%s", j)]:value(a.Powers[j])
 			end
 			
 			for k, v in pairs(b) do
