@@ -28,7 +28,7 @@ rom:close()
 --print(table.maxn(nameTable))
 --castle, mill, mine, farm, barracks, factory, t1, t2, t3, ship
 missingTable = {
-	[4] = "[K] Builder",
+	[3] = "[K] Builder",
 	[11] = "Castle",
 	[13] = "[K] Mine",
 	[14] = "Farm",
@@ -99,7 +99,7 @@ local newNames = { "BridgeSmallH", "BridgeSmallV", "BridgeMediumH", "BridgeMediu
 for i = 1, #newNames do
 	table.insert(nameTable, #nameTable, newNames[i])
 end
-print(table.maxn(nameTable))
+--print(table.maxn(nameTable))
 
 local function NothingICantHandle(inp, inp2)
 	local inputFile = assert(io.open("testD.bin", "rb"))
@@ -215,7 +215,12 @@ local function saveCallback(w)
 end
 
 local function quit_callback(w)
-	Fl:stop()
+	if (thisWindow == 1) then
+		window:hide()
+		return
+	elseif (thisWindow == 2) then
+		windowII:hide()
+	end
 end
 
 local widgetTable = {}
@@ -289,13 +294,6 @@ end
 local switchType = 0
 local tempPeople = {}
 local function switchCallback(w)
-	if (table.maxn(widgetTable) ~= 0) then
-		for i = 1, #widgetTable do
-			for k, v in pairs(widgetTable[i]) do
-				v:hide()
-			end
-		end
-	end
 	widgetTable = {}
 
 	local typeMapping = {
@@ -364,61 +362,73 @@ local function switchCallback(w)
 	end
 
 	tempPeople = {}
-	for i = 1, 182 do
+	for i = 1, #unitTable do
 		if (unitTable[i].Type == typeMapping[switchType]) then
 			if (unitTable[i].BuildCost > 1) then
 				tempPeople[#tempPeople + 1] = unitTable[i]
 			end
 		end
 	end
+	
 	table.sort(tempPeople, function(k1, k2) return k1.ID < k2.ID end)
 
 	local holding = {}
 	if (switchType == "Main Factions") then
-		for i = 1, 12 do
-			holding[#holding + 1] = tempPeople[i]
+		local check = 1
+		for k, v in pairs(tempPeople) do
+			if (check <= 12) then
+				holding[#holding + 1] = v
+				check = check + 1
+			end
 		end
 		tempPeople = holding
 	elseif (switchType == "Side Factions") then
-		for i = 13, 25 do
-			holding[#holding + 1] = tempPeople[i]
+		local check = 1
+		for k, v in pairs(tempPeople) do
+			check = check + 1
+			if (check > 13) then
+				print(string.format("%s: %s", #holding + 1, v.ID))
+				holding[#holding + 1] = v
+			end
 		end
 		tempPeople = holding
 	end
 
 	holding = {}
 	if (switchType == "Tier 1") then
-		for i = 1, #tempPeople do
-			if ((math.fmod(math.abs(tempPeople[i].ID - 6), 17)) == 0) then
-				holding[#holding + 1] = tempPeople[i]
+		for k, v in pairs(tempPeople) do
+			if ((math.fmod(math.abs(v.ID - 6), 20)) == 0) then
+				holding[#holding + 1] = v
 			end
 			tempPeople = holding
 		end
 	elseif (switchType == "Tier 2") then
-		for i = 1, #tempPeople do
-			if ((math.fmod(math.abs(tempPeople[i].ID - 7), 17)) == 0) or (tempPeople[i].ID >= 94) then
-				holding[#holding + 1] = tempPeople[i]
+		for k, v in pairs(tempPeople) do
+			if ((math.fmod(math.abs(v.ID - 7), 20)) == 0) then
+				holding[#holding + 1] = v
 			end
 			tempPeople = holding
 		end
 	elseif (switchType == "Tier 3") then
-		for i = 1, #tempPeople do
-			if ((math.fmod(math.abs(tempPeople[i].ID - 8), 17)) ~= 0) then
-				holding[#holding + 1] = tempPeople[i]
+		for k, v in pairs(tempPeople) do
+			if ((math.fmod(math.abs(v.ID - 8), 20)) == 0) then
+				holding[#holding + 1] = v
 			end
 			tempPeople = holding
 		end
 	end
-	
-	for i = 1, #tempPeople do
-		if	(i <= 15) then
-			local a = tempPeople[i]
+
+	local check = 1	
+	for k, v in pairs(tempPeople) do
+		if (check <= 15) then
+			check = check + 1
+			local a = v
 			local b = {}
 			local theValue = "???"
 			local theTable = {}
-			local button = fltk:Fl_Button(30, 30 * (i + 2), 100, 25, nameTable[a.ID + 1])
+			local button = fltk:Fl_Button(30, 30 * (check + 2), 100, 25, nameTable[a.ID + 1])
 			
-			b.Speed = fltk:Fl_Choice(185, 30 * (i + 2), 75, 25, "Speed")
+			b.Speed = fltk:Fl_Choice(185, 30 * (check + 2), 75, 25, "Speed")
 			b.Speed:down_box(fltk.FL_BORDER_BOX)
 			b.Speed:labelsize(14)
 			b.Speed:textsize(14)
@@ -434,7 +444,7 @@ local function switchCallback(w)
 			end
 			b.Speed:value(theValue)
 			
-			b.LandFlag = fltk:Fl_Choice(300, 30 * (i + 2), 50, 25, "Land")
+			b.LandFlag = fltk:Fl_Choice(300, 30 * (check + 2), 50, 25, "Land")
 			b.LandFlag:down_box(fltk.FL_BORDER_BOX)
 			b.LandFlag:labelsize(14)
 			b.LandFlag:textsize(14)
@@ -444,7 +454,7 @@ local function switchCallback(w)
 			end
 			b.LandFlag:value(a.LandFlag)
 			
-			b.WaterFlag = fltk:Fl_Choice(400, 30 * (i + 2), 50, 25, "Water")
+			b.WaterFlag = fltk:Fl_Choice(400, 30 * (check + 2), 50, 25, "Water")
 			b.WaterFlag:down_box(fltk.FL_BORDER_BOX)
 			b.WaterFlag:labelsize(14)
 			b.WaterFlag:textsize(14)
@@ -454,7 +464,7 @@ local function switchCallback(w)
 			end
 			b.WaterFlag:value(a.WaterFlag)
 			
-			b.Type = fltk:Fl_Choice(500, 30 * (i + 2), 75, 25, "Type")
+			b.Type = fltk:Fl_Choice(500, 30 * (check + 2), 75, 25, "Type")
 			b.Type:down_box(fltk.FL_BORDER_BOX)
 			b.Type:labelsize(14)
 			b.Type:textsize(14)
@@ -466,7 +476,7 @@ local function switchCallback(w)
 			end
 			b.Type:value(a.Type)
 			
-			b.BuildCost = fltk:Fl_Value_Input(625, 30 * (i + 2), 50, 25, "B Cost")
+			b.BuildCost = fltk:Fl_Value_Input(625, 30 * (check + 2), 50, 25, "B Cost")
 			b.BuildCost:labelsize(14)
 			b.BuildCost:textsize(14)
 			b.BuildCost:minimum(0)
@@ -474,7 +484,7 @@ local function switchCallback(w)
 			b.BuildCost:step(5)
 			b.BuildCost:value(a.BuildCost)
 			
-			b.BuildTime = fltk:Fl_Value_Input(725, 30 * (i + 2), 50, 25, "B Time")
+			b.BuildTime = fltk:Fl_Value_Input(725, 30 * (check + 2), 50, 25, "B Time")
 			b.BuildTime:labelsize(14)
 			b.BuildTime:textsize(14)
 			b.BuildTime:minimum(0)
@@ -482,7 +492,7 @@ local function switchCallback(w)
 			b.BuildTime:step(5)
 			b.BuildTime:value(a.BuildTime)
 			
-			b.Health = fltk:Fl_Value_Input(825, 30 * (i + 2), 50, 25, "Health")
+			b.Health = fltk:Fl_Value_Input(825, 30 * (check + 2), 50, 25, "Health")
 			b.Health:labelsize(14)
 			b.Health:textsize(14)
 			b.Health:minimum(0)
@@ -490,7 +500,7 @@ local function switchCallback(w)
 			b.Health:step(5)
 			b.Health:value(a.Health)
 			
-			b.Mana = fltk:Fl_Value_Input(925, 30 * (i + 2), 50, 25, "Mana")
+			b.Mana = fltk:Fl_Value_Input(925, 30 * (check + 2), 50, 25, "Mana")
 			b.Mana:labelsize(14)
 			b.Mana:textsize(14)
 			b.Mana:minimum(0)
@@ -498,7 +508,7 @@ local function switchCallback(w)
 			b.Mana:step(5)
 			b.Mana:value(a.Mana)
 			
-			b.ProjectileID = fltk:Fl_Choice(1025, 30 * (i + 2), 80, 25, "Proj")
+			b.ProjectileID = fltk:Fl_Choice(1025, 30 * (check + 2), 80, 25, "Proj")
 			b.ProjectileID:down_box(fltk.FL_BORDER_BOX)
 			b.ProjectileID:labelsize(14)
 			b.ProjectileID:textsize(14)
@@ -513,7 +523,7 @@ local function switchCallback(w)
 				b.ProjectileID:value(27)
 			end
 
-			b.AttackMin = fltk:Fl_Value_Input(1175, 30 * (i + 2), 50, 25, "Attack Min")
+			b.AttackMin = fltk:Fl_Value_Input(1175, 30 * (check + 2), 50, 25, "Attack Min")
 			b.AttackMin:labelsize(14)
 			b.AttackMin:textsize(14)
 			b.AttackMin:minimum(0)
@@ -521,7 +531,7 @@ local function switchCallback(w)
 			b.AttackMin:step(5)
 			b.AttackMin:value(a.AttackMin)
 			
-			b.AttackMax = fltk:Fl_Value_Input(1300, 30 * (i + 2), 50, 25, "Attack Max")
+			b.AttackMax = fltk:Fl_Value_Input(1300, 30 * (check + 2), 50, 25, "Attack Max")
 			b.AttackMax:labelsize(14)
 			b.AttackMax:textsize(14)
 			b.AttackMax:minimum(0)
@@ -530,7 +540,7 @@ local function switchCallback(w)
 			b.AttackMax:value(a.AttackMax)
 			
 			for j = 1, 5 do
-				b[string.format("Power%s", j)] = fltk:Fl_Choice(1275 + j * 135, 30 * (i + 2), 75, 25, string.format("Power%s", j))
+				b[string.format("Power%s", j)] = fltk:Fl_Choice(1275 + j * 135, 30 * (check + 2), 75, 25, string.format("Power%s", j))
 				b[string.format("Power%s", j)]:down_box(fltk.FL_BORDER_BOX)
 				b[string.format("Power%s", j)]:labelsize(14)
 				b[string.format("Power%s", j)]:textsize(14)
@@ -548,7 +558,7 @@ local function switchCallback(w)
 			for k, v in pairs(b) do
 				group:add(v)
 			end
-			widgetTable[i] = b
+			widgetTable[check] = b
 		end
 	end
 	if (thisWindow == 1) then
