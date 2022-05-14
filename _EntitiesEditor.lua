@@ -243,7 +243,7 @@ local function saveCallback(w)
 		local diff = math.max(a.AttackMax - a.AttackMin, 0)
 		reading = string.sub(reading, 1, base + 110) .. ThisLittleHexIsPayback(diff) .. string.sub(reading, base + 113, string.len(reading))
 		for j = 1, 5 do
-			reading = string.sub(reading, 1, base + 117 + j) .. IllHexYou(a[string.format("Power%s", j)]) .. string.sub(reading, base + 119 + checkP, string.len(reading))
+			reading = string.sub(reading, 1, base + 117 + j) .. IllHexYou(a[string.format("Power%s", j)]) .. string.sub(reading, base + 119 + j, string.len(reading))
 		end
 	end
 	for i = 0, 26 do
@@ -589,13 +589,13 @@ local function switchCallback(w)
 				b[string.format("Power%s", j)]:down_box(fltk.FL_BORDER_BOX)
 				b[string.format("Power%s", j)]:labelsize(14)
 				b[string.format("Power%s", j)]:textsize(14)
-				theTable = { "NONE", "Unit Heal [100]", "Unit Heal", "N/A", "Unit Speed Boost", "Area Speed Boost", "Unit Damage Boost",
+				theTable = { "NONE", "Unit Heal [100]", "Unit Heal", "Nothing", "Unit Speed Boost", "Area Speed Boost", "Unit Damage Boost",
 					"Area Damage Boost", "Unit Armor Boost", "Area Armor Boost", "Forest Spawn", "Crystal Cache", "Jungle Growth", "Earthquake",
 					"Fireball", "Lightning", "Thunder Hammer", "Mining Buff", "Roar", "Logging Buff", "Monkey Swarm", "Crab Swarm", "Coconut Storm",
 					"Artillery", "Trade Winds", "Arrow Volley", "Teleport", "EMP", "Space Laser", "ESP", "Tracking", "Cluster Bomb", "Hot Wire",
 					"Unit Heal [500]" }
 				for x, y in pairs(theTable) do
-					b[string.format("Power%s", j)]:add(y)
+					b[string.format("Power%s", j)]:add(theTable[x])
 				end
 				b[string.format("Power%s", j)]:value(a[string.format("Power%s", j)])
 			end
