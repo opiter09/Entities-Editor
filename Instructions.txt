@@ -1,0 +1,35 @@
+If you read my documentation on Entities.ebp, you will find the following instructions:
+
+HOW TO ACTUALLY EDIT ALL THIS STUFF:
+1. Legally back up your LEGO Battles cartridge, yielding a .nds ROM file
+2. Download CrystalTile2 (https://www.romhacking.net/utilities/818/)
+3. Use it to extract the files from the ROM (i.e. load it, go to Tools -> NDS File
+   System, and inside that window do File -> Split Rom)
+4. Download the Decompressor Thing, hacked into being by yours truly
+   (https://github.com/opiter09/Hacky-LZ11-Container-De-Compressor)
+5. Drag and Drop the file BP / Entities.ebp you got from the ROM onto our decompressor
+6. You will see an empty window, just close it. Now you have a testD.bin
+7. Open that up in a Hex Editor, do whatever you want to it
+8. When you want to put it back into the ROM, first compress it by dragging it onto
+   HackedNitroPaint.exe again. This will again give you a window to close, and the file
+   testC.bin
+9. Rename testC.bin to Entities.ebp, then open CrystalTile2 again
+10. Load your ROM into it, go to File -> NDS File System. For convenience, click
+    View a list of -> Directory to show files inside folders instead of in one
+    gigantic list. Then scroll down to BP -> Entities.ebp
+11. Left click the file to select it, then right click, press Import, and choose your
+    edited file
+12. Now save the ROM. CrystalTile2 is weird, so you have to save by trying to quit and
+    then clicking No to cancel. Then quit for real to be done
+
+Step 7 is where this program comes in. Instead of going insane traversing through a hex file, you have a nice GUI to edit all the values.
+In order to run this program, you need MurgaLua (RIP John Murga). It has been preserved at https://github.com/igame3dbill/murgaLua.
+All you need to do is download that archive (using the green button Code -> Download Zip, or some other method), extract it, and
+find bin / YourOperatingSystem / murgaLua. Then place that somewhere easy to get to, and put in the same spot:
+- EntitiesEditor.lua
+- your decompressed Entities file, testD.bin
+- a LEGO Battles ROM (Vanilla or otherwise not too messed up, for extracting the names), named "LegoBattles.NDS"
+- said murgaLua file
+Now drag and drop my lua script onto murgaLua, or run it from the command line, and you should be good to go!
+
+IMPORTANT: If you switch tabs, you will lose all unsaved work! Make sure to Save to the ROM before moving to a different section!

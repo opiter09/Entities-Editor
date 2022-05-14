@@ -9,4 +9,4 @@ sqlTool.lua
 *.nds
 drawSleepTest.lua
 LegoBattles.sav
-*.txt
+textfile.txt
