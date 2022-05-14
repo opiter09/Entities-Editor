@@ -1,4 +1,4 @@
-local window = fltk:Fl_Double_Window(0, 0, 4000, 1080, "Entities Editor")
+local window = fltk:Fl_Double_Window(0, 0, 4000, 3000, "Entities Editor")
 local thisWindow = 1
 local unitTable = {}
 local projectileTable = {}
@@ -165,13 +165,52 @@ local function ThisLittleHexIsPayback(num)
 	return(hex)
 end
 
+local speedTable = { "341 (1)", "375 (2)", "410(2)", "444 (2)", "478 (3)", "546 (3)", "614 (3)", "683 (4)", "819 (5)", "853 (5)", "NONE" }
+local widgetTable = {}
+
 local function saveCallback(w)
-	if (table.maxn(tempPeople) ~= 0) then
-		for i = 1, #tempPeople do
+	local internalTable = { "Arrow", "CrossbowBolt", "TBolt", "TBoulder", "TFireball", "BallistaBolt", "SiegeBolt", "Boulder", "OgreBoulder", 
+		"Fireball", "ImperialShot", "PirateShot", "TPirateShot", "ICannonBall", "PCannonBall", "Elaser", "ALaser", "TLaser",
+		"PlasmaBall", "LaserCannon", "ProjectileSpell", "AirBallistaBolt", "AirFireball", "AirLaser", "Sharkbite", "Gift", "ProjNoEffect" }
+
+	if (switchType ~= 0) and (widgetTable ~= nil) then
+		for k, v in pairs(widgetTable) do
 			if (switchType ~= "Projectiles") then
-				unitTable[tempPeople[i].ID + 1] = tempPeople[i]
+				for key, value in pairs(unitTable) do
+					if (v.ID == value.ID) then
+						if (speedTable[v.Speed:value() + 1] == "NONE") then
+							value.Speed = 65535
+						else
+							value.Speed = tonumber(string.sub(speedTable[v.Speed:value() + 1], 1, 3))
+						end
+						value.LandFlag = v.LandFlag:value()
+						value.WaterFlag = v.WaterFlag:value()
+						value.Type = v.Type:value()
+						value.BuildCost = v.BuildCost:value()
+						value.BuildTime = v.BuildTime:value()
+						value.Health = v.Health:value()
+						value.Mana = v.Mana:value()
+						if (v.ProjectileID:value() == 27) then
+							value.ProjectileID = 65535
+						else
+							value.ProjectileID = v.ProjectileID:value() + 182
+						end
+						value.AttackMin = v.AttackMin:value()
+						value.AttackMax = v.AttackMax:value()
+						value.Power1 = v.Power1:value()
+						value.Power2 = v.Power2:value()
+						value.Power3 = v.Power3:value()
+						value.Power4 = v.Power4:value()
+						value.Power5 = v.Power5:value()
+					end
+				end
 			else
-				projectileTable[tempPeople[i].ID - 181] = tempPeople[i]
+				for key, value in pairs(projectileTable) do
+					if (v.ID == value.ID) then
+						value.DamageMin = v.DamageMin:value()
+						value.DamageMax = v.DamageMax:value()
+					end
+				end
 			end
 		end
 	end
@@ -204,7 +243,7 @@ local function saveCallback(w)
 		local diff = math.max(a.AttackMax - a.AttackMin, 0)
 		reading = string.sub(reading, 1, base + 110) .. ThisLittleHexIsPayback(diff) .. string.sub(reading, base + 113, string.len(reading))
 		for j = 1, 5 do
-			reading = string.sub(reading, 1, base + 117 + j) .. IllHexYou(a.Powers[j]) .. string.sub(reading, base + 119 + j, string.len(reading))
+			reading = string.sub(reading, 1, base + 117 + j) .. IllHexYou(a[string.format("Power%s", j)]) .. string.sub(reading, base + 119 + checkP, string.len(reading))
 		end
 	end
 	for i = 0, 26 do
@@ -230,7 +269,6 @@ local function quit_callback(w)
 	end
 end
 
-local widgetTable = {}
 local windowII
 
 local function displayProjectiles()
@@ -284,6 +322,7 @@ local function displayProjectiles()
 		b.DamageMax:step(5)
 		b.DamageMax:value(a.DamageMax)
 		
+		b.ID = a.ID
 		widgetTable[i] = b
 	end
 	if (thisWindow == 1) then
@@ -394,7 +433,6 @@ local function switchCallback(w)
 		for k, v in pairs(tempPeople) do
 			check = check + 1
 			if (check > 13) then
-				print(string.format("%s: %s", #holding + 1, v.ID))
 				holding[#holding + 1] = v
 			end
 		end
@@ -439,7 +477,7 @@ local function switchCallback(w)
 			b.Speed:down_box(fltk.FL_BORDER_BOX)
 			b.Speed:labelsize(14)
 			b.Speed:textsize(14)
-			theTable = { "341 (1)", "375 (2)", "410(2)", "444 (2)", "478 (3)", "546 (3)", "614 (3)", "683 (4)", "819 (5)", "853 (5)", "NONE" }
+			theTable = speedTable
 			for j = 1, #theTable do
 				b.Speed:add(theTable[j])
 				if (a.Speed == tonumber(string.sub(theTable[j], 1, 3))) then
@@ -455,7 +493,7 @@ local function switchCallback(w)
 			b.LandFlag:down_box(fltk.FL_BORDER_BOX)
 			b.LandFlag:labelsize(14)
 			b.LandFlag:textsize(14)
-			theTable = { "Off (0)", "On (1)" }
+			theTable = { "Off", "On" }
 			for j = 1, #theTable do
 				b.LandFlag:add(theTable[j])
 			end
@@ -465,7 +503,7 @@ local function switchCallback(w)
 			b.WaterFlag:down_box(fltk.FL_BORDER_BOX)
 			b.WaterFlag:labelsize(14)
 			b.WaterFlag:textsize(14)
-			theTable = { "Off (0)", "On (1)" }
+			theTable = { "Off", "On" }
 			for j = 1, #theTable do
 				b.WaterFlag:add(theTable[j])
 			end
@@ -551,20 +589,21 @@ local function switchCallback(w)
 				b[string.format("Power%s", j)]:down_box(fltk.FL_BORDER_BOX)
 				b[string.format("Power%s", j)]:labelsize(14)
 				b[string.format("Power%s", j)]:textsize(14)
-				theTable = { "NONE", "Unit Heal [100]", "Unit Heal [100]", "Unit Speed Boost", "Area Speed Boost", "Unit Damage Boost",
+				theTable = { "NONE", "Unit Heal [100]", "Unit Heal", "N/A", "Unit Speed Boost", "Area Speed Boost", "Unit Damage Boost",
 					"Area Damage Boost", "Unit Armor Boost", "Area Armor Boost", "Forest Spawn", "Crystal Cache", "Jungle Growth", "Earthquake",
 					"Fireball", "Lightning", "Thunder Hammer", "Mining Buff", "Roar", "Logging Buff", "Monkey Swarm", "Crab Swarm", "Coconut Storm",
 					"Artillery", "Trade Winds", "Arrow Volley", "Teleport", "EMP", "Space Laser", "ESP", "Tracking", "Cluster Bomb", "Hot Wire",
 					"Unit Heal [500]" }
-				for k = 1, #theTable do
-					b[string.format("Power%s", j)]:add(theTable[k])
+				for x, y in pairs(theTable) do
+					b[string.format("Power%s", j)]:add(y)
 				end
-				b[string.format("Power%s", j)]:value(a.Powers[j])
+				b[string.format("Power%s", j)]:value(a[string.format("Power%s", j)])
 			end
 			
-			for k, v in pairs(b) do
-				group:add(v)
+			for key, value in pairs(b) do
+				group:add(value)
 			end
+			b.ID = a.ID
 			widgetTable[check] = b
 		end
 	end
@@ -595,15 +634,19 @@ for i = 0, 181 do
 	a.ProjectileID = NothingICantHandle(base + 107, base + 108)
 	a.AttackMin = NothingICantHandle(base + 109, base + 110)
 	a.AttackMax = a.AttackMin + NothingICantHandle(base + 111, base + 112)
-	a.Powers = {
-		NothingICantHandle(base + 119),
-		NothingICantHandle(base + 120),
-		NothingICantHandle(base + 121),
-		NothingICantHandle(base + 122),
-		NothingICantHandle(base + 123)
-	}
+	a.Power1 = NothingICantHandle(base + 119)
+	a.Power2 = NothingICantHandle(base + 120)
+	a.Power3 = NothingICantHandle(base + 121)
+	a.Power4 = NothingICantHandle(base + 122)
+	a.Power5 = NothingICantHandle(base + 123)
 	unitTable[i + 1] = a
-	--print(a.ID)
+	if (i == 0) then
+		print(a.Power1)
+		print(a.Power2)
+		print(a.Power3)
+		print(a.Power4)
+		print(a.Power5)
+	end
 end
 for i = 0, 26 do
 	projectileTable[i + 1] = {}
