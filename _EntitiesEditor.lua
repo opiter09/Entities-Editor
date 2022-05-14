@@ -69,8 +69,10 @@ missingTable = {
 	[126] = "[A] Well Cap",
 	[133] = "[A] Shipyard"
 }
-for k, v in pairs(missingTable) do
-	table.insert(nameTable, k, v)
+for i = 1, 140 do
+	if (missingTable[i] ~= nil) then
+		table.insert(nameTable, i, missingTable[i])
+	end
 end
 nameTable[12] = "[K] Lumber Mill"
 nameTable[18] = "[K] Tower II"
