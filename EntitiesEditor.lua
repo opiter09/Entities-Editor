@@ -174,7 +174,9 @@ local function ThisLittleHexIsPayback(num)
 	return(hex)
 end
 
-local speedTable = { "341 (1)", "375 (2)", "410 (2)", "444 (2)", "478 (3)", "546 (3)", "614 (3)", "683 (4)", "819 (5)", "853 (5)", "NONE" }
+local speedTable = { "273 (1)", "341 (1)", "375 (2)", "410 (2)", "444 (2)", "478 (3)", "546 (3)", "614 (3)", "683 (4)", "819 (5)", "853 (5)", "956 (5)", "NONE" }
+local typeTable = { "Hero", "Builder", "Melee", "Ranged", "Mounted", "Transport", "Special", "Castle", "Lumber Mill", "Mine", "Farm", "Barracks", "Factory",
+	"Tower I", "Tower II", "Tower III", "Shipyard", "Bridge", "Gate", "Wall", "Other" }
 local widgetTable = {}
 local switchType = 0
 
@@ -195,7 +197,7 @@ local function saveCallback(w)
 						end
 						value.LandFlag = v.LandFlag:value()
 						value.WaterFlag = v.WaterFlag:value()
-						if (v.Type:value() == 19) then
+						if (typeTable[v.Type:value() + 1] == "Other") then
 							value.Type = 255
 						else
 							value.Type = v.Type:value()
@@ -506,7 +508,7 @@ local function switchCallback(w)
 				end
 			end
 			if (a.Speed == 65535) then
-				theValue = 10
+				theValue = 12
 			end
 			b.Speed:value(theValue)
 			
@@ -534,14 +536,12 @@ local function switchCallback(w)
 			b.Type:down_box(fltk.FL_BORDER_BOX)
 			b.Type:labelsize(14)
 			b.Type:textsize(14)
-			theTable = { "Hero", "Builder", "Melee", "Ranged", "Mounted", "Transport", "Special",
-				"Castle", "Lumber Mill", "Mine", "Farm", "Barracks", "Factory", "Tower I", "Tower II",
-				"Tower III", "Shipyard", "Bridge", "Gate", "Other" }
+			theTable = typeTable
 			for j = 1, #theTable do
 				b.Type:add(theTable[j])
 			end
 			if (a.Type == 255) then
-				b.Type:value(19)
+				b.Type:value(20)
 			else
 				b.Type:value(a.Type)
 			end
