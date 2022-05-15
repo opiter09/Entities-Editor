@@ -77,6 +77,7 @@ for i = 1, 140 do
 		table.insert(nameTable, i, missingTable[i])
 	end
 end
+nameTable[10] = "[K] Transport Ship"
 nameTable[12] = "[K] Lumber Mill"
 nameTable[18] = "[K] Tower II"
 nameTable[19] = "[K] Tower III"
@@ -105,8 +106,8 @@ end
 nameTable = temp
 
 local newNames = { "Wall", "BridgeSmallH", "BridgeSmallV", "BridgeMediumH", "BridgeMediumV", "BridgeLargeH", "BridgeLargeV", "GateH", "GateV",
-	"Space Police Captain", "Space Police", "Space Police Cruiser", "Space Police Base", "Space Criminal Leader", "Space Criminal",
-	"Space Criminal Hotrod", "Space Criminal Base", "Falvour", "Robot", "ShipColor", "SupplyPod", "Mothership", "Meteorite",
+	"SpacePoliceCaptain", "Space Police", "SpacePoliceCruiser", "SpacePoliceBase", "SpaceCriminalLeader", "Space Criminal",
+	"SpaceCriminalHotrod", "SpaceCriminalBase", "Falvour", "Robot", "ShipColor", "SupplyPod", "Mothership", "Meteorite",
 	"CrashedTransport", "AncientStructure", "King Kahuka", "Islander", "Tiki Golem", "Islander Temple", "Ninja Master", "Ninja",
 	"Ninja Flying Ship", "Ninja Temple", "Monkey", "TraderShip", "Shark", "ShipwreckWater", "ShipwreckBeach", "ForgottenTemple",
 	"AbandonedOutpost", "Hermitage", "Dwarf King", "Dwarf", "Dwarf Glider", "Dwarf Hall", "Troll King", "Troll", "Troll Blimp", "Troll Hall",
@@ -288,15 +289,15 @@ local windowII
 local function displayProjectiles()
 	local internalTable = { "Arrow", "CrossbowBolt", "TBolt", "TBoulder", "TFireball", "BallistaBolt", "SiegeBolt", "Boulder", "OgreBoulder", 
 		"Fireball", "ImperialShot", "PirateShot", "TPirateShot", "ICannonBall", "PCannonBall", "Elaser", "ALaser", "TLaser",
-		"PlasmaBall", "LaserCannon", "ProjectileSpell", "AirBallistaBolt", "AirFireball", "AirLaser", "Sharkbite", "Gift", "ProjNoEffect" }
+		"PlasmaBall", "LaserCannon", "ProjectileSpell", "AirBallistaBolt", "AirFireball", "AirLaser", "Sharkbite", "Gift", "ProjectileNoEffect" }
 
 	for i = 1, 14 do
 		local a = projectileTable[i]
 		local b = {}
 		
-		fltk:Fl_Button(40, 30 * (i + 2), 100, 25, internalTable[i])
+		fltk:Fl_Button(20, 30 * (i + 2), 130, 25, internalTable[i])
 		
-		b.DamageMin = fltk:Fl_Value_Input(230, 30 * (i + 2), 50, 25, "Damage Min")
+		b.DamageMin = fltk:Fl_Value_Input(240, 30 * (i + 2), 50, 25, "Damage Min")
 		b.DamageMin:labelsize(14)
 		b.DamageMin:textsize(14)
 		b.DamageMin:minimum(0)
@@ -304,7 +305,7 @@ local function displayProjectiles()
 		b.DamageMin:step(5)
 		b.DamageMin:value(a.DamageMin)
 		
-		b.DamageMax = fltk:Fl_Value_Input(380, 30 * (i + 2), 50, 25, "Damage Max")
+		b.DamageMax = fltk:Fl_Value_Input(390, 30 * (i + 2), 50, 25, "Damage Max")
 		b.DamageMax:labelsize(14)
 		b.DamageMax:textsize(14)
 		b.DamageMax:minimum(0)
@@ -318,9 +319,9 @@ local function displayProjectiles()
 		local a = projectileTable[i]
 		local b = {}
 
-		fltk:Fl_Button(440, 30 * (i -12), 100, 25, internalTable[i])
+		fltk:Fl_Button(460, 30 * (i -12), 130, 25, internalTable[i])
 		
-		b.DamageMin = fltk:Fl_Value_Input(630, 30 * (i - 12), 50, 25, "Damage Min")
+		b.DamageMin = fltk:Fl_Value_Input(680, 30 * (i - 12), 50, 25, "Damage Min")
 		b.DamageMin:labelsize(14)
 		b.DamageMin:textsize(14)
 		b.DamageMin:minimum(0)
@@ -328,7 +329,7 @@ local function displayProjectiles()
 		b.DamageMin:step(5)
 		b.DamageMin:value(a.DamageMin)
 		
-		b.DamageMax = fltk:Fl_Value_Input(780, 30 * (i - 12), 50, 25, "Damage Max")
+		b.DamageMax = fltk:Fl_Value_Input(830, 30 * (i - 12), 50, 25, "Damage Max")
 		b.DamageMax:labelsize(14)
 		b.DamageMax:textsize(14)
 		b.DamageMax:minimum(0)
@@ -494,7 +495,7 @@ local function switchCallback(w)
 			local b = {}
 			local theValue = "???"
 			local theTable = {}
-			local button = fltk:Fl_Button(20, 30 * (check + 2), 110, 25, nameTable[a.ID + 1])
+			b.Button = fltk:Fl_Button(0, 30 * (check + 2), 130, 25, nameTable[a.ID + 1])
 			
 			b.Speed = fltk:Fl_Choice(185, 30 * (check + 2), 75, 25, "Speed")
 			b.Speed:down_box(fltk.FL_BORDER_BOX)
@@ -624,7 +625,9 @@ local function switchCallback(w)
 				end
 				b[string.format("Power%s", j)]:value(a[string.format("Power%s", j)])
 			end
-			
+
+			b.Button2 = fltk:Fl_Button(2040, 30 * (check + 2), 130, 25, nameTable[a.ID + 1])
+
 			for key, value in pairs(b) do
 				group:add(value)
 			end
