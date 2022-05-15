@@ -488,7 +488,7 @@ local function switchCallback(w)
 
 	local check = 1	
 	for k, v in pairs(tempPeople) do
-		if (check <= 15) then
+		if (check <= 20) then
 			check = check + 1
 			local a = v
 			local b = {}
