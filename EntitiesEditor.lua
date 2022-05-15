@@ -106,9 +106,9 @@ nameTable = temp
 
 local newNames = { "Wall", "BridgeSmallH", "BridgeSmallV", "BridgeMediumH", "BridgeMediumV", "BridgeLargeH", "BridgeLargeV", "GateH", "GateV",
 	"Space Police Captain", "Space Police", "Space Police Cruiser", "Space Police Base", "Space Criminal Leader", "Space Criminal",
-	"Space Criminal Hotrod", "Space Criminal Base", "Falvour", "Robot", "Color", "SupplyPod", "Mothership", "Meteorite",
+	"Space Criminal Hotrod", "Space Criminal Base", "Falvour", "Robot", "ShipColor", "SupplyPod", "Mothership", "Meteorite",
 	"CrashedTransport", "AncientStructure", "King Kahuka", "Islander", "Tiki Golem", "Islander Temple", "Ninja Master", "Ninja",
-	"Ninja Flying Ship", "Ninja Temple", "Moneky", "TraderShip", "Shark", "ShipwreckWater", "ShipwreckBeach", "ForgottenTemple",
+	"Ninja Flying Ship", "Ninja Temple", "Monkey", "TraderShip", "Shark", "ShipwreckWater", "ShipwreckBeach", "ForgottenTemple",
 	"AbandonedOutpost", "Hermitage", "Dwarf King", "Dwarf", "Dwarf Glider", "Dwarf Hall", "Troll King", "Troll", "Troll Blimp", "Troll Hall",
 	"Wolf", "Stonehenge", "Cairn", "Church", "RuinedTower", "RuinedCastle", "Forestman", "Ghost", "Sheriff", conqName, "Agent Chase",
 	"Classic Space", "Santa" }
@@ -195,7 +195,11 @@ local function saveCallback(w)
 						end
 						value.LandFlag = v.LandFlag:value()
 						value.WaterFlag = v.WaterFlag:value()
-						value.Type = v.Type:value()
+						if (v.Type:value() == 19) then
+							value.Type = 255
+						else
+							value.Type = v.Type:value()
+						end
 						value.BuildCost = v.BuildCost:value()
 						value.BuildTime = v.BuildTime:value()
 						value.Health = v.Health:value()
@@ -370,6 +374,7 @@ local function switchCallback(w)
 		["Tower 1"] = 13,
 		["Tower 2"] = 14,
 		["Tower 3"] = 15,
+		["Extras"] = -1
 	}
 	switchType = w:user_data()
 	
@@ -378,7 +383,7 @@ local function switchCallback(w)
 	elseif (thisWindow == 2) then
 		window = fltk:Fl_Double_Window(0, 0, 4000, 3000, "Entities Editor")
 	end
-	local menuBar = fltk:Fl_Menu_Bar(0, 0, 550, 25)
+	local menuBar = fltk:Fl_Menu_Bar(0, 0, 600, 25)
 
 	menuBar:add("Save", nil, saveCallback)
 	menuBar:add("Heroes/Main Factions", nil, switchCallback, "Main Factions")
@@ -401,6 +406,7 @@ local function switchCallback(w)
 	menuBar:add("Buildings/Tower 1", nil, switchCallback, "Tower 1")
 	menuBar:add("Buildings/Tower 2", nil, switchCallback, "Tower 2")
 	menuBar:add("Buildings/Tower 3", nil, switchCallback, "Tower 3")
+	menuBar:add("Extras", nil, switchCallback, "Extras")
 	menuBar:add("Projectiles", nil, switchCallback, "Projectiles")
 	
 	local quitButton = fltk:Fl_Button(1485, 0, 50, 25, "Exit")
@@ -469,6 +475,14 @@ local function switchCallback(w)
 			tempPeople = holding
 		end
 	end
+	
+	if (switchType == "Extras") then
+		for i = 1, #unitTable do
+			if (unitTable[i].Type > 16) or (unitTable[i].BuildCost <= 1) then
+				tempPeople[#tempPeople + 1] = unitTable[i]
+			end
+		end
+	end
 
 	local check = 1	
 	for k, v in pairs(tempPeople) do
@@ -522,11 +536,15 @@ local function switchCallback(w)
 			b.Type:textsize(14)
 			theTable = { "Hero", "Builder", "Melee", "Ranged", "Mounted", "Transport", "Special",
 				"Castle", "Lumber Mill", "Mine", "Farm", "Barracks", "Factory", "Tower I", "Tower II",
-				"Tower III", "Shipyard" }
+				"Tower III", "Shipyard", "Bridge", "Gate", "Other" }
 			for j = 1, #theTable do
 				b.Type:add(theTable[j])
 			end
-			b.Type:value(a.Type)
+			if (a.Type == 255) then
+				b.Type:value(19)
+			else
+				b.Type:value(a.Type)
+			end
 			
 			b.BuildCost = fltk:Fl_Value_Input(625, 30 * (check + 2), 50, 25, "B Cost")
 			b.BuildCost:labelsize(14)
@@ -657,7 +675,7 @@ for i = 0, 26 do
 	--print(a.ID)
 end
 
-local menuBar = fltk:Fl_Menu_Bar(0, 0, 550, 25)
+local menuBar = fltk:Fl_Menu_Bar(0, 0, 600, 25)
 
 menuBar:add("Save", nil, saveCallback)
 menuBar:add("Heroes/Main Factions", nil, switchCallback, "Main Factions")
@@ -680,6 +698,7 @@ menuBar:add("Buildings/Shipyard", nil, switchCallback, "Shipyard")
 menuBar:add("Buildings/Tower 1", nil, switchCallback, "Tower 1")
 menuBar:add("Buildings/Tower 2", nil, switchCallback, "Tower 2")
 menuBar:add("Buildings/Tower 3", nil, switchCallback, "Tower 3")
+menuBar:add("Extras", nil, switchCallback, "Extras")
 menuBar:add("Projectiles", nil, switchCallback, "Projectiles")
 
 local quitButton = fltk:Fl_Button(1485, 0, 50, 25, "Exit")
