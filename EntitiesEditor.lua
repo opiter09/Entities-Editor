@@ -415,7 +415,7 @@ local function switchCallback(w)
 	local quitButton = fltk:Fl_Button(1485, 0, 50, 25, "Exit")
 	quitButton:callback(quit_callback)
 	
-	local group = fltk:Fl_Scroll(0, 70, 1535, 650, "")
+	local group = fltk:Fl_Scroll(0, 25, 1535, 695, "")
 	group:box(fltk.FL_THIN_UP_BOX)
 
 	if (switchType == "Projectiles") then
