@@ -284,20 +284,6 @@ local function quitCallback(w)
 	end
 end
 
-local function mapCallback(w)
-	local out = assert(io.open("testD.bin", "rb"))
-	local reading = out:read("*all")
-	
-	for i = 1, 30 do
-		reading = string.sub(reading, 1, 29173 + ((i - 1) * 112) - 1) .. string.char(0x00) .. string.sub(reading, 29173 + ((i - 1) * 112) + 1, string.len(reading))
-	end
-	out:close()
-	out = assert(io.open("testD.bin", "wb"))
-	out:write(reading)
-	out:close()
-	fltk.fl_message("Store Muliplayer Maps Now Enabled Automatically!")
-end
-
 local windowII
 
 local function displayProjectiles()
@@ -428,9 +414,6 @@ local function switchCallback(w)
 	
 	local quitButton = fltk:Fl_Button(1485, 0, 50, 25, "Exit")
 	quitButton:callback(quitCallback)
-	
-	local mapButton = fltk:Fl_Button(950, 0, 100, 25, "Enable Maps")
-	mapButton:callback(mapCallback)
 	
 	local group = fltk:Fl_Scroll(0, 25, 1535, 695, "")
 	group:box(fltk.FL_THIN_UP_BOX)
@@ -723,9 +706,6 @@ menuBar:add("Projectiles", nil, switchCallback, "Projectiles")
 
 local quitButton = fltk:Fl_Button(1485, 0, 50, 25, "Exit")
 quitButton:callback(quitCallback)
-
-local mapButton = fltk:Fl_Button(950, 0, 100, 25, "Enable Maps")
-mapButton:callback(mapCallback)
 	
 window:show()
 Fl:run()
