@@ -295,7 +295,7 @@ local function mapCallback(w)
 	out = assert(io.open("testD.bin", "wb"))
 	out:write(reading)
 	out:close()
-	fltk.fl_message("Unused Muliplayer Maps Enabled!")
+	fltk.fl_message("Store Muliplayer Maps Now Enabled Automatically!")
 end
 
 local windowII
