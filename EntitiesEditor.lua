@@ -182,10 +182,6 @@ local widgetTable = {}
 local switchType = 0
 
 local function saveCallback(w)
-	local internalTable = { "Arrow", "CrossbowBolt", "TBolt", "TBoulder", "TFireball", "BallistaBolt", "SiegeBolt", "Boulder", "OgreBoulder", 
-		"Fireball", "ImperialShot", "PirateShot", "TPirateShot", "ICannonBall", "PCannonBall", "Elaser", "ALaser", "TLaser",
-		"PlasmaBall", "LaserCannon", "ProjectileSpell", "AirBallistaBolt", "AirFireball", "AirLaser", "Sharkbite", "Gift", "ProjNoEffect" }
-
 	if (switchType ~= 0) and (widgetTable ~= nil) then
 		for k, v in pairs(widgetTable) do
 			if (switchType ~= "Projectiles") then
@@ -226,7 +222,7 @@ local function saveCallback(w)
 		if (switchType == "Projectiles") then
 			for i = 1, 27 do
 				projectileTable[i].DamageMin = widgetTable[i].DamageMin:value()
-				projectileTable[i].DamageMax = widgetTable[i].DamageMax:value()
+				projectileTable[i].DamageMax = math.max(widgetTable[i].DamageMax:value(), widgetTable[i].DamageMin:value())
 			end
 		end
 	end
@@ -547,7 +543,7 @@ local function switchCallback(w)
 				b.Type:value(a.Type)
 			end
 			
-			b.BuildCost = fltk:Fl_Value_Input(625, 30 * (check + 2), 50, 25, "B Cost")
+			b.BuildCost = fltk:Fl_Value_Input(650, 30 * (check + 2), 50, 25, "Build Cost")
 			b.BuildCost:labelsize(14)
 			b.BuildCost:textsize(14)
 			b.BuildCost:minimum(0)
@@ -555,7 +551,7 @@ local function switchCallback(w)
 			b.BuildCost:step(5)
 			b.BuildCost:value(a.BuildCost)
 			
-			b.BuildTime = fltk:Fl_Value_Input(725, 30 * (check + 2), 50, 25, "B Time")
+			b.BuildTime = fltk:Fl_Value_Input(775, 30 * (check + 2), 50, 25, "Build Time")
 			b.BuildTime:labelsize(14)
 			b.BuildTime:textsize(14)
 			b.BuildTime:minimum(0)
@@ -563,7 +559,7 @@ local function switchCallback(w)
 			b.BuildTime:step(5)
 			b.BuildTime:value(a.BuildTime)
 			
-			b.Health = fltk:Fl_Value_Input(825, 30 * (check + 2), 50, 25, "Health")
+			b.Health = fltk:Fl_Value_Input(875, 30 * (check + 2), 50, 25, "Health")
 			b.Health:labelsize(14)
 			b.Health:textsize(14)
 			b.Health:minimum(0)
@@ -571,7 +567,7 @@ local function switchCallback(w)
 			b.Health:step(5)
 			b.Health:value(a.Health)
 			
-			b.Mana = fltk:Fl_Value_Input(925, 30 * (check + 2), 50, 25, "Mana")
+			b.Mana = fltk:Fl_Value_Input(975, 30 * (check + 2), 50, 25, "Mana")
 			b.Mana:labelsize(14)
 			b.Mana:textsize(14)
 			b.Mana:minimum(0)
@@ -579,13 +575,13 @@ local function switchCallback(w)
 			b.Mana:step(5)
 			b.Mana:value(a.Mana)
 			
-			b.ProjectileID = fltk:Fl_Choice(1025, 30 * (check + 2), 80, 25, "Proj")
+			b.ProjectileID = fltk:Fl_Choice(1100, 30 * (check + 2), 80, 25, "Projectile")
 			b.ProjectileID:down_box(fltk.FL_BORDER_BOX)
 			b.ProjectileID:labelsize(14)
 			b.ProjectileID:textsize(14)
 			theTable = { "Arrow", "CrossbowBolt", "TBolt", "TBoulder", "TFireball", "BallistaBolt", "SiegeBolt", "Boulder", "OgreBoulder", 
 			"Fireball", "ImperialShot", "PirateShot", "TPirateShot", "ICannonBall", "PCannonBall", "Elaser", "ALaser", "TLaser",
-			"PlasmaBall", "LaserCannon", "ProjectileSpell", "AirBallistaBolt", "AirFireball", "AirLaser", "Sharkbite", "Gift", "ProjectileNoEffect", "NONE"}
+			"PlasmaBall", "LaserCannon", "ProjectileSpell", "AirBallistaBolt", "AirFireball", "AirLaser", "Sharkbite", "Gift", "ProjectileNoEffect", "NONE" }
 			for j = 1, #theTable do
 				b.ProjectileID:add(theTable[j])
 			end
@@ -594,7 +590,7 @@ local function switchCallback(w)
 				b.ProjectileID:value(27)
 			end
 
-			b.AttackMin = fltk:Fl_Value_Input(1175, 30 * (check + 2), 50, 25, "Attack Min")
+			b.AttackMin = fltk:Fl_Value_Input(1260, 30 * (check + 2), 50, 25, "Attack Min")
 			b.AttackMin:labelsize(14)
 			b.AttackMin:textsize(14)
 			b.AttackMin:minimum(0)
@@ -602,7 +598,7 @@ local function switchCallback(w)
 			b.AttackMin:step(5)
 			b.AttackMin:value(a.AttackMin)
 			
-			b.AttackMax = fltk:Fl_Value_Input(1300, 30 * (check + 2), 50, 25, "Attack Max")
+			b.AttackMax = fltk:Fl_Value_Input(1400, 30 * (check + 2), 50, 25, "Attack Max")
 			b.AttackMax:labelsize(14)
 			b.AttackMax:textsize(14)
 			b.AttackMax:minimum(0)
@@ -611,7 +607,7 @@ local function switchCallback(w)
 			b.AttackMax:value(a.AttackMax)
 			
 			for j = 1, 5 do
-				b[string.format("Power%s", j)] = fltk:Fl_Choice(1275 + j * 135, 30 * (check + 2), 75, 25, string.format("Power%s", j))
+				b[string.format("Power%s", j)] = fltk:Fl_Choice(1375 + j * 135, 30 * (check + 2), 75, 25, string.format("Power%s", j))
 				b[string.format("Power%s", j)]:down_box(fltk.FL_BORDER_BOX)
 				b[string.format("Power%s", j)]:labelsize(14)
 				b[string.format("Power%s", j)]:textsize(14)
@@ -626,7 +622,7 @@ local function switchCallback(w)
 				b[string.format("Power%s", j)]:value(a[string.format("Power%s", j)])
 			end
 
-			b.Button2 = fltk:Fl_Button(2040, 30 * (check + 2), 130, 25, nameTable[a.ID + 1])
+			b.Button2 = fltk:Fl_Button(2135, 30 * (check + 2), 130, 25, nameTable[a.ID + 1])
 
 			for key, value in pairs(b) do
 				group:add(value)
