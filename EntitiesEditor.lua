@@ -22,11 +22,6 @@ for i = 1, string.len(text) do
 	end
 end
 rom:close()
---for i = 1, #nameTable do
-	--print(string.format("%s", nameTable[i]))
---end
---print(table.maxn(nameTable))
---castle, mill, mine, farm, barracks, factory, t1, t2, t3, ship
 missingTable = {
 	[3] = "[K] Builder",
 	[11] = "Castle",
@@ -116,7 +111,6 @@ local newNames = { "Wall", "BridgeSmallH", "BridgeSmallV", "BridgeMediumH", "Bri
 for i = 1, #newNames do
 	table.insert(nameTable, #nameTable + 1, newNames[i])
 end
---print(table.maxn(nameTable))
 
 local function NothingICantHandle(inp, inp2)
 	local inputFile = assert(io.open("testD.bin", "rb"))
@@ -362,6 +356,7 @@ local function switchCallback(w)
 		["Tier 1"] = 6,
 		["Tier 2"] = 6,
 		["Tier 3"] = 6,
+		["Holding"] = 6,
 		["Transport"] = 5,
 		["Castle"] = 7,
 		["Farm"] = 10,
@@ -394,6 +389,7 @@ local function switchCallback(w)
 	menuBar:add("Special/Tier 1", nil, switchCallback, "Tier 1")
 	menuBar:add("Special/Tier 2", nil, switchCallback, "Tier 2")
 	menuBar:add("Special/Tier 3", nil, switchCallback, "Tier 3")
+	menuBar:add("Special/Holding", nil, switchCallback, "Holding")
 	menuBar:add("Transport", nil, switchCallback, "Transport")
 	menuBar:add("Buildings/Castle", nil, switchCallback, "Castle")
 	menuBar:add("Buildings/Farm", nil, switchCallback, "Farm")
@@ -432,19 +428,15 @@ local function switchCallback(w)
 
 	local holding = {}
 	if (switchType == "Main Factions") then
-		local check = 1
 		for k, v in pairs(tempPeople) do
-			if (check <= 12) then
+			if (v.ID <= 128) then
 				holding[#holding + 1] = v
-				check = check + 1
 			end
 		end
 		tempPeople = holding
 	elseif (switchType == "Side Factions") then
-		local check = 1
 		for k, v in pairs(tempPeople) do
-			check = check + 1
-			if (check > 13) then
+			if (v.ID > 128) then
 				holding[#holding + 1] = v
 			end
 		end
@@ -473,6 +465,15 @@ local function switchCallback(w)
 			end
 			tempPeople = holding
 		end
+	elseif (switchType == "Holding") then
+		for k, v in pairs(tempPeople) do
+			if ((math.fmod(math.abs(v.ID - 6), 20)) ~= 0) and ((math.fmod(math.abs(v.ID - 7), 20)) ~= 0) then
+				if (v.ID <= 122) and ((math.fmod(math.abs(v.ID - 8), 20)) ~= 0) then
+					holding[#holding + 1] = v
+				end
+			end
+		end
+		tempPeople = holding
 	end
 	
 	if (switchType == "Extras") then
@@ -671,7 +672,6 @@ for i = 0, 26 do
 	projectileTable[i + 1].ID = NothingICantHandle(base + 22577, base + 22578)
 	projectileTable[i + 1].DamageMin = NothingICantHandle(base + 22681, base + 22682)
 	projectileTable[i + 1].DamageMax = NothingICantHandle(base + 22683, base + 22684)
-	--print(a.ID)
 end
 
 local menuBar = fltk:Fl_Menu_Bar(0, 0, 600, 25)
@@ -686,6 +686,7 @@ menuBar:add("Barracks/Mounted", nil, switchCallback, "Mounted")
 menuBar:add("Special/Tier 1", nil, switchCallback, "Tier 1")
 menuBar:add("Special/Tier 2", nil, switchCallback, "Tier 2")
 menuBar:add("Special/Tier 3", nil, switchCallback, "Tier 3")
+menuBar:add("Special/Holding", nil, switchCallback, "Holding")
 menuBar:add("Transport", nil, switchCallback, "Transport")
 menuBar:add("Buildings/Castle", nil, switchCallback, "Castle")
 menuBar:add("Buildings/Farm", nil, switchCallback, "Farm")
