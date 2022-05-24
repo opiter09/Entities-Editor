@@ -486,151 +486,149 @@ local function switchCallback(w)
 
 	local check = 1	
 	for k, v in pairs(tempPeople) do
-		if (check <= 20) then
-			check = check + 1
-			local a = v
-			local b = {}
-			local theValue = "???"
-			local theTable = {}
-			b.Button = fltk:Fl_Button(0, 30 * (check + 2), 130, 25, nameTable[a.ID + 1])
-			
-			b.Speed = fltk:Fl_Choice(185, 30 * (check + 2), 75, 25, "Speed")
-			b.Speed:down_box(fltk.FL_BORDER_BOX)
-			b.Speed:labelsize(14)
-			b.Speed:textsize(14)
-			theTable = speedTable
-			for j = 1, #theTable do
-				b.Speed:add(theTable[j])
-				if (a.Speed == tonumber(string.sub(theTable[j], 1, 3))) then
-					theValue = j - 1
-				end
+		check = check + 1
+		local a = v
+		local b = {}
+		local theValue = "???"
+		local theTable = {}
+		b.Button = fltk:Fl_Button(0, 30 * (check + 2), 130, 25, nameTable[a.ID + 1])
+		
+		b.Speed = fltk:Fl_Choice(185, 30 * (check + 2), 75, 25, "Speed")
+		b.Speed:down_box(fltk.FL_BORDER_BOX)
+		b.Speed:labelsize(14)
+		b.Speed:textsize(14)
+		theTable = speedTable
+		for j = 1, #theTable do
+			b.Speed:add(theTable[j])
+			if (a.Speed == tonumber(string.sub(theTable[j], 1, 3))) then
+				theValue = j - 1
 			end
-			if (a.Speed == 65535) then
-				theValue = 12
-			end
-			b.Speed:value(theValue)
-			
-			b.LandFlag = fltk:Fl_Choice(300, 30 * (check + 2), 50, 25, "Land")
-			b.LandFlag:down_box(fltk.FL_BORDER_BOX)
-			b.LandFlag:labelsize(14)
-			b.LandFlag:textsize(14)
-			theTable = { "Off", "On" }
-			for j = 1, #theTable do
-				b.LandFlag:add(theTable[j])
-			end
-			b.LandFlag:value(a.LandFlag)
-			
-			b.WaterFlag = fltk:Fl_Choice(400, 30 * (check + 2), 50, 25, "Water")
-			b.WaterFlag:down_box(fltk.FL_BORDER_BOX)
-			b.WaterFlag:labelsize(14)
-			b.WaterFlag:textsize(14)
-			theTable = { "Off", "On" }
-			for j = 1, #theTable do
-				b.WaterFlag:add(theTable[j])
-			end
-			b.WaterFlag:value(a.WaterFlag)
-			
-			b.Type = fltk:Fl_Choice(500, 30 * (check + 2), 75, 25, "Type")
-			b.Type:down_box(fltk.FL_BORDER_BOX)
-			b.Type:labelsize(14)
-			b.Type:textsize(14)
-			theTable = typeTable
-			for j = 1, #theTable do
-				b.Type:add(theTable[j])
-			end
-			if (a.Type == 255) then
-				b.Type:value(20)
-			else
-				b.Type:value(a.Type)
-			end
-			
-			b.BuildCost = fltk:Fl_Value_Input(650, 30 * (check + 2), 50, 25, "Build Cost")
-			b.BuildCost:labelsize(14)
-			b.BuildCost:textsize(14)
-			b.BuildCost:minimum(0)
-			b.BuildCost:maximum(65535)
-			b.BuildCost:step(5)
-			b.BuildCost:value(a.BuildCost)
-			
-			b.BuildTime = fltk:Fl_Value_Input(775, 30 * (check + 2), 50, 25, "Build Time")
-			b.BuildTime:labelsize(14)
-			b.BuildTime:textsize(14)
-			b.BuildTime:minimum(0)
-			b.BuildTime:maximum(65535)
-			b.BuildTime:step(5)
-			b.BuildTime:value(a.BuildTime)
-			
-			b.Health = fltk:Fl_Value_Input(875, 30 * (check + 2), 50, 25, "Health")
-			b.Health:labelsize(14)
-			b.Health:textsize(14)
-			b.Health:minimum(0)
-			b.Health:maximum(65535)
-			b.Health:step(5)
-			b.Health:value(a.Health)
-			
-			b.Mana = fltk:Fl_Value_Input(975, 30 * (check + 2), 50, 25, "Mana")
-			b.Mana:labelsize(14)
-			b.Mana:textsize(14)
-			b.Mana:minimum(0)
-			b.Mana:maximum(65535)
-			b.Mana:step(5)
-			b.Mana:value(a.Mana)
-			
-			b.ProjectileID = fltk:Fl_Choice(1100, 30 * (check + 2), 80, 25, "Projectile")
-			b.ProjectileID:down_box(fltk.FL_BORDER_BOX)
-			b.ProjectileID:labelsize(14)
-			b.ProjectileID:textsize(14)
-			theTable = { "Arrow", "CrossbowBolt", "TBolt", "TBoulder", "TFireball", "BallistaBolt", "SiegeBolt", "Boulder", "OgreBoulder", 
-			"Fireball", "ImperialShot", "PirateShot", "TPirateShot", "ICannonBall", "PCannonBall", "Elaser", "ALaser", "TLaser",
-			"PlasmaBall", "LaserCannon", "ProjectileSpell", "AirBallistaBolt", "AirFireball", "AirLaser", "Sharkbite", "Gift", "ProjectileNoEffect", "NONE" }
-			for j = 1, #theTable do
-				b.ProjectileID:add(theTable[j])
-			end
-			b.ProjectileID:value(a.ProjectileID - 182)
-			if (a.ProjectileID == 65535) then
-				b.ProjectileID:value(27)
-			end
-
-			b.AttackMin = fltk:Fl_Value_Input(1260, 30 * (check + 2), 50, 25, "Attack Min")
-			b.AttackMin:labelsize(14)
-			b.AttackMin:textsize(14)
-			b.AttackMin:minimum(0)
-			b.AttackMin:maximum(65535)
-			b.AttackMin:step(5)
-			b.AttackMin:value(a.AttackMin)
-			
-			b.AttackMax = fltk:Fl_Value_Input(1400, 30 * (check + 2), 50, 25, "Attack Max")
-			b.AttackMax:labelsize(14)
-			b.AttackMax:textsize(14)
-			b.AttackMax:minimum(0)
-			b.AttackMax:maximum(65535)
-			b.AttackMax:step(5)
-			b.AttackMax:value(a.AttackMax)
-			
-			for j = 1, 5 do
-				b[string.format("Power%s", j)] = fltk:Fl_Choice(1375 + j * 135, 30 * (check + 2), 75, 25, string.format("Power%s", j))
-				b[string.format("Power%s", j)]:down_box(fltk.FL_BORDER_BOX)
-				b[string.format("Power%s", j)]:labelsize(14)
-				b[string.format("Power%s", j)]:textsize(14)
-				theTable = { "NONE", "Unit Heal [100]", "UnitHeal [100]", "Nothing", "Unit Speed Boost", "Area Speed Boost", "Unit Damage Boost",
-					"Area Damage Boost", "Unit Armor Boost", "Area Armor Boost", "Forest Spawn", "Crystal Cache", "Jungle Growth", "Earthquake",
-					"Fireball", "Lightning", "Thunder Hammer", "Mining Buff", "Roar", "Logging Buff", "Monkey Swarm", "Crab Swarm", "Coconut Storm",
-					"Artillery", "Trade Winds", "Arrow Volley", "Teleport", "EMP", "Space Laser", "ESP", "Tracking", "Cluster Bomb", "Hot Wire",
-					"Unit Heal [500]" }
-				for x, y in pairs(theTable) do
-					b[string.format("Power%s", j)]:add(theTable[x])
-				end
-				b[string.format("Power%s", j)]:value(a[string.format("Power%s", j)])
-			end
-
-			b.Button2 = fltk:Fl_Button(2135, 30 * (check + 2), 130, 25, nameTable[a.ID + 1])
-
-			for key, value in pairs(b) do
-				group:add(value)
-			end
-			b.ID = a.ID
-			widgetTable[check] = b
 		end
+		if (a.Speed == 65535) then
+			theValue = 12
+		end
+		b.Speed:value(theValue)
+		
+		b.LandFlag = fltk:Fl_Choice(300, 30 * (check + 2), 50, 25, "Land")
+		b.LandFlag:down_box(fltk.FL_BORDER_BOX)
+		b.LandFlag:labelsize(14)
+		b.LandFlag:textsize(14)
+		theTable = { "Off", "On" }
+		for j = 1, #theTable do
+			b.LandFlag:add(theTable[j])
+		end
+		b.LandFlag:value(a.LandFlag)
+		
+		b.WaterFlag = fltk:Fl_Choice(400, 30 * (check + 2), 50, 25, "Water")
+		b.WaterFlag:down_box(fltk.FL_BORDER_BOX)
+		b.WaterFlag:labelsize(14)
+		b.WaterFlag:textsize(14)
+		theTable = { "Off", "On" }
+		for j = 1, #theTable do
+			b.WaterFlag:add(theTable[j])
+		end
+		b.WaterFlag:value(a.WaterFlag)
+		
+		b.Type = fltk:Fl_Choice(500, 30 * (check + 2), 75, 25, "Type")
+		b.Type:down_box(fltk.FL_BORDER_BOX)
+		b.Type:labelsize(14)
+		b.Type:textsize(14)
+		theTable = typeTable
+		for j = 1, #theTable do
+			b.Type:add(theTable[j])
+		end
+		if (a.Type == 255) then
+			b.Type:value(20)
+		else
+			b.Type:value(a.Type)
+		end
+		
+		b.BuildCost = fltk:Fl_Value_Input(650, 30 * (check + 2), 50, 25, "Build Cost")
+		b.BuildCost:labelsize(14)
+		b.BuildCost:textsize(14)
+		b.BuildCost:minimum(0)
+		b.BuildCost:maximum(65535)
+		b.BuildCost:step(5)
+		b.BuildCost:value(a.BuildCost)
+		
+		b.BuildTime = fltk:Fl_Value_Input(775, 30 * (check + 2), 50, 25, "Build Time")
+		b.BuildTime:labelsize(14)
+		b.BuildTime:textsize(14)
+		b.BuildTime:minimum(0)
+		b.BuildTime:maximum(65535)
+		b.BuildTime:step(5)
+		b.BuildTime:value(a.BuildTime)
+		
+		b.Health = fltk:Fl_Value_Input(875, 30 * (check + 2), 50, 25, "Health")
+		b.Health:labelsize(14)
+		b.Health:textsize(14)
+		b.Health:minimum(0)
+		b.Health:maximum(65535)
+		b.Health:step(5)
+		b.Health:value(a.Health)
+		
+		b.Mana = fltk:Fl_Value_Input(975, 30 * (check + 2), 50, 25, "Mana")
+		b.Mana:labelsize(14)
+		b.Mana:textsize(14)
+		b.Mana:minimum(0)
+		b.Mana:maximum(65535)
+		b.Mana:step(5)
+		b.Mana:value(a.Mana)
+		
+		b.ProjectileID = fltk:Fl_Choice(1100, 30 * (check + 2), 80, 25, "Projectile")
+		b.ProjectileID:down_box(fltk.FL_BORDER_BOX)
+		b.ProjectileID:labelsize(14)
+		b.ProjectileID:textsize(14)
+		theTable = { "Arrow", "CrossbowBolt", "TBolt", "TBoulder", "TFireball", "BallistaBolt", "SiegeBolt", "Boulder", "OgreBoulder", 
+		"Fireball", "ImperialShot", "PirateShot", "TPirateShot", "ICannonBall", "PCannonBall", "Elaser", "ALaser", "TLaser",
+		"PlasmaBall", "LaserCannon", "ProjectileSpell", "AirBallistaBolt", "AirFireball", "AirLaser", "Sharkbite", "Gift", "ProjectileNoEffect", "NONE" }
+		for j = 1, #theTable do
+			b.ProjectileID:add(theTable[j])
+		end
+		b.ProjectileID:value(a.ProjectileID - 182)
+		if (a.ProjectileID == 65535) then
+			b.ProjectileID:value(27)
+		end
+
+		b.AttackMin = fltk:Fl_Value_Input(1260, 30 * (check + 2), 50, 25, "Attack Min")
+		b.AttackMin:labelsize(14)
+		b.AttackMin:textsize(14)
+		b.AttackMin:minimum(0)
+		b.AttackMin:maximum(65535)
+		b.AttackMin:step(5)
+		b.AttackMin:value(a.AttackMin)
+		
+		b.AttackMax = fltk:Fl_Value_Input(1400, 30 * (check + 2), 50, 25, "Attack Max")
+		b.AttackMax:labelsize(14)
+		b.AttackMax:textsize(14)
+		b.AttackMax:minimum(0)
+		b.AttackMax:maximum(65535)
+		b.AttackMax:step(5)
+		b.AttackMax:value(a.AttackMax)
+		
+		for j = 1, 5 do
+			b[string.format("Power%s", j)] = fltk:Fl_Choice(1375 + j * 135, 30 * (check + 2), 75, 25, string.format("Power%s", j))
+			b[string.format("Power%s", j)]:down_box(fltk.FL_BORDER_BOX)
+			b[string.format("Power%s", j)]:labelsize(14)
+			b[string.format("Power%s", j)]:textsize(14)
+			theTable = { "NONE", "Unit Heal [100]", "UnitHeal [100]", "Nothing", "Unit Speed Boost", "Area Speed Boost", "Unit Damage Boost",
+				"Area Damage Boost", "Unit Armor Boost", "Area Armor Boost", "Forest Spawn", "Crystal Cache", "Jungle Growth", "Earthquake",
+				"Fireball", "Lightning", "Thunder Hammer", "Mining Buff", "Roar", "Logging Buff", "Monkey Swarm", "Crab Swarm", "Coconut Storm",
+				"Artillery", "Trade Winds", "Arrow Volley", "Teleport", "EMP", "Space Laser", "ESP", "Tracking", "Cluster Bomb", "Hot Wire",
+				"Unit Heal [500]" }
+			for x, y in pairs(theTable) do
+				b[string.format("Power%s", j)]:add(theTable[x])
+			end
+			b[string.format("Power%s", j)]:value(a[string.format("Power%s", j)])
+		end
+
+		b.Button2 = fltk:Fl_Button(2135, 30 * (check + 2), 130, 25, nameTable[a.ID + 1])
+
+		for key, value in pairs(b) do
+			group:add(value)
+		end
+		b.ID = a.ID
+		widgetTable[check] = b
 	end
 	if (thisWindow == 1) then
 		windowII:show()
