@@ -175,9 +175,8 @@ is 05, not 03 or 04. The last/30th map starts at 0x7E90. Unlike units, freeplay
 maps are nice and neat, and cleanly live between ...i...i groups.
 
 The 21st byte from the start of a map group (i.e. The One After the FF)
-is the map's ID. Any ID of a used map (so 00 to 0F, 13, 14, and 16) is valid,
-and can be for some reason be used any number of times. Thus, my hack to add
-in the unused maps literally just changed all their IDs to 00.
+is the map's ID. Map IDs can be for some reason be used any number of times. Thus, my
+hack to start with all maps unlocked literally just changed all their IDs to 00.
 
 
 HOW TO ACTUALLY EDIT ALL THIS STUFF:
