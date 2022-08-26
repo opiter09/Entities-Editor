@@ -1,0 +1,212 @@
+The documentation explains what has been discovered since the creation of a tool
+to decompress Entities.ebp, and the subsequent discovery that it is the fabled
+"Statistics Table," allowing for all sorts of numerical hacks.
+
+All values are "little endian." That is to say, to determine the value shown, you must
+first flip the order of the bytes (e.g. DE 01 -> 1DE), and then convert from
+hexadecimal to decimal. This is, of course, unnecessary for one-byte values (such as
+unit type). 
+
+Conveniently, the 160-odd units in this game come right at the beginning. Each unit's
+data is 121 bytes long, e.g from 0x04 to 0x7C is the King. That sounds intimidating,
+but fortunately both sides of each block (except for the beginning of the King's) is
+bounded by A2A2A2, or the very recognizable ¢¢¢ in text. As I like to put it,
+the data goes "from c to shining c."
+
+It is important to note that the order of the units is not the same as the shop. It
+follows the order of sprites/models in the plaintext block at the bottom on the file.
+Basically, it goes:
+- King units
+- King buildings
+- Wizard units
+- Wizard buildings
+- Pirate units
+- Pirate buildings
+- Imperial units
+- Imperial buildings
+- Astronaut units
+- Astronaut buildings
+- Alien units
+- Alien buildings
+- Space Police
+- Space Criminals
+- Islanders
+- Ninjas
+- Dwarves
+- Trolls
+- Extra Heroes
+
+A majority of the data in each block has been either figured out, or determined to
+be useless filler. Let's go in order:
+
+Bytes 1 and 2 represents the long "card" seen in the shop and
+multiplayer/freeplay army select.
+
+Bytes 5 and 6 are the unit's ID. This honestly does not matter a whole lot, but is
+a good idea to not mess with it and keep the IDs always going up by 1 to be safe.
+One thing this ID does help with is parsing the file Factions.fbp, which lists which
+units are availible to the player and computer for various campaign missions etc.
+
+Bytes 7 and 8 tell you what name the unit has. Again, it just increments up, this
+isn't all that helpful unless you need to do some name-length rearranging.
+
+Bytes 13 and 14 (right after the first ¢¢) are the unit's speed. The values don't
+seem to make all that much sense, we have:
+- 0x0155 = 341 = 1 star
+- 0x0177 = 375 = 2 stars
+- 0x019A = 410 = 2 stars
+- 0x01BC = 444 = 2 stars
+- 0x01DE = 478 = 3 stars
+- 0x0222 = 546 = 3 stars
+- 0x0266 = 614 = 3 stars
+- 0x02AB = 683 = 4 stars
+- 0x0333 = 819 = 5 stars
+- 0x0355 = 853 = 5 stars
+Along with a couple of weird values from strange units with 0 build cost that
+I can't prove the star-level of:
+- 0x0111 = 273 = 1 star?
+- 0x03BC = 956 = 5 stars?
+
+Bytes 24 to 28 are a serious of related "flag" values (i.e. they are all either 00 or
+01). Byte 24 is whether a unit can walk on land. Byte 25 is whether a unit can walk
+on water. If that unit can only do one or the other, bytes 26 to 28 need to be set to
+00 01 00. If the unit ought to be able to walk on both, set these bytes to
+01 00 01, or else the unit won't be able to cross from one terrain to another,
+and will get stuck trying.
+
+Bytes 37 and 38 (the ones right after the second ¢¢) tell the game what
+wallking/attacking sprite set to use. The values between units seem nearly random,
+so you're better off just replacing the graphics themselves.
+
+Then we have something of a long interlude of useless bytes, much of which are 00
+unless you're a transport ship or building (here we can note that the many values
+inapplicable to buildings are listed as FF).
+
+Finally, the 93rd byte, the dot between i..¢¢ and i, is the Type of the unit. It goes
+mostly in order, with 00 = Hero, 01 = builder, 02 = melee, 03 = ranged,
+04 = mounted, 06 = special, and 05 = transport. Please note that if you assign
+05/06 to a sprite unit, or the others to a model unit, the thing will just not show
+up. Also, whereas changing the sprite types actually changes the unit, it seems
+the members of the various tiers of specialness are hardcoded by location, and
+that the transport type thus only determines whether people can actually
+board/disembark the vehicle.
+
+After this, we quickly get to the good stuff, right in order. Starting from byte 95
+comes:
+- two bytes of build cost
+- two bytes of build time (in frames, one must assume)
+- two bytes of health
+- two bytes of mana (or 00 00 for non-heroes)
+- two bytes of what projectile they use (or FF FF for non-projectile-users)
+- four bytes of attack (the first two are the lower bound, and the second two are
+  the size of the range, i.e. upper bound = first two + second two)
+
+The attack stat is 00 00 00 00 for projectile-users, because damage
+is defined on a per-projectile basis (see below).
+
+Then there are 8 bytes whose purpose is completely unknown.
+
+Finally, bytes 115 to 119 represent the powers of the unit. These are, of course,
+all 00 for non-heroes. Otherwise, we have a nifty chart, presented here after
+a fair amount of busywork:
+
+POWER TABLE:
+00 = NO POWER
+01 = Unit Heal (UNUSED, costs 100)
+02 = Unit Heal (UNUSED, costs 100, presumably exactly the same as 01)
+03 = NONE
+04 = Unit Speed Boost (UNUSED, costs 100)
+05 = Area Speed Boost
+06 = Unit Damage Boost (UNUSED, costs 100)
+07 = Area Damage Boost
+08 = Unit Armor Boost (UNUSED, costs 100)
+09 = Area Armor Boost
+--Note that the area boosts and unused unit boosts cost exactly the same--
+0A = Forest Spawn
+0B = Crystal Cache
+0C = Jungle Growth
+0D = Earthquake
+0E = Fireball
+0F = Lightning
+10 = Thunder Hammer
+11 = Mining Buff
+12 = Roar
+13 = Logging Buff
+14 = Monkey Swarm
+15 = Crab Swarm
+16 = Coconut Storm
+17 = Artillery
+18 = Trade Winds (UNUSED, costs 500, I can't really tell what it does other than make
+the leader go faster)
+19 = Arrow Volley
+1A = Teleport
+1B = EMP
+1C = Space Laser
+1D = ESP
+1E = Tracking
+1F = Cluster Bomb
+20 = Hot Wire
+21 = Unit Heal (UNUSED, costs 500, presumably heals more than the others)
+
+After this come two bytes that are 00 00 for all non-hero units, and 01 05 for *almost*
+all heroes. Why some (Brickbeard, Lady Pirate, Broadside, Camila, Biff, Gemma,
+Alien Commander, and Alien Queen, specifically) also have 00 00 here is entirely
+unkown. It is currently recommended to stick with whatever is there in vanilla
+unless something is not working right. 
+
+The last unit is Santa, and his block ends at 0x5828. Then there is the
+data for 27 projectiles, which ends around 0x6420. Then there are 30 random map
+sprites (the scroll etc.), and that ends around 0x71B7. Then we have the 30 freeplay
+maps.
+
+With the projectiles, I can't really make a declaration on where blocks truly begin
+and end. However, 0x5830 has the first projectile's ID, and then every 116 bytes after
+that is the next ID, so that's as good a place to deliminate as any. Said ID's
+conveniently match up with what is found in the ranged units' data.
+
+The damage of a projectile is found at the 17th to the 24th bytes after a ¢¢ÿ group,
+those being in turn the 85th byte after the ID. It is notable for being
+duplicated for no good reason. It is also a range, with the 17th-18th and 21st-22nd
+bytes both showing the minimum value, and the 19th-20th and 23rd-24th showing the
+maximum value.
+
+The first freeplay map starts at 0x71E0. You can tell because the fifth byte after that
+is 05, not 03 or 04. The last/30th map starts at 0x7E90. Unlike units, freeplay
+maps are nice and neat, and cleanly live between ...i...i groups.
+
+The 21st byte from the start of a map group (i.e. The One After the FF)
+is the map's ID. Any ID of a used map (so 00 to 0F, 13, 14, and 16) is valid,
+and can be for some reason be used any number of times. Thus, my hack to add
+in the unused maps literally just changed all their IDs to 00.
+
+
+HOW TO ACTUALLY EDIT ALL THIS STUFF:
+1. Legally back up your LEGO Battles cartridge, yielding a .nds ROM file
+2. Download CrystalTile2 (https://www.romhacking.net/utilities/818/)
+3. Use it to extract the files from the ROM (i.e. load it, go to Tools -> NDS File
+   System, and inside that window do File -> Split Rom)
+4. Download the Decompressor Thing, hacked into being by yours truly
+   (https://github.com/opiter09/Hacky-LZ11-Container-De-Compressor)
+5. Drag and Drop the file BP / Entities.ebp you got from the ROM onto our decompressor
+6. You will see an empty window, just close it. Now you have a testD.bin
+7. Open that up in a Hex Editor, do whatever you want to it
+8. When you want to put it back into the ROM, first compress it by dragging it onto
+   HackedNitroPaint.exe again. This will again give you a window to close, and the file
+   testC.bin
+9. Rename testC.bin to Entities.ebp, then open CrystalTile2 again
+10. Load your ROM into it, go to File -> NDS File System. For convenience, click
+    View a list of -> Directory to show files inside folders instead of in one
+    gigantic list. Then scroll down to BP -> Entities.ebp
+11. Left click the file to select it, then right click, press Import, and choose your
+    edited file
+12. Now save the ROM. CrystalTile2 is weird, so you have to save by trying to quit and
+    then clicking No to cancel. Then quit for real to be done
+
+CREDITS
+Because more thanks are never bad, I, OEA, would like to take the opportunity to once
+again thank Garhoogin, the creator of NitroPaint. It was their willingness to
+look into why LEGO Battles images were not loading into that program, and then
+to reverse engineer the compression method used by this game in order to fix that,
+that allowed all the hacks for LEGO Battles, and this documentation, to exist at
+all. I hope Garhoogin is happy knowing that they singlehandedly created a romhacking
+scene where there was none before.

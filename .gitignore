@@ -11,3 +11,5 @@ drawSleepTest.lua
 LegoBattles.sav
 textfile.txt
 *.zip
+names.txt
+*.py
