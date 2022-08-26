@@ -112,6 +112,14 @@ for i = 1, #newNames do
 	table.insert(nameTable, #nameTable + 1, newNames[i])
 end
 
+--nameFile = assert(io.open("names.txt", "wt"))
+--nameString = ""
+--for i = 1, #nameTable do
+	--nameString = string.format("%s%s%s", nameString, nameTable[i], "\n")
+--end
+--nameFile:write(nameString)
+--nameFile:close()
+
 local function NothingICantHandle(inp, inp2)
 	local inputFile = assert(io.open("testD.bin", "rb"))
 	local bytE = inputFile:read("*all")
