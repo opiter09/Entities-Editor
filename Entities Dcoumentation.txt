@@ -10,7 +10,7 @@ unit type).
 Conveniently, the 160-odd units in this game come right at the beginning. Each unit's
 data is 121 bytes long, e.g from 0x04 to 0x7C is the King. That sounds intimidating,
 but fortunately both sides of each block (except for the beginning of the King's) is
-bounded by A2A2A2, or the very recognizable ¢¢¢ in text. As I like to put it,
+bounded by A2 A2 A2, or the very recognizable ¢¢¢ in text. As I like to put it,
 the data goes "from c to shining c."
 
 It is important to note that the order of the units is not the same as the shop. It
@@ -106,8 +106,14 @@ is defined on a per-projectile basis (see below).
 
 Then there are 5 bytes whose purpose is completely unknown.
 
-Byte 114 represents how much fog a unit dispels. The exact sizing of these values
-are unknown, other than that FF clears the whole map. So just copy values of
+Bytes 109 and 111 seem to always be 00 and 01, respectively.
+
+Byte 112 represents a unit's range. It is always 01 for melee units and buildings. The
+values for this are not well understood, other than that they are some sort of index,
+and not an actual distance amount. So just base things of the ranges of vanilla units.
+
+Byte 114 represents how much fog a unit dispels. Again, the exact sizing of these values
+is unknown, other than that FF clears the whole map. So just copy values of
 other units for this.
 
 Finally, bytes 115 to 119 represent the powers of the unit. These are, of course,
@@ -156,7 +162,12 @@ After this come two bytes that are 00 00 for all non-hero units, and 01 05 for *
 all heroes. Why some (Brickbeard, Lady Pirate, Broadside, Camila, Biff, Gemma,
 Alien Commander, and Alien Queen, specifically) also have 00 00 here is entirely
 unkown. It is currently recommended to stick with whatever is there in vanilla
-unless something is not working right. 
+unless something is not working right.
+
+In order for the byte numbers to work out right, technically the ¢¢¢ after a block must
+be counted as part of that block. Then you start the next one right after it, and
+everything is just like it would be if you looked at the King.
+
 
 The last unit is Santa, and his block ends at 0x5828. Then there is the
 data for 27 projectiles, which ends around 0x6420. Then there are 30 random map
