@@ -113,6 +113,10 @@ Byte 112 represents a unit's range. It is always 01 for melee units and building
 values for this are not well understood, other than that they are some sort of index,
 and not an actual distance amount. So just base things of the ranges of vanilla units.
 
+Byte 113 represents how much the unit is prioritized when the AI chooses what to attack.
+The values themselves are essentially meaningless, it's all based on the relative values
+of each unit nearby. Higher-value units are prioritized over lower-value units.
+
 Byte 114 represents how much fog a unit dispels. Again, the exact sizing of these values
 is unknown, other than that FF clears the whole map. So just copy values of
 other units for this.
