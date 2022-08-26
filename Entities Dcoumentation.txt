@@ -106,7 +106,8 @@ is defined on a per-projectile basis (see below).
 
 
 Bytes 109 and 111 seem to always be 00 and 01, respectively, while byte 110 represents
-the wait time between attacks. One must assume this is also in frames.
+the wait time between attacks. One must assume this is also in frames, especially since
+the value for (non-Tower) buildings is always 1E, i.e. 30.
 
 Byte 112 represents a unit's range. It is always 01 for melee units and buildings. The
 values for this are not well understood, other than that they are some sort of index,
