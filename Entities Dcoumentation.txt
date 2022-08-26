@@ -104,7 +104,7 @@ comes:
 The attack stat is 00 00 00 00 for projectile-users, because damage
 is defined on a per-projectile basis (see below).
 
-Then there are 8 bytes whose purpose is completely unknown.
+Then there are 6 bytes whose purpose is completely unknown.
 
 Finally, bytes 115 to 119 represent the powers of the unit. These are, of course,
 all 00 for non-heroes. Otherwise, we have a nifty chart, presented here after
