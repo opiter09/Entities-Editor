@@ -78,12 +78,17 @@ Bytes 15 and 16 are always 00 00 for non-buildings, and FF FF for buildings (inc
 towers). This does not seem to do anything at all. Bytes 19 and 20 are exactly like
 this as well.
 
-Bytes 24 to 28 are a serious of related "flag" values (i.e. they are all either 00 or
-01). Byte 24 is whether a unit can walk on land. Byte 25 is whether a unit can walk
-on water. If that unit can only do one or the other, bytes 26 to 28 need to be set to
-00 01 00. If the unit ought to be able to walk on both, set these bytes to
-01 00 01, or else the unit won't be able to cross from one terrain to another,
-and will get stuck trying.
+Bytes 23 to 29 are a serious of related "flag" values (i.e. they are all either 00 or
+01). Byte 23 is 00 for water-only units and Shipyards, and 01 for everything else; all
+it seems to do is turn a water-only unit into a land-only unit if you don't set it to 00
+properly. Byte 24 is whether a unit can walk on land, and Byte 25 is whether a unit can
+walk on water. Bytes 26 is whether a unit can cross over trees, Byte 27 is whether a unit has
+collision with buildings, and Byte 28 is whether a unit can cross from land to water and back.
+Finally, Byte 29 is 01 for bridges and whatever Gates are, and 00 for everything else; turning
+it to 00 for a bridge renders the bridge invisible (but stil able to be walked over).
+
+Byte 34 is 01 for buildings such as Stonehenge which have no health and cannot
+be interacted with in any way, and 00 for everything else.
 
 Bytes 37 and 38 (the ones right after the second ¢¢) tell the game what
 wallking/attacking sprite set to use. The values between units seem nearly random,
@@ -91,10 +96,14 @@ so you're better off just replacing the graphics themselves.
 
 Bytes 41 to 46 are unusual in that they are all 00's for most units, and then a
 specific, consistent set of values for the following:
-- For Castles and Lumber Mills, they are 01 02 00 02 00 01
+- For Castles, they are 01 02 00 02 00 01
+- For Lumber Mills, they are 00 02 00 00 00 01
 - For Transport Ships, they are 01 04 04 04 02 00
-Thus, one can conclude that it has something to do with units being able to
-"go into" these entities.
+Thus, one would conclude that it has something to do with units being able to
+"go into" these entities. However, editing these values does absolutely
+nothing, and since (for example) whether a transport ship can transport
+things is based on its Type, I suspect that this is the remnants of some
+earlier scheme for assigning what does what.
 
 Then we have something of a long interlude of useless bytes, much of which are 00
 unless you're a transport ship or building (here we can note that the many values
@@ -180,11 +189,11 @@ the leader go faster)
 20 = Hot Wire
 21 = Unit Heal (UNUSED, costs 500, presumably heals more than the others)
 
-After this come two bytes that are 00 00 for all non-hero units, and 01 05 for *almost*
-all heroes. Why some (Brickbeard, Lady Pirate, Broadside, Camila, Biff, Gemma,
-Alien Commander, and Alien Queen, specifically) also have 00 00 here is entirely
-unkown. It is currently recommended to stick with whatever is there in vanilla
-unless something is not working right.
+After this come two bytes that are 04 02 for all towers, 00 00 for all other 
+non-hero units, and 01 05 for *almost* all heroes. Why some (Brickbeard, Lady
+Pirate, Broadside, Camila, Biff, Gemma, Alien Commander, and Alien Queen, specifically)
+also have 00 00 here is entirely unknown. It is currently recommended to stick with
+whatever is there in vanilla unless something is not working right.
 
 In order for the byte numbers to work out right, technically the ¢¢¢ after a block must
 be counted as part of that block. Then you start the next one right after it, and
