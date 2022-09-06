@@ -92,7 +92,7 @@ so you're better off just replacing the graphics themselves.
 Bytes 41 to 47 are unusual in that they are all 00's for most units, and then a
 specific, consistent set of values for the following:
 - For Castles and Lumber Mills, they are 01 02 00 02 00 01 00
-For Transport Ships, they are 01 04 04 04 02 00 00
+- For Transport Ships, they are 01 04 04 04 02 00 00
 
 Then we have something of a long interlude of useless bytes, much of which are 00
 unless you're a transport ship or building (here we can note that the many values
