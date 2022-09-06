@@ -101,6 +101,12 @@ and Byte 32 is Height. Obviously, you should not change these unless you resize
 the sprites in question, or else graphical glitches will occur. Also, these
 bytes are 00 00 for specials, since they are 3D models.
 
+Byte 33 is 00 for all units, and only matters for buildings because they are all
+part of one giant sprite. This value tells you what tile in that sprite to
+start from, at which point the appropriate number of rows and columns from
+above is draw. As you can see in NitroPaint, this value is based on the
+top-left tile of the building.
+
 Byte 34 is 01 for buildings such as Stonehenge which have no health and cannot
 be interacted with in any way, and 00 for everything else.
 
