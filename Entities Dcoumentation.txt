@@ -50,9 +50,9 @@ units are availible to the player and computer for various campaign missions etc
 Bytes 7 and 8 tell you what name the unit has. Again, it just increments up, this
 isn't all that helpful unless you need to do some name-length rearranging.
 
-Bytes 9 and 10 tell you what macro-category a unit is, presumbaly based on their
-graphics: 00 00 is Hero, 00 01 is builder and barracks, 00 02 is special and
-transport, 00 03 is all the towers, and and 00 04 is buildings. If you change
+Byte 10 tells you what macro-category a unit is, presumbaly based on their
+graphics: 00 is Hero, 01 is builder and barracks, 02 is special and
+transport, 03 is all the towers, and and 04 is buildings. If you change
 types in a way that would switch between these without changing this value, the
 unit disappears (from Freeplay unit selection), but if you change both things, the
 game actually crashes when you start a match.
@@ -91,6 +91,10 @@ walk on water. Bytes 26 is whether a unit can cross over trees, Byte 27 is wheth
 collision with buildings, and Byte 28 is whether a unit can cross from land to water and back.
 Finally, Byte 29 is 01 for bridges and whatever Gates are, and 00 for everything else; turning
 it to 00 for a bridge renders the bridge invisible (but stil able to be walked over).
+
+Byte 30 represents the size of a unit's collision box (which is also their
+hurtbox and hitbox). Seeing as Towers and normal sprite units are both a 1,
+one must assume this value is relative to the size of their sprite.
 
 Bytes 31 and 32 represent the size of the sprite in 8x8 tiles. Byte 31 is Width,
 and Byte 32 is Height. Obviously, you should not change these unless you resize
