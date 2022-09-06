@@ -92,6 +92,11 @@ collision with buildings, and Byte 28 is whether a unit can cross from land to w
 Finally, Byte 29 is 01 for bridges and whatever Gates are, and 00 for everything else; turning
 it to 00 for a bridge renders the bridge invisible (but stil able to be walked over).
 
+Bytes 31 and 32 represent the size of the sprite in 8x8 tiles. Byte 31 is Width,
+and Byte 32 is Height. Obviously, you should not change these unless you resize
+the sprites in question, or else graphical glitches will occur. Also, these
+bytes are 00 00 for specials, since they are 3D models.
+
 Byte 34 is 01 for buildings such as Stonehenge which have no health and cannot
 be interacted with in any way, and 00 for everything else.
 
