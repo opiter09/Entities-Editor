@@ -50,6 +50,13 @@ units are availible to the player and computer for various campaign missions etc
 Bytes 7 and 8 tell you what name the unit has. Again, it just increments up, this
 isn't all that helpful unless you need to do some name-length rearranging.
 
+Bytes 9 and 10 tell you what macro-category a unit is, presumbaly based on their
+graphics: 00 00 is Hero, 00 01 is builder and barracks, 00 02 is special and
+transport, 00 03 is all the towers, and and 00 04 is buildings. If you change
+types in a way that would switch between these without changing this value, the
+unit disappears (from Freeplay unit selection), but if you change both things, the
+game actually crashes when you start a match.
+
 Bytes 13 and 14 (right after the first ¢¢) are the unit's speed. The values don't
 seem to make all that much sense, we have:
 - 0x0155 = 341 = 1 star
@@ -67,6 +74,10 @@ I can't prove the star-level of:
 - 0x0111 = 273 = 1 star?
 - 0x03BC = 956 = 5 stars?
 
+Bytes 15 and 16 are always 00 00 for non-buildings, and FF FF for buildings (including
+towers). This does not seem to do anything at all. Bytes 19 and 20 are exactly like
+this as well.
+
 Bytes 24 to 28 are a serious of related "flag" values (i.e. they are all either 00 or
 01). Byte 24 is whether a unit can walk on land. Byte 25 is whether a unit can walk
 on water. If that unit can only do one or the other, bytes 26 to 28 need to be set to
@@ -77,6 +88,11 @@ and will get stuck trying.
 Bytes 37 and 38 (the ones right after the second ¢¢) tell the game what
 wallking/attacking sprite set to use. The values between units seem nearly random,
 so you're better off just replacing the graphics themselves.
+
+Bytes 41 to 47 are unusual in that they are all 00's for most units, and then a
+specific, consistent set of values for the following:
+- For Castles and Lumber Mills, they are 01 02 00 02 00 01 00
+For Transport Ships, they are 01 04 04 04 02 00 00
 
 Then we have something of a long interlude of useless bytes, much of which are 00
 unless you're a transport ship or building (here we can note that the many values
@@ -197,6 +213,9 @@ The 21st byte from the start of a map group (i.e. The One After the FF)
 is the map's ID. Map IDs can be for some reason be used any number of times. Thus, my
 hack to start with all maps unlocked literally just changed all their IDs to 00.
 
+Finally, any unit data not mentioned here is just padding, constant across
+all units (e.g. all the A2's). Some things may appear to be padding, but then you go
+look at a building and they use it for something, so always check here first.
 
 HOW TO ACTUALLY EDIT ALL THIS STUFF:
 1. Legally back up your LEGO Battles cartridge, yielding a .nds ROM file
