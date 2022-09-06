@@ -78,6 +78,11 @@ Bytes 15 and 16 are always 00 00 for non-buildings, and FF FF for buildings (inc
 towers). This does not seem to do anything at all. Bytes 19 and 20 are exactly like
 this as well.
 
+Bytes 17 and 18 are FF FF for all buildings, 00 C0 for the vast majority of units, and
+55 05 for the following units: Ballista, Catapult, Siege Tower, Barracuda, [P] Battleship,
+Clipper, Claw Tank, Starfighter, and Alien Attack Ship. The purpose of these bytes is
+unknown, and changing them has no obvious effect.
+
 Bytes 23 to 29 are a serious of related "flag" values (i.e. they are all either 00 or
 01). Byte 23 is 00 for water-only units and Shipyards, and 01 for everything else; all
 it seems to do is turn a water-only unit into a land-only unit if you don't set it to 00
