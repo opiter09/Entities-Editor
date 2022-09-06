@@ -83,6 +83,23 @@ Bytes 17 and 18 are FF FF for all buildings, 00 C0 for the vast majority of unit
 Clipper, Claw Tank, Starfighter, and Alien Attack Ship. The purpose of these bytes is
 unknown, and changing them has no obvious effect.
 
+Byte 21 seems to relate to having graphics appear near something, e.g. the Golden
+Minikit you see when building. Curiously, changing this seems to invalidate entire
+mechanical processes--for example, changing a castle from 07 means that you can
+queue up builders, but they will not build at all. Here is a table for these:
+- 00: Nothing
+- 01: UNUSED
+- 02: Builders (no idea what this does)
+- 03: Heroes, infantry, and calvary (no idea what this does)
+- 04: Towers, ranged units, and for some odd reason Troll Giant (no idea what this does)
+- 05: Specials of all tiers (no idea what this does)
+- 06: Transport Ships (no idea what this does)
+- 07: Castles/HQs,  Barracks, and both types of Special Makers (golden minifig)
+- 08: Mines (sparkles when you get money)
+- 10: Wall (smoke?)
+It is probably a good idea to keep these in line with types, even if they mostly
+do not seem to do anything.
+
 Bytes 23 to 29 are a serious of related "flag" values (i.e. they are all either 00 or
 01). Byte 23 is 00 for water-only units and Shipyards, and 01 for everything else; all
 it seems to do is turn a water-only unit into a land-only unit if you don't set it to 00
