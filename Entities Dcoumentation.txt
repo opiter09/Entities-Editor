@@ -102,7 +102,7 @@ It is probably a good idea to keep these in line with types, even if they mostly
 do not seem to do anything.
 
 Bytes 23 to 29 are a serious of related "flag" values (i.e. they are all either 00 or
-01). Byte 23 is 00 for water-only units and Shipyards, and 01 for everything else; all
+01, off or on). Byte 23 is 00 for water-only units and Shipyards, and 01 for everything else; all
 it seems to do is turn a water-only unit into a land-only unit if you don't set it to 00
 properly. Byte 24 is whether a unit can walk on land, and Byte 25 is whether a unit can
 walk on water. Bytes 26 is whether a unit can cross over trees, Byte 27 is whether a unit has
