@@ -1,5 +1,5 @@
-file = open("testD.bin", "rb").read()
-names = open("names.txt", "rt").read()
+file = open("testD_U.bin", "rb").read()
+names = open("namesU.txt", "rt").read()
 import os
 try:
     os.mkdir("unitFiles")
