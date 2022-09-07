@@ -96,7 +96,8 @@ queue up builders, but they will not build at all. Here is a table for these:
 - 06: Transport Ships (no idea what this does)
 - 07: Castles/HQs,  Barracks, and both types of Special Makers (golden minifig)
 - 08: Mines (sparkles when you get money)
-- 10: Wall (smoke?)
+- 09: UNUSED
+- 0A: Wall (smoke?)
 It is probably a good idea to keep these in line with types, even if they mostly
 do not seem to do anything.
 
