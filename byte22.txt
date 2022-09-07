@@ -1,0 +1,95 @@
+[all buildings, including towers, are 0]
+
+003_[K] Builder.bin  1
+021_Wizard.bin  1
+022_Sorceress.bin  1
+023_[W] Builder.bin  1
+025_Crossbowman.bin  1
+043_[P] Builder.bin  1
+063_[I] Builder.bin  1
+083_[E] Builder.bin  1
+103_[A] Builder.bin  1
+134_SpaceCriminalLeader.bin  1
+005_Archer.bin  2
+028_Troll Giant.bin  2
+045_Gunman.bin  2
+065_Rifleman.bin  2
+085_Commando.bin  2
+105_Laser Trooper.bin  2
+001_King.bin  3
+002_Queen.bin  3
+004_Guardsman.bin  3
+006_Knight.bin  3
+024_Skeleton.bin  3
+026_Skeleknight.bin  3
+041_Captain Brickbeard.bin  3
+042_Lady Pirate.bin  3
+044_Oarsman.bin  3
+046_Horseman.bin  3
+061_Governor Broadside.bin  3
+062_Camilla.bin  3
+064_Swordsman.bin  3
+066_Cavalry.bin  3
+081_Biff.bin  3
+082_Gemma.bin  3
+084_Trooper.bin  3
+086_Gripley.bin  3
+101_Alien Commander.bin  3
+102_Alien Queen.bin  3
+104_Drone.bin  3
+106_Grav Runner.bin  3
+130_SpacePoliceCaptain.bin  3
+131_Space Police.bin  3
+135_Space Criminal.bin  3
+139_Robot.bin  3
+146_King Kahuka.bin  3
+147_Islander.bin  3
+150_Ninja Master.bin  3
+151_Ninja.bin  3
+154_Monkey.bin  3
+162_Dwarf King.bin  3
+163_Dwarf.bin  3
+166_Troll King.bin  3
+167_Troll.bin  3
+170_Wolf.bin  3
+176_Forestman.bin  3
+177_Ghost.bin  3
+178_Sheriff.bin  3
+179_Conquistador.bin  3
+180_Agent Chase.bin  3
+181_Classic Space.bin  3
+182_Santa.bin  3
+007_Ballista.bin  4
+008_Catapult.bin  4
+009_King's Dragon.bin  4
+011_Castle.bin  4
+027_Siege Tower.bin  4
+029_Wizard's Dragon.bin  4
+047_Barracuda.bin  4
+048_[P] Battleship.bin  4
+049_Brickbeard's Bounty.bin  4
+067_Clipper.bin  4
+068_[I] Battleship.bin  4
+069_Flagship.bin  4
+087_Claw Tank.bin  4
+088_Starfighter.bin  4
+089_Starship 1.bin  4
+107_Alien Attack Ship.bin  4
+108_Alien Strike Ship.bin  4
+109_Alien Assault Ship.bin  4
+132_SpacePoliceCruiser.bin  4
+136_SpaceCriminalHotrod.bin  4
+148_Tiki Golem.bin  4
+152_Ninja Flying Ship.bin  4
+156_Shark.bin  4
+164_Dwarf Glider.bin  4
+168_Troll Blimp.bin  4
+010_[K] Transport Ship.bin  5
+030_[W] Transport Ship.bin  5
+050_[P] Transport Ship.bin  5
+070_[I] Transport Ship.bin  5
+090_[E] Transport Ship.bin  5
+110_[A] Transport Ship.bin  5
+155_Trader Ship.bin  5
+138_Falvour.bin  255
+140_SpaceCrimShipColor.bin  255

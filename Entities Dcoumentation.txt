@@ -101,6 +101,12 @@ queue up builders, but they will not build at all. Here is a table for these:
 It is probably a good idea to keep these in line with types, even if they mostly
 do not seem to do anything.
 
+Byte 22 seems to do nothing if changed, is next to a value which mostly does
+nothing, and has a distribution which has just enough irregularities to be
+unhelpful. As such, I am declaring this value to be useless, but providing
+a file in this repo named "byte22.txt" which shows you its amount for all
+units, in the hope that someone else can discern a meaningful pattern.
+
 Bytes 23 to 29 are a serious of related "flag" values (i.e. they are all either 00 or
 01, off or on). Byte 23 is 00 for water-only units and Shipyards, and 01 for everything else; all
 it seems to do is turn a water-only unit into a land-only unit if you don't set it to 00
