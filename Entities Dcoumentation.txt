@@ -42,10 +42,13 @@ be useless filler. Let's go in order:
 Bytes 1 and 2 represents the long "card" seen in the shop and
 multiplayer/freeplay army select.
 
-Bytes 5 and 6 are the unit's ID. This honestly does not matter a whole lot, but is
-a good idea to not mess with it and keep the IDs always going up by 1 to be safe.
-One thing this ID does help with is parsing the file Factions.fbp, which lists which
-units are availible to the player and computer for various campaign missions etc.
+Bytes 5 and 6 are the unit's ID. Changing this will make a unit vanish from
+Freplay/Multiplayer, and in the campaign they will take on the icon of
+the unit whose ID was used, along with their model if both units are
+3D models. There also appear to be issues where, for example, making
+the King's ID the same as the Builders will cause the actual
+Builders in the level to not spawn. All in all, you really should
+not be touching this.
 
 Bytes 7 and 8 tell you what name the unit has. Again, it just increments up, this
 isn't all that helpful unless you need to do some name-length rearranging.
