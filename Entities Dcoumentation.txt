@@ -87,7 +87,7 @@ Byte 21 seems to relate to having graphics appear near something, e.g. the Golde
 Minikit you see when building. Curiously, changing this seems to invalidate entire
 mechanical processes--for example, changing a castle from 07 means that you can
 queue up builders, but they will not build at all. Here is a table for these:
-- 00: Nothing
+- 00: Nothing (Lumber Mills, Farms, Bridges, and Gates)
 - 01: UNUSED
 - 02: Builders (no idea what this does)
 - 03: Heroes, infantry, and calvary (no idea what this does)
@@ -98,6 +98,7 @@ queue up builders, but they will not build at all. Here is a table for these:
 - 08: Mines (sparkles when you get money)
 - 09: UNUSED
 - 0A: Wall (smoke?)
+- Other/FF types have FF here
 It is probably a good idea to keep these in line with types, even if they mostly
 do not seem to do anything.
 

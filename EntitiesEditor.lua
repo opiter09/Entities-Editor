@@ -178,8 +178,29 @@ local function ThisLittleHexIsPayback(num)
 end
 
 local speedTable = { "273 (1)", "341 (1)", "375 (2)", "410 (2)", "444 (2)", "478 (3)", "546 (3)", "614 (3)", "683 (4)", "819 (5)", "853 (5)", "956 (5)", "NONE" }
-local typeTable = { "Hero", "Builder", "Melee", "Ranged", "Mounted", "Transport", "Special", "Castle", "Lumber Mill", "Mine", "Farm", "Barracks", "Factory",
-	"Tower I", "Tower II", "Tower III", "Shipyard", "Bridge", "Gate", "Wall", "Other" }
+local typeTable = {
+	"Hero",
+	"Builder",
+	"Melee",
+	"Ranged",
+	"Mounted",
+	"Transport",
+	"Special",
+	"Castle",
+	"Lumber Mill",
+	"Mine",
+	"Farm",
+	"Barracks",
+	"Factory",
+	"Tower I",
+	"Tower II",
+	"Tower III",
+	"Shipyard",
+	"Bridge",
+	"Gate",
+	"Wall",
+	"Other"
+}
 local widgetTable = {}
 local switchType = 0
 
@@ -196,6 +217,11 @@ local function saveCallback(w)
 						end
 						value.LandFlag = v.LandFlag:value()
 						value.WaterFlag = v.WaterFlag:value()
+						value.TreeCrossFlag = v.TreeCrossFlag:value()
+						value.BuildingHitFlag = v.BuildingHitFlag:value()
+						value.BoundaryCrossFlag = v.BoundaryCrossFlag:value()
+						value.HitboxSize = v.HitboxSize:value()
+						value.UninteractableFlag = v.UninteractableFlag:value()
 						if (typeTable[v.Type:value() + 1] == "Other") then
 							value.Type = 255
 						else
@@ -212,6 +238,7 @@ local function saveCallback(w)
 						end
 						value.AttackMin = v.AttackMin:value()
 						value.AttackMax = v.AttackMax:value()
+						value.MineAmount = v.MineAmount:value()
 						value.AttackWaitTime = v.AttackWaitTime:value()
 						value.Range = v.Range:value()
 						value.Priority = v.Priority:value()
@@ -240,17 +267,31 @@ local function saveCallback(w)
 		local base = i * 124
 		reading = string.sub(reading, 1, base + 8) .. ThisLittleHexIsPayback(a.ID) .. string.sub(reading, base + 11, string.len(reading))
 		reading = string.sub(reading, 1, base + 16) .. ThisLittleHexIsPayback(a.Speed) .. string.sub(reading, base + 19, string.len(reading))
-		reading = string.sub(reading, 1, base + 27) .. IllHexYou(a.LandFlag) .. string.sub(reading, base + 29, string.len(reading))
-		reading = string.sub(reading, 1, base + 28) .. IllHexYou(a.WaterFlag) .. string.sub(reading, base + 30, string.len(reading))	
-		if ((a.LandFlag == 0) or (a.WaterFlag == 0)) and (a.Speed ~= 65535) then
-			if (string.sub(reading, base + 30, base + 32) == string.char(0x00, 0x01, 0x00)) or (string.sub(reading, base + 30, base + 32) == string.char(0x01, 0x00, 0x01)) then
-				reading = string.sub(reading, 1, base + 29) .. string.char(0x00, 0x01, 0x00) .. string.sub(reading, base + 33, string.len(reading))
-			end
-		elseif (a.LandFlag == 1) and (a.WaterFlag == 1) and (a.Speed ~= 65535) then
-			if (string.sub(reading, base + 30, base + 32) == string.char(0x00, 0x01, 0x00)) or (string.sub(reading, base + 30, base + 32) == string.char(0x01, 0x00, 0x01)) then
-				reading = string.sub(reading, 1, base + 29) .. string.char(0x01, 0x00, 0x01) .. string.sub(reading, base + 33, string.len(reading))
-			end
+		local leTable = { 3, 2, 3, 4, 3, 6, 5, 7, 0, 8, 0, 7, 7, 4, 4, 4, 7, 0, 0, 10 }
+		leTable[256] = 255
+		if (a.ID == 27) then
+			reading = string.sub(reading, 1, base + 24) .. IllHexYou(4) .. string.sub(reading, base + 26, string.len(reading))
+		elseif (a.ID < 129) then
+			reading = string.sub(reading, 1, base + 24) .. IllHexYou(leTable[a.Type + 1]) .. string.sub(reading, base + 26, string.len(reading))
 		end
+		if (a.WaterFlag == 1) and (a.LandFlag == 0) then
+			a.BoatAntiFlag = 0
+		end
+		reading = string.sub(reading, 1, base + 26) .. IllHexYou(a.BoatAntiFlag) .. string.sub(reading, base + 28, string.len(reading))		
+		reading = string.sub(reading, 1, base + 27) .. IllHexYou(a.LandFlag) .. string.sub(reading, base + 29, string.len(reading))
+		reading = string.sub(reading, 1, base + 28) .. IllHexYou(a.WaterFlag) .. string.sub(reading, base + 30, string.len(reading))
+		reading = string.sub(reading, 1, base + 29) .. IllHexYou(a.TreeCrossFlag) .. string.sub(reading, base + 31, string.len(reading))
+		reading = string.sub(reading, 1, base + 30) .. IllHexYou(a.BuildingHitFlag) .. string.sub(reading, base + 32, string.len(reading))
+		reading = string.sub(reading, 1, base + 31) .. IllHexYou(a.BoundaryCrossFlag) .. string.sub(reading, base + 33, string.len(reading))
+		if (a.Type == 17) or (a.Type == 18) then
+			a.BridgeFlag = 1
+		else
+			a.BridgeFlag = 0
+		end
+		reading = string.sub(reading, 1, base + 32) .. IllHexYou(a.BridgeFlag) .. string.sub(reading, base + 34, string.len(reading))
+		reading = string.sub(reading, 1, base + 33) .. IllHexYou(a.HitboxSize) .. string.sub(reading, base + 35, string.len(reading))
+		reading = string.sub(reading, 1, base + 37) .. IllHexYou(a.UninteractableFlag) .. string.sub(reading, base + 39, string.len(reading))
+
 		reading = string.sub(reading, 1, base + 96) .. IllHexYou(a.Type) .. string.sub(reading, base + 98, string.len(reading))
 		reading = string.sub(reading, 1, base + 98) .. ThisLittleHexIsPayback(a.BuildCost) .. string.sub(reading, base + 101, string.len(reading))
 		reading = string.sub(reading, 1, base + 100) .. ThisLittleHexIsPayback(a.BuildTime) .. string.sub(reading, base + 103, string.len(reading))
@@ -260,6 +301,7 @@ local function saveCallback(w)
 		reading = string.sub(reading, 1, base + 108) .. ThisLittleHexIsPayback(a.AttackMin) .. string.sub(reading, base + 111, string.len(reading))
 		local diff = math.max(a.AttackMax - a.AttackMin, 0)
 		reading = string.sub(reading, 1, base + 110) .. ThisLittleHexIsPayback(diff) .. string.sub(reading, base + 113, string.len(reading))
+		reading = string.sub(reading, 1, base + 112) .. IllHexYou(a.MineAmount) .. string.sub(reading, base + 114, string.len(reading))
 		reading = string.sub(reading, 1, base + 113) .. IllHexYou(a.AttackWaitTime) .. string.sub(reading, base + 115, string.len(reading))
 		reading = string.sub(reading, 1, base + 115) .. IllHexYou(a.Range) .. string.sub(reading, base + 117, string.len(reading))
 		reading = string.sub(reading, 1, base + 116) .. IllHexYou(a.Priority) .. string.sub(reading, base + 118, string.len(reading))
@@ -566,7 +608,7 @@ local function switchCallback(w)
 		end
 		b.TreeCrossFlag:value(a.TreeCrossFlag)
 		
-		tpos = tpos + 175
+		tpos = tpos + 150
 		b.BuildingHitFlag = fltk:Fl_Choice(tpos, 30 * (check + 2), 50, 25, "Hits Buildings")
 		b.BuildingHitFlag:down_box(fltk.FL_BORDER_BOX)
 		b.BuildingHitFlag:labelsize(14)
@@ -577,7 +619,7 @@ local function switchCallback(w)
 		end
 		b.BuildingHitFlag:value(a.BuildingHitFlag)
 		
-		tpos = tpos + 175
+		tpos = tpos + 160
 		b.BoundaryCrossFlag = fltk:Fl_Choice(tpos, 30 * (check + 2), 50, 25, "Crosses Terrain")
 		b.BoundaryCrossFlag:down_box(fltk.FL_BORDER_BOX)
 		b.BoundaryCrossFlag:labelsize(14)
@@ -587,6 +629,26 @@ local function switchCallback(w)
 			b.BoundaryCrossFlag:add(theTable[j])
 		end
 		b.BoundaryCrossFlag:value(a.BoundaryCrossFlag)
+
+		tpos = tpos + 140
+		b.HitboxSize = fltk:Fl_Value_Input(tpos, 30 * (check + 2), 50, 25, "Hitbox Size")
+		b.HitboxSize:labelsize(14)
+		b.HitboxSize:textsize(14)
+		b.HitboxSize:minimum(0)
+		b.HitboxSize:maximum(255)
+		b.HitboxSize:step(5)
+		b.HitboxSize:value(a.HitboxSize)
+		
+		tpos = tpos + 160
+		b.UninteractableFlag = fltk:Fl_Choice(tpos, 30 * (check + 2), 50, 25, "Uninteractable")
+		b.UninteractableFlag:down_box(fltk.FL_BORDER_BOX)
+		b.UninteractableFlag:labelsize(14)
+		b.UninteractableFlag:textsize(14)
+		theTable = { "Off", "On" }
+		for j = 1, #theTable do
+			b.UninteractableFlag:add(theTable[j])
+		end
+		b.UninteractableFlag:value(a.UninteractableFlag)
 		
 		tpos = tpos + 100
 		b.Type = fltk:Fl_Choice(tpos, 30 * (check + 2), 75, 25, "Type")
@@ -673,8 +735,17 @@ local function switchCallback(w)
 		b.AttackMax:step(5)
 		b.AttackMax:value(a.AttackMax)
 		
-		tpos = tpos + 160
-		b.AttackWaitTime = fltk:Fl_Value_Input(tpos, 30 * (check + 2), 50, 25, "Attack Interval")
+		tpos = tpos + 140
+		b.MineAmount = fltk:Fl_Value_Input(tpos, 30 * (check + 2), 50, 25, "Mine Payout")
+		b.MineAmount:labelsize(14)
+		b.MineAmount:textsize(14)
+		b.MineAmount:minimum(0)
+		b.MineAmount:maximum(255)
+		b.MineAmount:step(5)
+		b.MineAmount:value(a.MineAmount)
+		
+		tpos = tpos + 190
+		b.AttackWaitTime = fltk:Fl_Value_Input(tpos, 30 * (check + 2), 50, 25, "Attack/Mine Interval")
 		b.AttackWaitTime:labelsize(14)
 		b.AttackWaitTime:textsize(14)
 		b.AttackWaitTime:minimum(0)
@@ -691,7 +762,7 @@ local function switchCallback(w)
 		b.Range:step(5)
 		b.Range:value(a.Range)
 		
-		tpos = tpos + 140
+		tpos = tpos + 125
 		b.Priority = fltk:Fl_Value_Input(tpos, 30 * (check + 2), 50, 25, "AI Priority")
 		b.Priority:labelsize(14)
 		b.Priority:textsize(14)
@@ -757,7 +828,7 @@ for i = 0, 181 do
 	a.BoundaryCrossFlag = NothingICantHandle(base + 32)
 	a.BridgeFlag = NothingICantHandle(base + 33)
 	a.HitboxSize = NothingICantHandle(base + 34)
-	a.Uninteractable = NothingICantHandle(base + 38)
+	a.UninteractableFlag = NothingICantHandle(base + 38)
 	a.Type = NothingICantHandle(base + 97)
 	a.BuildCost = NothingICantHandle(base + 99, base + 100)
 	a.BuildTime = NothingICantHandle(base + 101, base + 102)
