@@ -301,9 +301,9 @@ local function displayProjectiles()
 		local a = projectileTable[i]
 		local b = {}
 		
-		fltk:Fl_Button(20, 30 * (i + 2), 130, 25, internalTable[i])
+		fltk:Fl_Button(20, 45 * (i + 2) - 90, 130, 25, internalTable[i])
 		
-		b.DamageMin = fltk:Fl_Value_Input(240, 30 * (i + 2), 50, 25, "Damage Min")
+		b.DamageMin = fltk:Fl_Value_Input(240, 45 * (i + 2) - 90, 50, 25, "Damage Min")
 		b.DamageMin:labelsize(14)
 		b.DamageMin:textsize(14)
 		b.DamageMin:minimum(0)
@@ -311,7 +311,7 @@ local function displayProjectiles()
 		b.DamageMin:step(5)
 		b.DamageMin:value(a.DamageMin)
 		
-		b.DamageMax = fltk:Fl_Value_Input(390, 30 * (i + 2), 50, 25, "Damage Max")
+		b.DamageMax = fltk:Fl_Value_Input(390, 45 * (i + 2) - 90, 50, 25, "Damage Max")
 		b.DamageMax:labelsize(14)
 		b.DamageMax:textsize(14)
 		b.DamageMax:minimum(0)
@@ -325,9 +325,9 @@ local function displayProjectiles()
 		local a = projectileTable[i]
 		local b = {}
 
-		fltk:Fl_Button(460, 30 * (i -12), 130, 25, internalTable[i])
+		fltk:Fl_Button(560, 45 * (i - 12) - 90, 130, 25, internalTable[i])
 		
-		b.DamageMin = fltk:Fl_Value_Input(680, 30 * (i - 12), 50, 25, "Damage Min")
+		b.DamageMin = fltk:Fl_Value_Input(780, 45 * (i - 12) - 90, 50, 25, "Damage Min")
 		b.DamageMin:labelsize(14)
 		b.DamageMin:textsize(14)
 		b.DamageMin:minimum(0)
@@ -335,7 +335,7 @@ local function displayProjectiles()
 		b.DamageMin:step(5)
 		b.DamageMin:value(a.DamageMin)
 		
-		b.DamageMax = fltk:Fl_Value_Input(830, 30 * (i - 12), 50, 25, "Damage Max")
+		b.DamageMax = fltk:Fl_Value_Input(930, 45 * (i - 12) - 90, 50, 25, "Damage Max")
 		b.DamageMax:labelsize(14)
 		b.DamageMax:textsize(14)
 		b.DamageMax:minimum(0)
@@ -422,9 +422,6 @@ local function switchCallback(w)
 	
 	local quitButton = fltk:Fl_Button(1485, 0, 50, 25, "Exit")
 	quitButton:callback(quitCallback)
-	
-	local group = fltk:Fl_Scroll(0, 25, 1535, 695, "")
-	group:box(fltk.FL_THIN_UP_BOX)
 
 	if (switchType == "Projectiles") then
 		displayProjectiles()
@@ -500,16 +497,27 @@ local function switchCallback(w)
 		end
 	end
 
-	local check = 1	
+	local index = 1
+	for k, v in pairs(tempPeople) do
+		index = index + 1
+		local button = fltk:Fl_Button(0, 30 * (index + 2), 130, 25, nameTable[v.ID + 1])
+	end
+	local group = fltk:Fl_Scroll(140, 25, 1400, 750, "")
+	group:box(fltk.FL_THIN_UP_BOX)
+	
+	local check = 1
 	for k, v in pairs(tempPeople) do
 		check = check + 1
 		local a = v
 		local b = {}
 		local theValue = "???"
 		local theTable = {}
-		b.Button = fltk:Fl_Button(0, 30 * (check + 2), 130, 25, nameTable[a.ID + 1])
 		
-		b.Speed = fltk:Fl_Choice(185, 30 * (check + 2), 75, 25, "Speed")
+		b.FakeButton = fltk:Fl_Button(135, 30 * (check + 2), 0, 25, "")
+
+		local tpos = 185
+		
+		b.Speed = fltk:Fl_Choice(tpos, 30 * (check + 2), 75, 25, "Speed")
 		b.Speed:down_box(fltk.FL_BORDER_BOX)
 		b.Speed:labelsize(14)
 		b.Speed:textsize(14)
@@ -525,7 +533,8 @@ local function switchCallback(w)
 		end
 		b.Speed:value(theValue)
 		
-		b.LandFlag = fltk:Fl_Choice(300, 30 * (check + 2), 50, 25, "Land")
+		tpos = tpos + 115
+		b.LandFlag = fltk:Fl_Choice(tpos, 30 * (check + 2), 50, 25, "Land")
 		b.LandFlag:down_box(fltk.FL_BORDER_BOX)
 		b.LandFlag:labelsize(14)
 		b.LandFlag:textsize(14)
@@ -535,7 +544,8 @@ local function switchCallback(w)
 		end
 		b.LandFlag:value(a.LandFlag)
 		
-		b.WaterFlag = fltk:Fl_Choice(400, 30 * (check + 2), 50, 25, "Water")
+		tpos = tpos + 100
+		b.WaterFlag = fltk:Fl_Choice(tpos, 30 * (check + 2), 50, 25, "Water")
 		b.WaterFlag:down_box(fltk.FL_BORDER_BOX)
 		b.WaterFlag:labelsize(14)
 		b.WaterFlag:textsize(14)
@@ -545,7 +555,41 @@ local function switchCallback(w)
 		end
 		b.WaterFlag:value(a.WaterFlag)
 		
-		b.Type = fltk:Fl_Choice(500, 30 * (check + 2), 75, 25, "Type")
+		tpos = tpos + 100
+		b.TreeCrossFlag = fltk:Fl_Choice(tpos, 30 * (check + 2), 50, 25, "Trees")
+		b.TreeCrossFlag:down_box(fltk.FL_BORDER_BOX)
+		b.TreeCrossFlag:labelsize(14)
+		b.TreeCrossFlag:textsize(14)
+		theTable = { "Off", "On" }
+		for j = 1, #theTable do
+			b.TreeCrossFlag:add(theTable[j])
+		end
+		b.TreeCrossFlag:value(a.TreeCrossFlag)
+		
+		tpos = tpos + 175
+		b.BuildingHitFlag = fltk:Fl_Choice(tpos, 30 * (check + 2), 50, 25, "Hits Buildings")
+		b.BuildingHitFlag:down_box(fltk.FL_BORDER_BOX)
+		b.BuildingHitFlag:labelsize(14)
+		b.BuildingHitFlag:textsize(14)
+		theTable = { "Off", "On" }
+		for j = 1, #theTable do
+			b.BuildingHitFlag:add(theTable[j])
+		end
+		b.BuildingHitFlag:value(a.BuildingHitFlag)
+		
+		tpos = tpos + 175
+		b.BoundaryCrossFlag = fltk:Fl_Choice(tpos, 30 * (check + 2), 50, 25, "Crosses Terrain")
+		b.BoundaryCrossFlag:down_box(fltk.FL_BORDER_BOX)
+		b.BoundaryCrossFlag:labelsize(14)
+		b.BoundaryCrossFlag:textsize(14)
+		theTable = { "Off", "On" }
+		for j = 1, #theTable do
+			b.BoundaryCrossFlag:add(theTable[j])
+		end
+		b.BoundaryCrossFlag:value(a.BoundaryCrossFlag)
+		
+		tpos = tpos + 100
+		b.Type = fltk:Fl_Choice(tpos, 30 * (check + 2), 75, 25, "Type")
 		b.Type:down_box(fltk.FL_BORDER_BOX)
 		b.Type:labelsize(14)
 		b.Type:textsize(14)
@@ -559,7 +603,8 @@ local function switchCallback(w)
 			b.Type:value(a.Type)
 		end
 		
-		b.BuildCost = fltk:Fl_Value_Input(650, 30 * (check + 2), 50, 25, "Build Cost")
+		tpos = tpos + 150
+		b.BuildCost = fltk:Fl_Value_Input(tpos, 30 * (check + 2), 50, 25, "Build Cost")
 		b.BuildCost:labelsize(14)
 		b.BuildCost:textsize(14)
 		b.BuildCost:minimum(0)
@@ -567,7 +612,8 @@ local function switchCallback(w)
 		b.BuildCost:step(5)
 		b.BuildCost:value(a.BuildCost)
 		
-		b.BuildTime = fltk:Fl_Value_Input(775, 30 * (check + 2), 50, 25, "Build Time")
+		tpos = tpos + 125
+		b.BuildTime = fltk:Fl_Value_Input(tpos, 30 * (check + 2), 50, 25, "Build Time")
 		b.BuildTime:labelsize(14)
 		b.BuildTime:textsize(14)
 		b.BuildTime:minimum(0)
@@ -575,7 +621,8 @@ local function switchCallback(w)
 		b.BuildTime:step(5)
 		b.BuildTime:value(a.BuildTime)
 		
-		b.Health = fltk:Fl_Value_Input(875, 30 * (check + 2), 50, 25, "Health")
+		tpos = tpos + 100
+		b.Health = fltk:Fl_Value_Input(tpos, 30 * (check + 2), 50, 25, "Health")
 		b.Health:labelsize(14)
 		b.Health:textsize(14)
 		b.Health:minimum(0)
@@ -583,7 +630,8 @@ local function switchCallback(w)
 		b.Health:step(5)
 		b.Health:value(a.Health)
 		
-		b.Mana = fltk:Fl_Value_Input(975, 30 * (check + 2), 50, 25, "Mana")
+		tpos = tpos + 100
+		b.Mana = fltk:Fl_Value_Input(tpos, 30 * (check + 2), 50, 25, "Mana")
 		b.Mana:labelsize(14)
 		b.Mana:textsize(14)
 		b.Mana:minimum(0)
@@ -591,7 +639,8 @@ local function switchCallback(w)
 		b.Mana:step(5)
 		b.Mana:value(a.Mana)
 		
-		b.ProjectileID = fltk:Fl_Choice(1100, 30 * (check + 2), 80, 25, "Projectile")
+		tpos = tpos + 125
+		b.ProjectileID = fltk:Fl_Choice(tpos, 30 * (check + 2), 80, 25, "Projectile")
 		b.ProjectileID:down_box(fltk.FL_BORDER_BOX)
 		b.ProjectileID:labelsize(14)
 		b.ProjectileID:textsize(14)
@@ -606,7 +655,8 @@ local function switchCallback(w)
 			b.ProjectileID:value(27)
 		end
 
-		b.AttackMin = fltk:Fl_Value_Input(1260, 30 * (check + 2), 50, 25, "Attack Min")
+		tpos = tpos + 160
+		b.AttackMin = fltk:Fl_Value_Input(tpos, 30 * (check + 2), 50, 25, "Attack Min")
 		b.AttackMin:labelsize(14)
 		b.AttackMin:textsize(14)
 		b.AttackMin:minimum(0)
@@ -614,7 +664,8 @@ local function switchCallback(w)
 		b.AttackMin:step(5)
 		b.AttackMin:value(a.AttackMin)
 		
-		b.AttackMax = fltk:Fl_Value_Input(1400, 30 * (check + 2), 50, 25, "Attack Max")
+		tpos = tpos + 140
+		b.AttackMax = fltk:Fl_Value_Input(tpos, 30 * (check + 2), 50, 25, "Attack Max")
 		b.AttackMax:labelsize(14)
 		b.AttackMax:textsize(14)
 		b.AttackMax:minimum(0)
@@ -622,7 +673,8 @@ local function switchCallback(w)
 		b.AttackMax:step(5)
 		b.AttackMax:value(a.AttackMax)
 		
-		b.AttackWaitTime = fltk:Fl_Value_Input(1560, 30 * (check + 2), 50, 25, "Attack Interval")
+		tpos = tpos + 160
+		b.AttackWaitTime = fltk:Fl_Value_Input(tpos, 30 * (check + 2), 50, 25, "Attack Interval")
 		b.AttackWaitTime:labelsize(14)
 		b.AttackWaitTime:textsize(14)
 		b.AttackWaitTime:minimum(0)
@@ -630,7 +682,8 @@ local function switchCallback(w)
 		b.AttackWaitTime:step(5)
 		b.AttackWaitTime:value(a.AttackWaitTime)
 		
-		b.Range = fltk:Fl_Value_Input(1670, 30 * (check + 2), 50, 25, "Range")
+		tpos = tpos + 110
+		b.Range = fltk:Fl_Value_Input(tpos, 30 * (check + 2), 50, 25, "Range")
 		b.Range:labelsize(14)
 		b.Range:textsize(14)
 		b.Range:minimum(0)
@@ -638,7 +691,8 @@ local function switchCallback(w)
 		b.Range:step(5)
 		b.Range:value(a.Range)
 		
-		b.Priority = fltk:Fl_Value_Input(1800, 30 * (check + 2), 50, 25, "AI Priority")
+		tpos = tpos + 140
+		b.Priority = fltk:Fl_Value_Input(tpos, 30 * (check + 2), 50, 25, "AI Priority")
 		b.Priority:labelsize(14)
 		b.Priority:textsize(14)
 		b.Priority:minimum(0)
@@ -646,7 +700,8 @@ local function switchCallback(w)
 		b.Priority:step(5)
 		b.Priority:value(a.Priority)
 		
-		b.FogDispel = fltk:Fl_Value_Input(1960, 30 * (check + 2), 50, 25, "Defogged Area")
+		tpos = tpos + 160
+		b.FogDispel = fltk:Fl_Value_Input(tpos, 30 * (check + 2), 50, 25, "Defogged Area")
 		b.FogDispel:labelsize(14)
 		b.FogDispel:textsize(14)
 		b.FogDispel:minimum(0)
@@ -655,7 +710,7 @@ local function switchCallback(w)
 		b.FogDispel:value(a.FogDispel)
 		
 		for j = 1, 5 do
-			b[string.format("Power%s", j)] = fltk:Fl_Choice(1935 + j * 135, 30 * (check + 2), 75, 25, string.format("Power%s", j))
+			b[string.format("Power%s", j)] = fltk:Fl_Choice(tpos - 25 + j * 135, 30 * (check + 2), 75, 25, string.format("Power%s", j))
 			b[string.format("Power%s", j)]:down_box(fltk.FL_BORDER_BOX)
 			b[string.format("Power%s", j)]:labelsize(14)
 			b[string.format("Power%s", j)]:textsize(14)
@@ -669,8 +724,6 @@ local function switchCallback(w)
 			end
 			b[string.format("Power%s", j)]:value(a[string.format("Power%s", j)])
 		end
-
-		b.Button2 = fltk:Fl_Button(2695, 30 * (check + 2), 130, 25, nameTable[a.ID + 1])
 
 		for key, value in pairs(b) do
 			group:add(value)
@@ -695,8 +748,16 @@ for i = 0, 181 do
 	local base = i * 124
 	a.ID = NothingICantHandle(base + 9, base + 10)
 	a.Speed = NothingICantHandle(base + 17, base + 18)
+	a.SideGraphic = NothingICantHandle(base + 25)
+	a.BoatAntiFlag = NothingICantHandle(base + 27)
 	a.LandFlag = NothingICantHandle(base + 28)
 	a.WaterFlag = NothingICantHandle(base + 29)
+	a.TreeCrossFlag = NothingICantHandle(base + 30)
+	a.BuildingHitFlag = NothingICantHandle(base + 31)
+	a.BoundaryCrossFlag = NothingICantHandle(base + 32)
+	a.BridgeFlag = NothingICantHandle(base + 33)
+	a.HitboxSize = NothingICantHandle(base + 34)
+	a.Uninteractable = NothingICantHandle(base + 38)
 	a.Type = NothingICantHandle(base + 97)
 	a.BuildCost = NothingICantHandle(base + 99, base + 100)
 	a.BuildTime = NothingICantHandle(base + 101, base + 102)
@@ -705,6 +766,7 @@ for i = 0, 181 do
 	a.ProjectileID = NothingICantHandle(base + 107, base + 108)
 	a.AttackMin = NothingICantHandle(base + 109, base + 110)
 	a.AttackMax = a.AttackMin + NothingICantHandle(base + 111, base + 112)
+	a.MineAmount = NothingICantHandle(base + 113)
 	a.AttackWaitTime = NothingICantHandle(base + 114)
 	a.Range = NothingICantHandle(base + 116)
 	a.Priority = NothingICantHandle(base + 117)
