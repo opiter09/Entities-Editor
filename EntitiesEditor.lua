@@ -223,8 +223,18 @@ local function saveCallback(w)
 						value.HitboxSize = v.HitboxSize:value()
 						value.UninteractableFlag = v.UninteractableFlag:value()
 						if (typeTable[v.Type:value() + 1] == "Other") then
+							if (value.Type ~= 255) then
+								value.TypeDiff = "True"
+							else
+								value.TypeDiff = "False"
+							end
 							value.Type = 255
 						else
+							if (value.Type ~= v.Type:value()) then
+								value.TypeDiff = "True"
+							else
+								value.TypeDiff = "False"
+							end
 							value.Type = v.Type:value()
 						end
 						value.BuildCost = v.BuildCost:value()
@@ -271,7 +281,7 @@ local function saveCallback(w)
 		leTable[256] = 255
 		if (a.ID == 27) then
 			reading = string.sub(reading, 1, base + 24) .. IllHexYou(4) .. string.sub(reading, base + 26, string.len(reading))
-		elseif (a.ID < 129) then
+		elseif (a.ID < 129) or (a.TypeDiff == "True") then
 			reading = string.sub(reading, 1, base + 24) .. IllHexYou(leTable[a.Type + 1]) .. string.sub(reading, base + 26, string.len(reading))
 		end
 		if (a.WaterFlag == 1) and (a.LandFlag == 0) then
@@ -818,6 +828,7 @@ end
 for i = 0, 181 do 
 	local a = {}
 	local base = i * 124
+	a.TypeDiff = "False"
 	a.ID = NothingICantHandle(base + 9, base + 10)
 	a.Speed = NothingICantHandle(base + 17, base + 18)
 	a.SideGraphic = NothingICantHandle(base + 25)
