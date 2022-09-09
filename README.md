@@ -1,1 +1,5 @@
-This project is a GUI allowing for simple editing of the file Entities.ebp, from the NDS video game LEGO Battles. It runs using MurgaLua, found at https://github.com/igame3dbill/murgaLua (RIP John Murga). Instructions on how to use this can be found in Instructions.txt.
+This project is a GUI allowing for simple editing of the file Entities.ebp, from the NDS video game LEGO Battles. It runs using MurgaLua, found at 
+https://github.com/igame3dbill/murgaLua (RIP John Murga). Instructions on how to use this can be found in Instructions.txt.
+
+This repo serves as a more bleending-edge version of, and additional preservation for, Entities Editor as it exists on RomHacking.net:
+https://www.romhacking.net/utilities/1682/
