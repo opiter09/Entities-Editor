@@ -169,7 +169,7 @@ board/disembark the vehicle.
 After this, we quickly get to the good stuff, right in order. Starting from byte 95
 comes:
 - two bytes of build cost
-- two bytes of build time (in frames, one must assume)
+- two bytes of build time (this has been proven to be in frames, at 30 FPS)
 - two bytes of health
 - two bytes of mana (or 00 00 for non-heroes)
 - two bytes of what projectile they use (or FF FF for non-projectile-users)
@@ -184,9 +184,9 @@ controls how much money the mine gives you. Do not set this above 99 aka 0x63, o
 the money display will take too long to increase and everything will run together
 and it's a mess.
 
-Byte 110 represents the wait time between attacks. One must assume this is also in frames,
-especially since the value for (non-Tower) buildings is always 1E, i.e. 30. This byte
-also controls the time between mine payouts.
+Byte 110 represents the wait time between attacks. One must assume this is also in frames
+(at 30 FPS), especially since the value for (non-Tower) buildings is always 1E, i.e. 30.
+This byte also controls the time between mine payouts.
 
 Byte 112 represents a unit's range. It is always 01 for melee units and buildings. The
 values for this are not well understood, other than that they are some sort of index,
