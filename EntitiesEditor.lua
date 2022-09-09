@@ -586,7 +586,7 @@ local function switchCallback(w)
 		end
 		b.Speed:value(theValue)
 		
-		tpos = tpos + 115
+		tpos = tpos + 120
 		b.LandFlag = fltk:Fl_Choice(tpos, yPosition, 50, 25, "Land")
 		b.LandFlag:down_box(fltk.FL_BORDER_BOX)
 		b.LandFlag:labelsize(14)
@@ -630,7 +630,7 @@ local function switchCallback(w)
 		end
 		b.BuildingHitFlag:value(a.BuildingHitFlag)
 		
-		tpos = tpos + 160
+		tpos = tpos + 165
 		b.BoundaryCrossFlag = fltk:Fl_Choice(tpos, yPosition, 50, 25, "Crosses Terrain")
 		b.BoundaryCrossFlag:down_box(fltk.FL_BORDER_BOX)
 		b.BoundaryCrossFlag:labelsize(14)
@@ -641,7 +641,7 @@ local function switchCallback(w)
 		end
 		b.BoundaryCrossFlag:value(a.BoundaryCrossFlag)
 
-		tpos = tpos + 140
+		tpos = tpos + 130
 		b.HitboxSize = fltk:Fl_Value_Input(tpos, yPosition, 50, 25, "Hitbox Size")
 		b.HitboxSize:labelsize(14)
 		b.HitboxSize:textsize(14)
@@ -676,7 +676,7 @@ local function switchCallback(w)
 			b.Type:value(a.Type)
 		end
 		
-		tpos = tpos + 150
+		tpos = tpos + 160
 		b.BuildCost = fltk:Fl_Value_Input(tpos, yPosition, 50, 25, "Build Cost")
 		b.BuildCost:labelsize(14)
 		b.BuildCost:textsize(14)
@@ -685,7 +685,7 @@ local function switchCallback(w)
 		b.BuildCost:step(5)
 		b.BuildCost:value(a.BuildCost)
 		
-		tpos = tpos + 125
+		tpos = tpos + 135
 		b.BuildTime = fltk:Fl_Value_Input(tpos, yPosition, 50, 25, "Build Time")
 		b.BuildTime:labelsize(14)
 		b.BuildTime:textsize(14)
@@ -694,7 +694,7 @@ local function switchCallback(w)
 		b.BuildTime:step(5)
 		b.BuildTime:value(a.BuildTime)
 		
-		tpos = tpos + 100
+		tpos = tpos + 110
 		b.Health = fltk:Fl_Value_Input(tpos, yPosition, 50, 25, "Health")
 		b.Health:labelsize(14)
 		b.Health:textsize(14)
@@ -703,7 +703,7 @@ local function switchCallback(w)
 		b.Health:step(5)
 		b.Health:value(a.Health)
 		
-		tpos = tpos + 100
+		tpos = tpos + 105
 		b.Mana = fltk:Fl_Value_Input(tpos, yPosition, 50, 25, "Mana")
 		b.Mana:labelsize(14)
 		b.Mana:textsize(14)
@@ -712,7 +712,7 @@ local function switchCallback(w)
 		b.Mana:step(5)
 		b.Mana:value(a.Mana)
 		
-		tpos = tpos + 125
+		tpos = tpos + 130
 		b.ProjectileID = fltk:Fl_Choice(tpos, yPosition, 80, 25, "Projectile")
 		b.ProjectileID:down_box(fltk.FL_BORDER_BOX)
 		b.ProjectileID:labelsize(14)
@@ -728,7 +728,7 @@ local function switchCallback(w)
 			b.ProjectileID:value(27)
 		end
 
-		tpos = tpos + 160
+		tpos = tpos + 165
 		b.AttackMin = fltk:Fl_Value_Input(tpos, yPosition, 50, 25, "Attack Min")
 		b.AttackMin:labelsize(14)
 		b.AttackMin:textsize(14)
@@ -746,7 +746,7 @@ local function switchCallback(w)
 		b.AttackMax:step(5)
 		b.AttackMax:value(a.AttackMax)
 		
-		tpos = tpos + 140
+		tpos = tpos + 150
 		b.MineAmount = fltk:Fl_Value_Input(tpos, yPosition, 50, 25, "Mine Payout")
 		b.MineAmount:labelsize(14)
 		b.MineAmount:textsize(14)
@@ -764,7 +764,7 @@ local function switchCallback(w)
 		b.AttackWaitTime:step(5)
 		b.AttackWaitTime:value(a.AttackWaitTime)
 		
-		tpos = tpos + 110
+		tpos = tpos + 115
 		b.Range = fltk:Fl_Value_Input(tpos, yPosition, 50, 25, "Range")
 		b.Range:labelsize(14)
 		b.Range:textsize(14)
@@ -773,7 +773,7 @@ local function switchCallback(w)
 		b.Range:step(5)
 		b.Range:value(a.Range)
 		
-		tpos = tpos + 125
+		tpos = tpos + 130
 		b.Priority = fltk:Fl_Value_Input(tpos, yPosition, 50, 25, "AI Priority")
 		b.Priority:labelsize(14)
 		b.Priority:textsize(14)
@@ -782,7 +782,7 @@ local function switchCallback(w)
 		b.Priority:step(5)
 		b.Priority:value(a.Priority)
 		
-		tpos = tpos + 160
+		tpos = tpos + 165
 		b.FogDispel = fltk:Fl_Value_Input(tpos, yPosition, 50, 25, "Defogged Area")
 		b.FogDispel:labelsize(14)
 		b.FogDispel:textsize(14)
@@ -792,7 +792,7 @@ local function switchCallback(w)
 		b.FogDispel:value(a.FogDispel)
 		
 		for j = 1, 5 do
-			b[string.format("Power%s", j)] = fltk:Fl_Choice(tpos - 25 + j * 135, yPosition, 75, 25, string.format("Power%s", j))
+			b[string.format("Power%s", j)] = fltk:Fl_Choice(tpos - 25 + j * 140, yPosition, 75, 25, string.format("Power%s", j))
 			b[string.format("Power%s", j)]:down_box(fltk.FL_BORDER_BOX)
 			b[string.format("Power%s", j)]:labelsize(14)
 			b[string.format("Power%s", j)]:textsize(14)
