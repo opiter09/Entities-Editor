@@ -755,8 +755,8 @@ local function switchCallback(w)
 		b.MineAmount:step(5)
 		b.MineAmount:value(a.MineAmount)
 		
-		tpos = tpos + 190
-		b.AttackWaitTime = fltk:Fl_Value_Input(tpos, yPosition, 50, 25, "Attack/Mine Interval")
+		tpos = tpos + 160
+		b.AttackWaitTime = fltk:Fl_Value_Input(tpos, yPosition, 50, 25, "Attack Interval")
 		b.AttackWaitTime:labelsize(14)
 		b.AttackWaitTime:textsize(14)
 		b.AttackWaitTime:minimum(0)
