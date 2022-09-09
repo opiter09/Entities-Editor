@@ -552,7 +552,7 @@ local function switchCallback(w)
 	local index = 1
 	for k, v in pairs(tempPeople) do
 		index = index + 1
-		local button = fltk:Fl_Button(0, 45 * (index + 2) - 90, 130, 25, nameTable[v.ID + 1])
+		local button = fltk:Fl_Button(0, 45 * (index + 2) - 135, 130, 25, nameTable[v.ID + 1])
 	end
 	local group = fltk:Fl_Scroll(140, 25, 1400, 750, "")
 	group:box(fltk.FL_THIN_UP_BOX)
@@ -560,7 +560,7 @@ local function switchCallback(w)
 	local check = 1
 	for k, v in pairs(tempPeople) do
 		check = check + 1
-		yPosition = 45 * (check + 2) - 90
+		yPosition = 45 * (check + 2) - 135
 		local a = v
 		local b = {}
 		local theValue = "???"
