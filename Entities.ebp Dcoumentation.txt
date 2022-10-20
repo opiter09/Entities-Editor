@@ -158,13 +158,33 @@ unless you're a transport ship or building (here we can note that the many value
 inapplicable to buildings are listed as FF).
 
 Finally, the 93rd byte, the dot between i..¢¢ and i, is the Type of the unit. It goes
-mostly in order, with 00 = Hero, 01 = builder, 02 = melee, 03 = ranged,
-04 = mounted, 06 = special, and 05 = transport. Please note that if you assign
-05/06 to a sprite unit, or the others to a model unit, the thing will just not show
-up. Also, whereas changing the sprite types actually changes the unit, it seems
-the members of the various tiers of specialness are hardcoded by location, and
-that the transport type thus only determines whether people can actually
-board/disembark the vehicle.
+mostly in order; see the list below. Please note that if you assign 05/06 to a sprite
+unit, or the others to a model unit, the thing will just not show up. Also, whereas
+changing the sprite types actually changes the unit, it seems the members of the 
+various tiers of specialness are hardcoded by location, and that the transport 
+type thus only determines whether people can actually board/disembark the vehicle. 
+And now here's the type list:
+- 00: Hero
+- 01: Builders
+- 02: Melee
+- 03: Ranged
+- 04: Mounted
+- 05: Transport
+- 06: Special
+- 07: Castle
+- 08: Lumber Mill
+- 09: Mine
+- 0A: Farm
+- 0B: Barracks
+- 0C: Special Factory
+- 0D: Tower 1
+- 0E: Tower 2
+- 0F: Tower 3
+- 10: Shipyard
+- 11: Bridge
+- 12: Gate
+- 13: Wall
+- FF: Other
 
 After this, we quickly get to the good stuff, right in order. Starting from byte 95
 comes:
