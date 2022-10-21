@@ -12,6 +12,6 @@ LegoBattles.sav
 textfile.txt
 *.zip
 names.txt
-*.py
 nitropaint.ini
 group_visibility.lua
+proj.py
