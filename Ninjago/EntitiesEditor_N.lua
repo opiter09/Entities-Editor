@@ -9,11 +9,11 @@ local text = doc:read()
 local nameTable = {}
 local iterator = 1
 for i = 1, string.len(text) do
-	if (string.byte(string.sub(text, i, i)) == 10) then
-		if (nameTable[1] ~= nil) and (string.byte(string.sub(text, i - 1, i - 1)) ~= 10) then
+	if (string.sub(text, i, i) == "~") then
+		if (nameTable[1] ~= nil) and (string.sub(text, i - 1, i - 1) ~= "~") then
 			iterator = iterator + 1
 		end
-	elseif (string.byte(string.sub(text, i, i)) ~= 10) and (string.byte(string.sub(text, i, i)) ~= 13) then
+	elseif (string.sub(text, i, i) ~= "~") then
 		if (nameTable[iterator] == nil) then
 			nameTable[iterator] = ""
 		end
