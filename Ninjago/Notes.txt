@@ -1,7 +1,23 @@
-Types are still at 0x58:
-- 00 = level 1 hero
-- 01 = level 2 hero
-- 02 = level 3 hero
+Types are still at the same little spot (which is now 0x58):
+- 00 = Base Hero
+- 01 = Level I Hero
+- 02 = Level II Hero
+- 03 = Builder
+- 04 = Keep
+- 05 = Mill
+- 06 = Mine
+- 07 = Barracks
+- 08 = Checkpoint
+- 09 = Spawner
+- 0A = Default Tower
+- 0B = Fire Tower
+- 0C = Ice Tower
+- 0D = Lightning Tower
+- 0E = Earth Tower
+- 0F = Cave and Bridge
+- 10 = NOTHING
+- 11 = Dragon (and Rock Monster)
+- 12 = Minion (and Shadow Kai and Generics)
 
 0x62-0x63 is health. 0x64-0x65 is magic.
 
