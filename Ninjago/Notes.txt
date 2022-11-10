@@ -1,0 +1,12 @@
+Types are still at 0x58:
+- 00 = level 1 hero
+- 01 = level 2 hero
+- 02 = level 3 hero
+
+0x62-0x63 is health. 0x64-0x65 is magic.
+
+0x5A-0x5B is build cost. 0x5C-0x5D is build time (in frames, with this game running
+at 30 FPS).
+
+0x6A-0x6D is damage. Like in the original, the first two bytes are the start of the
+damage range, and the second two bytes are the size of it (so end = start + size).
