@@ -1,6 +1,26 @@
 Run units.py. This will give you a folder named "units" of 128-byte-long files. The hex addresses below
 refer to locations in those files.
 
+0x0D seems to be speed. Here are some examples and their stars:
+- 0x26 = 38 = 0.5 stars
+- 0x2A = 42 = 0.5 stars
+- 0x30 = 48 = 1 star
+- 0x32 = 50 = 1 star
+- 0x34 = 52 = 1.5 stars
+- 0x38 = 56 = 1.5 stars
+- 0x3C = 60 = 2 stars
+- 0x3D = 61 = 2 stars
+- 0x3F = 63 = 2.5 stars
+- 0x43 = 67 = 2.5 stars
+- 0x44 = 68 = 3 stars
+- 0x48 = 72 = 3 stars
+- 0x4C = 76 = 3.5 stars
+- 0x53 = 83 = 4 stars
+- 0x54 = 84 = 4.5 stars
+- 0x58 = 88 = 4.5 stars
+- 0x5C = 92 = 5 stars
+I really don't feel like making coherent ranges out of this, and honestly it doesn't even matter.
+
 Types are still at the same little spot (which is now 0x58):
 - 00 = Base Hero
 - 01 = Level I Hero
@@ -22,10 +42,12 @@ Types are still at the same little spot (which is now 0x58):
 - 11 = Dragon (and Rock Monster)
 - 12 = Minion (and Shadow Kai and Generics)
 
-0x62-0x63 is health. 0x64-0x65 is magic.
-
 0x5A-0x5B is build cost. 0x5C-0x5D is build time (in frames, with this game running
 at 30 FPS).
+
+0x62-0x63 is health. 0x64-0x65 is magic.
+
+0x68-0x69 is the projectile ID, then 00. For units without a projectile, this is FF FF.
 
 0x6A-0x6D is damage. Like in the original, the first two bytes are the start of the
 damage range, and the second two bytes are the size of it (so end = start + size).
