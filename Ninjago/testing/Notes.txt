@@ -1,3 +1,6 @@
+Run units.py. This will give you a folder named "units" of 128-byte-long files. The hex addresses below
+refer to locations in those files.
+
 Types are still at the same little spot (which is now 0x58):
 - 00 = Base Hero
 - 01 = Level I Hero
