@@ -121,3 +121,6 @@ Here is the table:
 - 3A: Triple Attack
 - 3B: Triple Shot
 - 3C: Vision Plus (Definitely Unused)
+
+The first projectile starts at 0x4D5C in testD.bin. Its ID is at 0x4D78, and its damage goes from
+0x4D6C to 0x4D73 (in the same doubled style as in the original game).
