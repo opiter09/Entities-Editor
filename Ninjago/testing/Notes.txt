@@ -52,7 +52,9 @@ at 30 FPS).
 0x6A-0x6D is damage. Like in the original, the first two bytes are the start of the
 damage range, and the second two bytes are the size of it (so end = start + size).
 
-All four of those bytes are 00 for Ranged units. The projectile ID should be somewhere around here.
+0x6F seems to be a unit's attack speed. Like in the original, this refers to the time between
+attacks, so lower is better. Since the buildings use 1E = 30 like in the original, we can assume
+this is in frames (and, again, this game runs at 30 FPS).
 
 The two magic powers of a unit are at 0x76 and 0x77. Unlike in the original, magic is displayed in
 the actual order of these bytes. Given that there are five 00's after this, I would not be surprised if
