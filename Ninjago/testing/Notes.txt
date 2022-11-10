@@ -38,46 +38,46 @@ it was possible to give units more than 2 powers.
 Here is the table:
 - 00: NO POWER
 - 01: Army Heal
-- 02: ???
+- 02: Armor Powerup (Used for the death items)
 - 03: Arrow Volley
 - 04: Artillery
-- 05: ???
+- 05: Attack Powerup (Used for the death items)
 - 06: Balloon Animal Attack
 - 07: Boulder Toss
-- 08: ???
-- 09: ???
-- 0A: ???
-- 0B: ???
+- 08: Burn Out (Unused?)
+- 09: Charge (Unused?)
+- 0A: Charm (Unused?)
+- 0B: Cleanse (Unused?)
 - 0C: Cluster Bomb
 - 0D: Crab Swarm
 - 0E: Dead Eye
-- 0F: ???
-- 10: ???
-- 11: ???
+- 0F: Dispel (Unused?)
+- 10: ESP Attack (Unused?)
+- 11: Evil Eye (Unused?)
 - 12: Fiery Touch
 - 13: Fire Works
 - 14: Flash Bang
 - 15: Grenade
 - 16: Group Heal
-- 17: ???
-- 18: ???
+- 17: Joust (Definitely Unused)
+- 18: Blueprint Missing Name! (Definitely Unused)
 - 19: Lightning Bolt
 - 1A: Magic Steal
 - 1B: Meteor Shower
-- 1C: ???
-- 1D: ???
-- 1E: ???
-- 1F: ???
+- 1C: Mining Buff (Unused?)
+- 1D: Ninja Attack (Unused?)
+- 1E: Pierce (Unused?)
+- 1F: Possess (Unused?)
 - 20: Projectile Attack
 - 21: Quicksand
 - 22: Rally Cry
 - 23: Ravage
 - 24: Roar
 - 25: Scorpion Swarm
-- 26: ???
-- 27: ???
-- 28: ???
-- 29: ???
+- 26: Screech (Unused?)
+- 27: Silence (Unused?)
+- 28: Siren (Unused?)
+- 29: Slap (Unused?)
 - 2A: Space Laser
 - 2B: Speed Buff
 - 2C: Spinjitzu Blizzard
@@ -90,9 +90,10 @@ Here is the table:
 - 33: Spinjitzu Fire Ring
 - 34: Spinjitzu Helping Hand
 - 35: Spinjitzu Target Attack
-- 36: ???
+- 36: Stealth (Unused?)
 - 37: Stone Skin
-- 38: ???
-- 39: ???
+- 38: Third Eye (Unused?)
+- 39: Tracking (Unused?)
 - 3A: Triple Attack
 - 3B: Triple Shot
+- 3C: Vision Plus (Definitely Unused)
