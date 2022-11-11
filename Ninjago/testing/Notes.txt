@@ -1,6 +1,8 @@
 Run units.py. This will give you a folder named "units" of 128-byte-long files. The hex addresses below
 refer to locations in those files.
 
+0x04 is the ID of the unit.
+
 0x0D seems to be speed. Here are some examples and their stars:
 - 0x26 = 38 = 0.5 stars
 - 0x2A = 42 = 0.5 stars
@@ -20,6 +22,9 @@ refer to locations in those files.
 - 0x58 = 88 = 4.5 stars
 - 0x5C = 92 = 5 stars
 I really don't feel like making coherent ranges out of this, and honestly it doesn't even matter.
+
+0x13-0x19 are our dear flag values: waterfront, land walk, water walk, tree crossing, building collision,
+terrain switching, and bridgeness. 0x1A definitely seems to be hitbox size.
 
 Types are still at the same little spot (which is now 0x58):
 - 00 = Base Hero
@@ -55,6 +60,8 @@ damage range, and the second two bytes are the size of it (so end = start + size
 0x6F seems to be a unit's attack speed. Like in the original, this refers to the time between
 attacks, so lower is better. Since the buildings use 1E = 30 like in the original, we can assume
 this is in frames (and, again, this game runs at 30 FPS).
+
+0x72-0x73 is a unit's range.
 
 The two magic powers of a unit are at 0x76 and 0x77. Unlike in the original, magic is displayed in
 the actual order of these bytes. Given that there are five 00's after this, I would not be surprised if
