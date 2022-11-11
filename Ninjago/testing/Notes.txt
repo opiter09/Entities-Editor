@@ -64,8 +64,7 @@ this is in frames (and, again, this game runs at 30 FPS).
 0x72-0x73 is a unit's range.
 
 The two magic powers of a unit are at 0x76 and 0x77. Unlike in the original, magic is displayed in
-the actual order of these bytes. Given that there are five 00's after this, I would not be surprised if
-it was possible to give units more than 2 powers.
+the actual order of these bytes. Despite the many 00's after these, units can only ever have two powers.
 Here is the table:
 - 00: NO POWER
 - 01: Army Heal
