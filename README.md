@@ -3,3 +3,6 @@ https://github.com/igame3dbill/murgaLua (RIP John Murga). Instructions on how to
 
 This repo serves as a more bleending-edge version of, and additional preservation for, Entities Editor as it exists on RomHacking.net:
 https://www.romhacking.net/utilities/1682/
+
+Finally, in the "Ninjago" folder you will find a similar GUI to edit this game's sequel, LEGO Battles: Ninjago. The instructions for it
+are the same as with the original.
