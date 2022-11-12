@@ -79,29 +79,27 @@ local function ThisLittleHexIsPayback(num)
 	return(hex)
 end
 
-local speedTable = { "273 (1)", "341 (1)", "375 (2)", "410 (2)", "444 (2)", "478 (3)", "546 (3)", "614 (3)", "683 (4)", "819 (5)", "853 (5)", "956 (5)", "NONE" }
 local typeTable = {
-	"Hero",
+	"Base Hero",
+	"I Hero",
+	"II Hero",
 	"Builder",
-	"Melee",
-	"Ranged",
-	"Mounted",
-	"Transport",
-	"Special",
-	"Castle",
-	"Lumber Mill",
+	"Keep",
+	"Mill",
 	"Mine",
-	"Farm",
 	"Barracks",
-	"Factory",
-	"Tower I",
-	"Tower II",
-	"Tower III",
-	"Shipyard",
+	"Checkpoint",
+	"Spawner",
+	"Default T",
+	"Fire T",
+	"Ice T",
+	"Lightning T",
+	"Earth T",
 	"Bridge",
-	"Gate",
-	"Wall",
-	"Other"
+	"Unused",
+	"Dragon",
+	"Minion"
+	
 }
 local widgetTable = {}
 local switchType = 0
@@ -247,11 +245,10 @@ end
 local windowII
 
 local function displayProjectiles()
-	local internalTable = { "Arrow", "CrossbowBolt", "TBolt", "TBoulder", "TFireball", "BallistaBolt", "SiegeBolt", "Boulder", "OgreBoulder", 
-		"Fireball", "ImperialShot", "PirateShot", "TPirateShot", "ICannonBall", "PCannonBall", "Elaser", "ALaser", "TLaser",
-		"PlasmaBall", "LaserCannon", "ProjectileSpell", "AirBallistaBolt", "AirFireball", "AirLaser", "Sharkbite", "Gift", "ProjectileNoEffect" }
+	local internalTable = { "Arrow", "Shuriken", "GoldShuriken", "DarkShuriken", "CannonBall", "Laser", "EnergyBullet", "Dynamite",
+		"Maraca", "Present", "Snowball", "Spear", "Bullet", "Lightning", "Rock", "Fire", "Ice", "Flail" }
 
-	for i = 1, 14 do
+	for i = 1, 9 do
 		local a = projectileTable[i]
 		local b = {}
 		
@@ -275,13 +272,13 @@ local function displayProjectiles()
 		
 		widgetTable[i] = b
 	end
-	for i = 15, 27 do
+	for i = 10, 18 do
 		local a = projectileTable[i]
 		local b = {}
 
-		fltk:Fl_Button(560, 45 * (i - 12) - 90, 130, 25, internalTable[i])
+		fltk:Fl_Button(560, 45 * (i - 7) - 90, 130, 25, internalTable[i])
 		
-		b.DamageMin = fltk:Fl_Value_Input(780, 45 * (i - 12) - 90, 50, 25, "Damage Min")
+		b.DamageMin = fltk:Fl_Value_Input(780, 45 * (i - 7) - 90, 50, 25, "Damage Min")
 		b.DamageMin:labelsize(14)
 		b.DamageMin:textsize(14)
 		b.DamageMin:minimum(0)
@@ -289,7 +286,7 @@ local function displayProjectiles()
 		b.DamageMin:step(5)
 		b.DamageMin:value(a.DamageMin)
 		
-		b.DamageMax = fltk:Fl_Value_Input(930, 45 * (i - 12) - 90, 50, 25, "Damage Max")
+		b.DamageMax = fltk:Fl_Value_Input(930, 45 * (i - 7) - 90, 50, 25, "Damage Max")
 		b.DamageMax:labelsize(14)
 		b.DamageMax:textsize(14)
 		b.DamageMax:minimum(0)
@@ -317,27 +314,27 @@ local function switchCallback(w)
 	widgetTable = {}
 
 	local typeMapping = {
-		["Main Factions"] = 0,
-		["Side Factions"] = 0,
-		["Builders"] = 1,
-		["Melee"] = 2,
-		["Ranged"] = 3,
-		["Mounted"] = 4,
-		["Tier 1"] = 6,
-		["Tier 2"] = 6,
-		["Tier 3"] = 6,
-		["Holding"] = 6,
-		["Transport"] = 5,
-		["Castle"] = 7,
-		["Farm"] = 10,
-		["Mine"] = 9,
-		["Lumber Mill"] = 8,
-		["Barracks"] = 11,
-		["Factory"] = 12,
-		["Shipyard"] = 16,
-		["Tower 1"] = 13,
-		["Tower 2"] = 14,
-		["Tower 3"] = 15,
+		["H_Base"] = 0,
+		["H_LevelOne"] = 1,
+		["H_LevelTwo"] = 2,
+		["E_H_Base"] = 0,
+		["E_H_LevelOne"] = 1,
+		["E_H_LevelTwo"] = 2,
+		["S_H_Base"] = 0,
+		["S_H_LevelOne"] = 1,
+		["S_H_LevelTwo"] = 2,
+		["Builders"] = 3,
+		["Keep"] = 4,
+		["Mill"] = 5,
+		["Mine"] = 6,
+		["Barracks"] = 7,
+		["T_Default"] = 10,
+		["T_Fire"] = 11,
+		["T_Ice"] = 12,
+		["T_Lightning"] = 13,
+		["T_Earth"] = 14,
+		["Dragons"] = 17,
+		["Minions"] = 18,
 		["Extras"] = -1
 	}
 	switchType = w:user_data()
@@ -347,12 +344,18 @@ local function switchCallback(w)
 	elseif (thisWindow == 2) then
 		window = fltk:Fl_Double_Window(0, 0, 4000, 3000, "Entities Editor")
 	end
-	local menuBar = fltk:Fl_Menu_Bar(0, 0, 600, 25)
+	local menuBar = fltk:Fl_Menu_Bar(0, 0, 750, 25)
 
 	menuBar:add("Save", nil, saveCallback)
 	menuBar:add("Heroes/Base", nil, switchCallback, "H_Base")
 	menuBar:add("Heroes/Level I", nil, switchCallback, "H_LevelOne")
 	menuBar:add("Heroes/Level II", nil, switchCallback, "H_LevelTwo")
+	menuBar:add("E_Heroes/Base", nil, switchCallback, "E_H_Base")
+	menuBar:add("E_Heroes/Level I", nil, switchCallback, "E_H_LevelOne")
+	menuBar:add("E_Heroes/Level II", nil, switchCallback, "E_H_LevelTwo")
+	menuBar:add("S_Heroes/Base", nil, switchCallback, "S_H_Base")
+	menuBar:add("S_Heroes/Level I", nil, switchCallback, "S_H_LevelOne")
+	menuBar:add("S_Heroes/Level II", nil, switchCallback, "S_H_LevelTwo")
 	menuBar:add("Builders", nil, switchCallback, "Builders")
 	menuBar:add("Dragons", nil, switchCallback, "Dragons")
 	menuBar:add("Minions", nil, switchCallback, "Minions")
@@ -379,7 +382,19 @@ local function switchCallback(w)
 	tempPeople = {}
 	for i = 1, #unitTable do
 		if (unitTable[i].Type == typeMapping[switchType]) then
-			if (unitTable[i].BuildCost > 1) then
+			if (string.sub(switchType, 1, 2) == "H_") then
+				if (unitTable[i].ID < 79) then
+					tempPeople[#tempPeople + 1] = unitTable[i]
+				end
+			elseif (string.sub(switchType, 1, 2) == "E_") then
+				if (unitTable[i].ID >= 79) and (unitTable[i].ID < 129) then
+					tempPeople[#tempPeople + 1] = unitTable[i]
+				end
+			elseif (string.sub(switchType, 1, 2) == "S_") then
+				if (unitTable[i].ID >= 129) then
+					tempPeople[#tempPeople + 1] = unitTable[i]
+				end			
+			else
 				tempPeople[#tempPeople + 1] = unitTable[i]
 			end
 		end
@@ -387,59 +402,9 @@ local function switchCallback(w)
 	
 	table.sort(tempPeople, function(k1, k2) return k1.ID < k2.ID end)
 
-	local holding = {}
-	if (switchType == "Main Factions") then
-		for k, v in pairs(tempPeople) do
-			if (v.ID <= 128) then
-				holding[#holding + 1] = v
-			end
-		end
-		tempPeople = holding
-	elseif (switchType == "Side Factions") then
-		for k, v in pairs(tempPeople) do
-			if (v.ID > 128) then
-				holding[#holding + 1] = v
-			end
-		end
-		tempPeople = holding
-	end
-
-	holding = {}
-	if (switchType == "Tier 1") then
-		for k, v in pairs(tempPeople) do
-			if ((math.fmod(math.abs(v.ID - 6), 20)) == 0) then
-				holding[#holding + 1] = v
-			end
-			tempPeople = holding
-		end
-	elseif (switchType == "Tier 2") then
-		for k, v in pairs(tempPeople) do
-			if ((math.fmod(math.abs(v.ID - 7), 20)) == 0) or (v.ID > 122) then
-				holding[#holding + 1] = v
-			end
-			tempPeople = holding
-		end
-	elseif (switchType == "Tier 3") then
-		for k, v in pairs(tempPeople) do
-			if ((math.fmod(math.abs(v.ID - 8), 20)) == 0) then
-				holding[#holding + 1] = v
-			end
-			tempPeople = holding
-		end
-	elseif (switchType == "Holding") then
-		for k, v in pairs(tempPeople) do
-			if ((math.fmod(math.abs(v.ID - 6), 20)) ~= 0) and ((math.fmod(math.abs(v.ID - 7), 20)) ~= 0) then
-				if (v.ID <= 122) and ((math.fmod(math.abs(v.ID - 8), 20)) ~= 0) then
-					holding[#holding + 1] = v
-				end
-			end
-		end
-		tempPeople = holding
-	end
-	
 	if (switchType == "Extras") then
 		for i = 1, #unitTable do
-			if (unitTable[i].Type > 16) or (unitTable[i].BuildCost <= 1) then
+			if (unitTable[i].Type == 8) or (unitTable[i].Type == 9) or (unitTable[i].Type == 15) or (unitTable[i].Type == 16) then
 				tempPeople[#tempPeople + 1] = unitTable[i]
 			end
 		end
@@ -466,23 +431,13 @@ local function switchCallback(w)
 
 		local tpos = 185
 		
-		b.Speed = fltk:Fl_Choice(tpos, yPosition, 75, 25, "Speed")
-		b.Speed:down_box(fltk.FL_BORDER_BOX)
-		b.Speed:labelsize(14)
-		b.Speed:textsize(14)
-		theTable = speedTable
-		for j = 1, #theTable do
-			b.Speed:add(theTable[j])
-			if (a.Speed == tonumber(string.sub(theTable[j], 1, 3))) then
-				theValue = j - 1
-			end
-		end
-		if (a.Speed == 65535) then
-			theValue = 12
-		end
-		b.Speed:value(theValue)
+		b.Speed = fltk:Fl_Value_Input(tpos, yPosition, 50, 25, "Speed")
+		b.Speed:minimum(0)
+		b.Speed:maximum(255)
+		b.Speed:step(5)
+		b.Speed:value(a.Speed)
 		
-		tpos = tpos + 120
+		tpos = tpos + 100
 		b.LandFlag = fltk:Fl_Choice(tpos, yPosition, 50, 25, "Land")
 		b.LandFlag:down_box(fltk.FL_BORDER_BOX)
 		b.LandFlag:labelsize(14)
@@ -613,15 +568,15 @@ local function switchCallback(w)
 		b.ProjectileID:down_box(fltk.FL_BORDER_BOX)
 		b.ProjectileID:labelsize(14)
 		b.ProjectileID:textsize(14)
-		theTable = { "Arrow", "CrossbowBolt", "TBolt", "TBoulder", "TFireball", "BallistaBolt", "SiegeBolt", "Boulder", "OgreBoulder", 
-		"Fireball", "ImperialShot", "PirateShot", "TPirateShot", "ICannonBall", "PCannonBall", "Elaser", "ALaser", "TLaser",
-		"PlasmaBall", "LaserCannon", "ProjectileSpell", "AirBallistaBolt", "AirFireball", "AirLaser", "Sharkbite", "Gift", "ProjectileNoEffect", "NONE" }
+		theTable = { "Arrow", "Shuriken", "GoldShuriken", "DarkShuriken", "CannonBall", "Laser", "EnergyBullet", "Dynamite",
+		"Maraca", "Present", "Snowball", "Spear", "Bullet", "Lightning", "Rock", "Fire", "Ice", "Flail", "NONE" }
 		for j = 1, #theTable do
 			b.ProjectileID:add(theTable[j])
 		end
-		b.ProjectileID:value(a.ProjectileID - 182)
 		if (a.ProjectileID == 65535) then
-			b.ProjectileID:value(27)
+			b.ProjectileID:value(18)
+		else
+			b.ProjectileID:value(a.ProjectileID - 154)
 		end
 
 		tpos = tpos + 165
@@ -642,15 +597,6 @@ local function switchCallback(w)
 		b.AttackMax:step(5)
 		b.AttackMax:value(a.AttackMax)
 		
-		tpos = tpos + 150
-		b.MineAmount = fltk:Fl_Value_Input(tpos, yPosition, 50, 25, "Mine Payout")
-		b.MineAmount:labelsize(14)
-		b.MineAmount:textsize(14)
-		b.MineAmount:minimum(0)
-		b.MineAmount:maximum(255)
-		b.MineAmount:step(5)
-		b.MineAmount:value(a.MineAmount)
-		
 		tpos = tpos + 160
 		b.AttackWaitTime = fltk:Fl_Value_Input(tpos, yPosition, 50, 25, "Attack Interval")
 		b.AttackWaitTime:labelsize(14)
@@ -669,34 +615,74 @@ local function switchCallback(w)
 		b.Range:step(5)
 		b.Range:value(a.Range)
 		
-		tpos = tpos + 130
-		b.Priority = fltk:Fl_Value_Input(tpos, yPosition, 50, 25, "AI Priority")
-		b.Priority:labelsize(14)
-		b.Priority:textsize(14)
-		b.Priority:minimum(0)
-		b.Priority:maximum(255)
-		b.Priority:step(5)
-		b.Priority:value(a.Priority)
-		
-		tpos = tpos + 165
-		b.FogDispel = fltk:Fl_Value_Input(tpos, yPosition, 50, 25, "Defogged Area")
-		b.FogDispel:labelsize(14)
-		b.FogDispel:textsize(14)
-		b.FogDispel:minimum(0)
-		b.FogDispel:maximum(255)
-		b.FogDispel:step(5)
-		b.FogDispel:value(a.FogDispel)
-		
-		for j = 1, 5 do
+		for j = 1, 2 do
 			b[string.format("Power%s", j)] = fltk:Fl_Choice(tpos - 25 + j * 140, yPosition, 75, 25, string.format("Power%s", j))
 			b[string.format("Power%s", j)]:down_box(fltk.FL_BORDER_BOX)
 			b[string.format("Power%s", j)]:labelsize(14)
 			b[string.format("Power%s", j)]:textsize(14)
-			theTable = { "NONE", "Unit Heal [100]", "UnitHeal [100]", "Nothing", "Unit Speed Boost", "Area Speed Boost", "Unit Damage Boost",
-				"Area Damage Boost", "Unit Armor Boost", "Area Armor Boost", "Forest Spawn", "Crystal Cache", "Jungle Growth", "Earthquake",
-				"Fireball", "Lightning", "Thunder Hammer", "Mining Buff", "Roar", "Logging Buff", "Monkey Swarm", "Crab Swarm", "Coconut Storm",
-				"Artillery", "Trade Winds", "Arrow Volley", "Teleport", "EMP", "Space Laser", "ESP", "Tracking", "Cluster Bomb", "Hot Wire",
-				"Unit Heal [500]" }
+			theTable = {
+				"NONE",
+				"Army Heal",
+				"Armor Powerup",
+				"Arrow Volley",
+				"Artillery",
+				"Attack Powerup",
+				"Balloon Animal Attack",
+				"Boulder Toss",
+				"Burn Out",
+				"Charge",
+				"Charm",
+				"Cleanse",
+				"Cluster Bomb",
+				"Crab Swarm",
+				"Dead Eye",
+				"Dispel",
+				"ESP Attack",
+				"Evil Eye",
+				"Fiery Touch",
+				"Fire Works",
+				"Flash Bang",
+				"Grenade",
+				"Group Heal",
+				"Joust",
+				"Blueprint Missing Name!",
+				"Lightning Bolt",
+				"Magic Steal",
+				"Meteor Shower",
+				"Mining Buff",
+				"Ninja Attack",
+				"Pierce",
+				"Possess",
+				"Projectile Attack",
+				"Quicksand",
+				"Rally Cry",
+				"Ravage",
+				"Roar",
+				"Scorpion Swarm",
+				"Screech",
+				"Silence",
+				"Siren",
+				"Slap",
+				"Space Laser",
+				"Speed Buff",
+				"Sp. Blizzard",
+				"Sp. Brush Fire",
+				"Sp. Chain Lightning",
+				"Sp. Deep Freeze",
+				"Sp. Dust Storm",
+				"Sp. Earthquake",
+				"Sp. Electroshock",
+				"Sp. Fire Ring",
+				"Sp. Helping Hand",
+				"Sp. Target Attack",
+				"Stealth",
+				"Stone Skin",
+				"Third Eye",
+				"Tracking",
+				"Triple Attack",
+				"Triple Shot",
+				"Vision Plus"
+			}
 			for x, y in pairs(theTable) do
 				b[string.format("Power%s", j)]:add(theTable[x])
 			end
@@ -726,15 +712,15 @@ for i = 0, 154 do
 	local base = i * 128
 	a.TypeDiff = "False"
 	a.ID = NothingICantHandle(base + 9, base + 10)
-	a.Speed = NothingICantHandle(base + 17, base + 18)
-	a.BoatAntiFlag = NothingICantHandle(base + 27)
-	a.LandFlag = NothingICantHandle(base + 24)
-	a.WaterFlag = NothingICantHandle(base + 25)
-	a.TreeCrossFlag = NothingICantHandle(base + 26)
-	a.BuildingHitFlag = NothingICantHandle(base + 27)
-	a.BoundaryCrossFlag = NothingICantHandle(base + 28)
-	a.BridgeFlag = NothingICantHandle(base + 29)
-	a.HitboxSize = NothingICantHandle(base + 30)
+	a.Speed = NothingICantHandle(base + 18)
+	a.BoatAntiFlag = NothingICantHandle(base + 24)
+	a.LandFlag = NothingICantHandle(base + 25)
+	a.WaterFlag = NothingICantHandle(base + 26)
+	a.TreeCrossFlag = NothingICantHandle(base + 27)
+	a.BuildingHitFlag = NothingICantHandle(base + 28)
+	a.BoundaryCrossFlag = NothingICantHandle(base + 29)
+	a.BridgeFlag = NothingICantHandle(base + 30)
+	a.HitboxSize = NothingICantHandle(base + 31)
 	a.Type = NothingICantHandle(base + 93)
 	a.BuildCost = NothingICantHandle(base + 95, base + 96)
 	a.BuildTime = NothingICantHandle(base + 97, base + 98)
@@ -749,20 +735,26 @@ for i = 0, 154 do
 	a.Power2 = NothingICantHandle(base + 124)
 	unitTable[i + 1] = a
 end
-for i = 0, 26 do
+for i = 0, 18 do
 	projectileTable[i + 1] = {}
-	local base = i * 116
-	projectileTable[i + 1].ID = NothingICantHandle(base + 22577, base + 22578)
-	projectileTable[i + 1].DamageMin = NothingICantHandle(base + 22681, base + 22682)
-	projectileTable[i + 1].DamageMax = NothingICantHandle(base + 22683, base + 22684)
+	local base = i * 112
+	projectileTable[i + 1].ID = NothingICantHandle(base + 19837, base + 19838)
+	projectileTable[i + 1].DamageMin = NothingICantHandle(base + 19937, base + 19938)
+	projectileTable[i + 1].DamageMax = NothingICantHandle(base + 19939, base + 19940)
 end
 
-local menuBar = fltk:Fl_Menu_Bar(0, 0, 600, 25)
+local menuBar = fltk:Fl_Menu_Bar(0, 0, 750, 25)
 
 menuBar:add("Save", nil, saveCallback)
 menuBar:add("Heroes/Base", nil, switchCallback, "H_Base")
 menuBar:add("Heroes/Level I", nil, switchCallback, "H_LevelOne")
 menuBar:add("Heroes/Level II", nil, switchCallback, "H_LevelTwo")
+menuBar:add("E_Heroes/Base", nil, switchCallback, "E_H_Base")
+menuBar:add("E_Heroes/Level I", nil, switchCallback, "E_H_LevelOne")
+menuBar:add("E_Heroes/Level II", nil, switchCallback, "E_H_LevelTwo")
+menuBar:add("S_Heroes/Base", nil, switchCallback, "S_H_Base")
+menuBar:add("S_Heroes/Level I", nil, switchCallback, "S_H_LevelOne")
+menuBar:add("S_Heroes/Level II", nil, switchCallback, "S_H_LevelTwo")
 menuBar:add("Builders", nil, switchCallback, "Builders")
 menuBar:add("Dragons", nil, switchCallback, "Dragons")
 menuBar:add("Minions", nil, switchCallback, "Minions")
