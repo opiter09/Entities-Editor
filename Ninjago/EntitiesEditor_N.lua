@@ -98,8 +98,8 @@ local typeTable = {
 	"Bridge",
 	"Unused",
 	"Dragon",
-	"Minion"
-	
+	"Minion",
+	"Other"
 }
 local widgetTable = {}
 local switchType = 0
@@ -110,18 +110,13 @@ local function saveCallback(w)
 			if (switchType ~= "Projectiles") then
 				for key, value in pairs(unitTable) do
 					if (v.ID == value.ID) then
-						if (speedTable[v.Speed:value() + 1] == "NONE") then
-							value.Speed = 65535
-						else
-							value.Speed = tonumber(string.sub(speedTable[v.Speed:value() + 1], 1, 3))
-						end
+						value.Speed = v.Speed:value()
 						value.LandFlag = v.LandFlag:value()
 						value.WaterFlag = v.WaterFlag:value()
 						value.TreeCrossFlag = v.TreeCrossFlag:value()
 						value.BuildingHitFlag = v.BuildingHitFlag:value()
 						value.BoundaryCrossFlag = v.BoundaryCrossFlag:value()
 						value.HitboxSize = v.HitboxSize:value()
-						value.UninteractableFlag = v.UninteractableFlag:value()
 						if (typeTable[v.Type:value() + 1] == "Other") then
 							if (value.Type ~= 255) then
 								value.TypeDiff = "True"
@@ -141,29 +136,23 @@ local function saveCallback(w)
 						value.BuildTime = v.BuildTime:value()
 						value.Health = v.Health:value()
 						value.Mana = v.Mana:value()
-						if (v.ProjectileID:value() == 27) then
+						if (v.ProjectileID:value() == 18) then
 							value.ProjectileID = 65535
 						else
-							value.ProjectileID = v.ProjectileID:value() + 182
+							value.ProjectileID = v.ProjectileID:value() + 154
 						end
 						value.AttackMin = v.AttackMin:value()
 						value.AttackMax = v.AttackMax:value()
-						value.MineAmount = v.MineAmount:value()
 						value.AttackWaitTime = v.AttackWaitTime:value()
 						value.Range = v.Range:value()
-						value.Priority = v.Priority:value()
-						value.FogDispel = v.FogDispel:value()
 						value.Power1 = v.Power1:value()
 						value.Power2 = v.Power2:value()
-						value.Power3 = v.Power3:value()
-						value.Power4 = v.Power4:value()
-						value.Power5 = v.Power5:value()
 					end
 				end
 			end
 		end
 		if (switchType == "Projectiles") then
-			for i = 1, 27 do
+			for i = 1, 18 do
 				projectileTable[i].DamageMin = widgetTable[i].DamageMin:value()
 				projectileTable[i].DamageMax = math.max(widgetTable[i].DamageMax:value(), widgetTable[i].DamageMin:value())
 			end
@@ -172,59 +161,40 @@ local function saveCallback(w)
 
 	local out = assert(io.open("testD.bin", "rb"))
 	local reading = out:read("*all")
-	for i = 0, 181 do
+	for i = 0, 153 do
 		local a = unitTable[i + 1]
-		local base = i * 124
+		local base = i * 128
 		reading = string.sub(reading, 1, base + 8) .. ThisLittleHexIsPayback(a.ID) .. string.sub(reading, base + 11, string.len(reading))
-		reading = string.sub(reading, 1, base + 16) .. ThisLittleHexIsPayback(a.Speed) .. string.sub(reading, base + 19, string.len(reading))
-		local leTable = { 3, 2, 3, 4, 3, 6, 5, 7, 0, 8, 0, 7, 7, 4, 4, 4, 7, 0, 0, 10 }
-		leTable[256] = 255
-		if (a.ID == 27) then
-			reading = string.sub(reading, 1, base + 24) .. IllHexYou(4) .. string.sub(reading, base + 26, string.len(reading))
-		elseif (a.ID < 129) or (a.TypeDiff == "True") then
-			reading = string.sub(reading, 1, base + 24) .. IllHexYou(leTable[a.Type + 1]) .. string.sub(reading, base + 26, string.len(reading))
-		end
-		if (a.WaterFlag == 1) and (a.LandFlag == 0) then
-			a.BoatAntiFlag = 0
-		end
-		reading = string.sub(reading, 1, base + 26) .. IllHexYou(a.BoatAntiFlag) .. string.sub(reading, base + 28, string.len(reading))		
-		reading = string.sub(reading, 1, base + 27) .. IllHexYou(a.LandFlag) .. string.sub(reading, base + 29, string.len(reading))
-		reading = string.sub(reading, 1, base + 28) .. IllHexYou(a.WaterFlag) .. string.sub(reading, base + 30, string.len(reading))
-		reading = string.sub(reading, 1, base + 29) .. IllHexYou(a.TreeCrossFlag) .. string.sub(reading, base + 31, string.len(reading))
-		reading = string.sub(reading, 1, base + 30) .. IllHexYou(a.BuildingHitFlag) .. string.sub(reading, base + 32, string.len(reading))
-		reading = string.sub(reading, 1, base + 31) .. IllHexYou(a.BoundaryCrossFlag) .. string.sub(reading, base + 33, string.len(reading))
-		if (a.Type == 17) or (a.Type == 18) then
-			a.BridgeFlag = 1
-		else
-			a.BridgeFlag = 0
-		end
-		reading = string.sub(reading, 1, base + 32) .. IllHexYou(a.BridgeFlag) .. string.sub(reading, base + 34, string.len(reading))
-		reading = string.sub(reading, 1, base + 33) .. IllHexYou(a.HitboxSize) .. string.sub(reading, base + 35, string.len(reading))
-		reading = string.sub(reading, 1, base + 37) .. IllHexYou(a.UninteractableFlag) .. string.sub(reading, base + 39, string.len(reading))
+		reading = string.sub(reading, 1, base + 17) .. IllHexYou(a.Speed) .. string.sub(reading, base + 19, string.len(reading))
+		reading = string.sub(reading, 1, base + 23) .. IllHexYou(a.BoatAntiFlag) .. string.sub(reading, base + 25, string.len(reading))		
+		reading = string.sub(reading, 1, base + 24) .. IllHexYou(a.LandFlag) .. string.sub(reading, base + 26, string.len(reading))
+		reading = string.sub(reading, 1, base + 25) .. IllHexYou(a.WaterFlag) .. string.sub(reading, base + 27, string.len(reading))
+		reading = string.sub(reading, 1, base + 26) .. IllHexYou(a.TreeCrossFlag) .. string.sub(reading, base + 28, string.len(reading))
+		reading = string.sub(reading, 1, base + 27) .. IllHexYou(a.BuildingHitFlag) .. string.sub(reading, base + 29, string.len(reading))
+		reading = string.sub(reading, 1, base + 28) .. IllHexYou(a.BoundaryCrossFlag) .. string.sub(reading, base + 30, string.len(reading))
+		reading = string.sub(reading, 1, base + 29) .. IllHexYou(a.BridgeFlag) .. string.sub(reading, base + 31, string.len(reading))
+		reading = string.sub(reading, 1, base + 30) .. IllHexYou(a.HitboxSize) .. string.sub(reading, base + 32, string.len(reading))
 
-		reading = string.sub(reading, 1, base + 96) .. IllHexYou(a.Type) .. string.sub(reading, base + 98, string.len(reading))
-		reading = string.sub(reading, 1, base + 98) .. ThisLittleHexIsPayback(a.BuildCost) .. string.sub(reading, base + 101, string.len(reading))
-		reading = string.sub(reading, 1, base + 100) .. ThisLittleHexIsPayback(a.BuildTime) .. string.sub(reading, base + 103, string.len(reading))
+		reading = string.sub(reading, 1, base + 92) .. IllHexYou(a.Type) .. string.sub(reading, base + 94, string.len(reading))
+		reading = string.sub(reading, 1, base + 94) .. ThisLittleHexIsPayback(a.BuildCost) .. string.sub(reading, base + 97, string.len(reading))
+		reading = string.sub(reading, 1, base + 96) .. ThisLittleHexIsPayback(a.BuildTime) .. string.sub(reading, base + 99, string.len(reading))
 		reading = string.sub(reading, 1, base + 102) .. ThisLittleHexIsPayback(a.Health) .. string.sub(reading, base + 105, string.len(reading))
 		reading = string.sub(reading, 1, base + 104) .. ThisLittleHexIsPayback(a.Mana) .. string.sub(reading, base + 107, string.len(reading))
-		reading = string.sub(reading, 1, base + 106) .. ThisLittleHexIsPayback(a.ProjectileID) .. string.sub(reading, base + 109, string.len(reading))
-		reading = string.sub(reading, 1, base + 108) .. ThisLittleHexIsPayback(a.AttackMin) .. string.sub(reading, base + 111, string.len(reading))
+		reading = string.sub(reading, 1, base + 108) .. ThisLittleHexIsPayback(a.ProjectileID) .. string.sub(reading, base + 111, string.len(reading))
+		reading = string.sub(reading, 1, base + 110) .. ThisLittleHexIsPayback(a.AttackMin) .. string.sub(reading, base + 113, string.len(reading))
 		local diff = math.max(a.AttackMax - a.AttackMin, 0)
-		reading = string.sub(reading, 1, base + 110) .. ThisLittleHexIsPayback(diff) .. string.sub(reading, base + 113, string.len(reading))
-		reading = string.sub(reading, 1, base + 112) .. IllHexYou(a.MineAmount) .. string.sub(reading, base + 114, string.len(reading))
-		reading = string.sub(reading, 1, base + 113) .. IllHexYou(a.AttackWaitTime) .. string.sub(reading, base + 115, string.len(reading))
-		reading = string.sub(reading, 1, base + 115) .. IllHexYou(a.Range) .. string.sub(reading, base + 117, string.len(reading))
-		reading = string.sub(reading, 1, base + 116) .. IllHexYou(a.Priority) .. string.sub(reading, base + 118, string.len(reading))
-		reading = string.sub(reading, 1, base + 117) .. IllHexYou(a.FogDispel) .. string.sub(reading, base + 119, string.len(reading))
-		for j = 1, 5 do
-			reading = string.sub(reading, 1, base + 117 + j) .. IllHexYou(a[string.format("Power%s", j)]) .. string.sub(reading, base + 119 + j, string.len(reading))
+		reading = string.sub(reading, 1, base + 112) .. ThisLittleHexIsPayback(diff) .. string.sub(reading, base + 115, string.len(reading))
+		reading = string.sub(reading, 1, base + 115) .. IllHexYou(a.AttackWaitTime) .. string.sub(reading, base + 117, string.len(reading))
+		reading = string.sub(reading, 1, base + 118) .. IllHexYou(a.Range) .. string.sub(reading, base + 120, string.len(reading))
+		for j = 1, 2 do
+			reading = string.sub(reading, 1, base + 121 + j) .. IllHexYou(a[string.format("Power%s", j)]) .. string.sub(reading, base + 123 + j, string.len(reading))
 		end
 	end
-	for i = 0, 26 do
+	for i = 0, 18 do
 		local a = projectileTable[i + 1]
-		local base = i * 116
-		reading = string.sub(reading, 1, base + 22680) .. ThisLittleHexIsPayback(a.DamageMin) .. ThisLittleHexIsPayback(a.DamageMax) ..
-		ThisLittleHexIsPayback(a.DamageMin) .. ThisLittleHexIsPayback(a.DamageMax) .. string.sub(reading, base + 22689, string.len(reading))
+		local base = i * 112
+		reading = string.sub(reading, 1, base + 19932) .. ThisLittleHexIsPayback(a.DamageMin) .. ThisLittleHexIsPayback(a.DamageMax) ..
+		ThisLittleHexIsPayback(a.DamageMin) .. ThisLittleHexIsPayback(a.DamageMax) .. string.sub(reading, base + 19941, string.len(reading))
 	end
 	out:close()
 	out = assert(io.open("testD.bin", "wb"))
@@ -501,17 +471,6 @@ local function switchCallback(w)
 		b.HitboxSize:step(5)
 		b.HitboxSize:value(a.HitboxSize)
 		
-		tpos = tpos + 160
-		b.UninteractableFlag = fltk:Fl_Choice(tpos, yPosition, 50, 25, "Uninteractable")
-		b.UninteractableFlag:down_box(fltk.FL_BORDER_BOX)
-		b.UninteractableFlag:labelsize(14)
-		b.UninteractableFlag:textsize(14)
-		theTable = { "Off", "On" }
-		for j = 1, #theTable do
-			b.UninteractableFlag:add(theTable[j])
-		end
-		b.UninteractableFlag:value(a.UninteractableFlag)
-		
 		tpos = tpos + 100
 		b.Type = fltk:Fl_Choice(tpos, yPosition, 75, 25, "Type")
 		b.Type:down_box(fltk.FL_BORDER_BOX)
@@ -522,7 +481,7 @@ local function switchCallback(w)
 			b.Type:add(theTable[j])
 		end
 		if (a.Type == 255) then
-			b.Type:value(20)
+			b.Type:value(19)
 		else
 			b.Type:value(a.Type)
 		end
@@ -707,7 +666,7 @@ local function switchCallback(w)
 	end
 end
 
-for i = 0, 154 do 
+for i = 0, 153 do 
 	local a = {}
 	local base = i * 128
 	a.TypeDiff = "False"
