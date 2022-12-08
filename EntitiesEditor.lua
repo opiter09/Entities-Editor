@@ -3,6 +3,9 @@ local thisWindow = 1
 local unitTable = {}
 local projectileTable = {}
 
+screenWidth = Fl:w()
+screenHeight = Fl:h()
+
 local rom = assert(io.open("LegoBattles.NDS", "rb"))
 local text = rom:read(1825767)
 text = string.sub(text, 1824087, 1825766)
@@ -111,14 +114,6 @@ local newNames = { "Wall", "BridgeSmallH", "BridgeSmallV", "BridgeMediumH", "Bri
 for i = 1, #newNames do
 	table.insert(nameTable, #nameTable + 1, newNames[i])
 end
-
---nameFile = assert(io.open("names.txt", "wt"))
---nameString = ""
---for i = 1, #nameTable do
-	--nameString = string.format("%s%s%s", nameString, nameTable[i], "\n")
---end
---nameFile:write(nameString)
---nameFile:close()
 
 local function NothingICantHandle(inp, inp2)
 	local inputFile = assert(io.open("testD.bin", "rb"))
@@ -245,8 +240,11 @@ local function saveCallback(w)
 							value.ProjectileID = 65535
 						else
 							value.ProjectileID = v.ProjectileID:value() + 182
+							v.AttackMin:value(0)
+							v.AttackMax:value(0)
 						end
 						value.AttackMin = v.AttackMin:value()
+						v.AttackMax:value(math.max(v.AttackMax:value(), v.AttackMin:value()))
 						value.AttackMax = v.AttackMax:value()
 						value.MineAmount = v.MineAmount:value()
 						value.AttackWaitTime = v.AttackWaitTime:value()
@@ -265,7 +263,8 @@ local function saveCallback(w)
 		if (switchType == "Projectiles") then
 			for i = 1, 27 do
 				projectileTable[i].DamageMin = widgetTable[i].DamageMin:value()
-				projectileTable[i].DamageMax = math.max(widgetTable[i].DamageMax:value(), widgetTable[i].DamageMin:value())
+				widgetTable[i].DamageMax:value(math.max(widgetTable[i].DamageMax:value(), widgetTable[i].DamageMin:value()))
+				projectileTable[i].DamageMax = widgetTable[i].DamageMax:value()
 			end
 		end
 	end
@@ -472,7 +471,7 @@ local function switchCallback(w)
 	menuBar:add("Extras", nil, switchCallback, "Extras")
 	menuBar:add("Projectiles", nil, switchCallback, "Projectiles")
 	
-	local quitButton = fltk:Fl_Button(1485, 0, 50, 25, "Exit")
+	local quitButton = fltk:Fl_Button(screenWidth - 50, 0, 50, 25, "Exit")
 	quitButton:callback(quitCallback)
 
 	if (switchType == "Projectiles") then
@@ -554,7 +553,7 @@ local function switchCallback(w)
 		index = index + 1
 		local button = fltk:Fl_Button(0, 45 * (index + 2) - 135, 130, 25, nameTable[v.ID + 1])
 	end
-	local group = fltk:Fl_Scroll(140, 25, 1400, 750, "")
+	local group = fltk:Fl_Scroll(140, 25, 1400, math.floor(screenHeight * 0.85), "")
 	group:box(fltk.FL_THIN_UP_BOX)
 	
 	local check = 1
@@ -807,6 +806,8 @@ local function switchCallback(w)
 			b[string.format("Power%s", j)]:value(a[string.format("Power%s", j)])
 		end
 
+		b.FakeButton2 = fltk:Fl_Button(tpos + 150 + math.floor((3 + (1536 - screenWidth) / 55) * 140), yPosition, 0, 25, "")
+
 		for key, value in pairs(b) do
 			group:add(value)
 		end
@@ -896,7 +897,7 @@ menuBar:add("Buildings/Tower 3", nil, switchCallback, "Tower 3")
 menuBar:add("Extras", nil, switchCallback, "Extras")
 menuBar:add("Projectiles", nil, switchCallback, "Projectiles")
 
-local quitButton = fltk:Fl_Button(1485, 0, 50, 25, "Exit")
+local quitButton = fltk:Fl_Button(screenWidth - 50, 0, 50, 25, "Exit")
 quitButton:callback(quitCallback)
 	
 window:show()
