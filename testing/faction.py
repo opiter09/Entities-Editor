@@ -8,6 +8,6 @@ except OSError as error:
     
 for i in range(len(names.split("\n"))):
     newFile = open("factionFiles/" + str(i + 1).zfill(3) + "_" + names.split("\n")[i] + ".bin", "wb")
-    newFile.write(file[(8 + (64 * i)):(8 + (64 * (i + 1)))])
+    newFile.write(file[(4 + (64 * i)):(4 + (64 * (i + 1)))])
     newFile.close()
     
