@@ -27,12 +27,12 @@ if (os.path.isdir("./factionFiles") == True):
     if (os.path.exists("combined_F.bin") == True):
         os.remove("combined_F.bin")
     combined = open("combined_F.bin", "ab")
-    combined.write(file[0:4])
+    combined.write(file[0:8])
     for i in range(len(names.split("\n"))):
         newFile = open("factionFiles/" + str(i + 1).zfill(3) + "_" + names.split("\n")[i] + ".bin", "rb")
         combined.write(newFile.read())
         newFile.close()
-    combined.write(file[(4 + 64 * (len(names.split("\n")))):os.stat("testD_F.bin").st_size])
+    combined.write(file[(8 + 64 * (len(names.split("\n")))):os.stat("testD_F.bin").st_size])
     combined.close()
 
     if (os.path.exists("HackedNitroPaint.exe") == True):
