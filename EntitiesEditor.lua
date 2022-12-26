@@ -553,7 +553,7 @@ local function switchCallback(w)
 		index = index + 1
 		local button = fltk:Fl_Button(0, 45 * (index + 2) - 135, 130, 25, nameTable[v.ID + 1])
 	end
-	local group = fltk:Fl_Scroll(140, 25, 1400, math.floor(screenHeight * 0.85), "")
+	local group = fltk:Fl_Scroll(140, 25, 1400, math.floor(screenHeight * 0.92), "")
 	group:box(fltk.FL_THIN_UP_BOX)
 	
 	local check = 1
