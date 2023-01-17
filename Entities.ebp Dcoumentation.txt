@@ -54,11 +54,11 @@ Bytes 7 and 8 tell you what name the unit has. Again, it just increments up, thi
 isn't all that helpful unless you need to do some name-length rearranging.
 
 Byte 10 tells you what macro-category a unit is, presumbaly based on their
-graphics: 00 is Hero, 01 is builder and barracks, 02 is special and
-transport, 03 is all the towers, and and 04 is buildings. If you change
-types in a way that would switch between these without changing this value, the
-unit disappears (from Freeplay unit selection), but if you change both things, the
-game actually crashes when you start a match.
+graphics: 00 is Hero, 01 is builder, 02 is special and transport, 03 is all 
+the towers, and 04 is the other buildings. If you change types in a way that 
+would switch between these without changing this value, the unit disappears 
+(from Freeplay unit selection), but if you change both things, the game actually
+crashes when you start a match.
 
 Bytes 13 and 14 (right after the first ¢¢) are the unit's speed. The values don't
 seem to make all that much sense, we have:
