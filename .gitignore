@@ -15,3 +15,4 @@ names.txt
 nitropaint.ini
 group_visibility.lua
 proj.py
+*.ebp

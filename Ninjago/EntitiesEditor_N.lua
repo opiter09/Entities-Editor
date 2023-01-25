@@ -193,8 +193,8 @@ local function saveCallback(w)
 	for i = 0, 18 do
 		local a = projectileTable[i + 1]
 		local base = i * 112
-		reading = string.sub(reading, 1, base + 19932) .. ThisLittleHexIsPayback(a.DamageMin) .. ThisLittleHexIsPayback(a.DamageMax) ..
-		ThisLittleHexIsPayback(a.DamageMin) .. ThisLittleHexIsPayback(a.DamageMax) .. string.sub(reading, base + 19941, string.len(reading))
+		reading = string.sub(reading, 1, base + 19820) .. ThisLittleHexIsPayback(a.DamageMin) .. ThisLittleHexIsPayback(a.DamageMax) ..
+		ThisLittleHexIsPayback(a.DamageMin) .. ThisLittleHexIsPayback(a.DamageMax) .. string.sub(reading, base + 19829, string.len(reading))
 	end
 	out:close()
 	out = assert(io.open("testD.bin", "wb"))
@@ -697,9 +697,9 @@ end
 for i = 0, 18 do
 	projectileTable[i + 1] = {}
 	local base = i * 112
-	projectileTable[i + 1].ID = NothingICantHandle(base + 19837, base + 19838)
-	projectileTable[i + 1].DamageMin = NothingICantHandle(base + 19937, base + 19938)
-	projectileTable[i + 1].DamageMax = NothingICantHandle(base + 19939, base + 19940)
+	projectileTable[i + 1].ID = NothingICantHandle(base + 19833, base + 19834)
+	projectileTable[i + 1].DamageMin = NothingICantHandle(base + 19821, base + 19822)
+	projectileTable[i + 1].DamageMax = NothingICantHandle(base + 19823, base + 19824)
 end
 
 local menuBar = fltk:Fl_Menu_Bar(0, 0, 750, 25)
