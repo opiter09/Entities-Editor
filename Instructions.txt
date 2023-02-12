@@ -28,13 +28,7 @@ All you need to do is download that archive (using the green button Code -> Down
 find bin / YourOperatingSystem / murgaLua. Then place that somewhere easy to get to, and put in the same spot:
 - EntitiesEditor.lua
 - your decompressed Entities file, testD.bin
-- a LEGO Battles ROM (Vanilla or otherwise not too messed up, for extracting the names), named "LegoBattles.NDS"
 - said murgaLua file
 Now drag and drop my lua script onto murgaLua, or run it from the command line, and you should be good to go!
 
 IMPORTANT: If you switch tabs, you will lose all unsaved work! Make sure to Save to the ROM before moving to a different section!
-
-IMPORTANT II: This code contains a little text swap to make your life easier if you are building off my All-in-One hack: if it detects that the ROM refers to Plantation as Storehouse,
-it appropriately swaps Gemma and Biff's name, and changes the Conquistador to "Ancient Wolf." This has two implications:
-- if you are going to use an All-in-One ROM, also use that ROM's edited Entities.ebp, or it will get confusing
-- if you want to use the Storehouse change without the other stuff in your hack, it is recommened to use a vanilla ROM for names, so there is only one non-change to remember

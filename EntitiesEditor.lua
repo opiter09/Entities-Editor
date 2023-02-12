@@ -6,114 +6,24 @@ local projectileTable = {}
 screenWidth = Fl:w()
 screenHeight = Fl:h()
 
-local rom = assert(io.open("LegoBattles.NDS", "rb"))
-local text = rom:read(1825767)
-text = string.sub(text, 1824087, 1825766)
+local doc = assert(io.open("namesTilde.txt", "rb"))
+local text = doc:read()
 
 local nameTable = {}
 local iterator = 1
 for i = 1, string.len(text) do
-	if (string.byte(string.sub(text, i, i)) == 0) then
-		if (nameTable[1] ~= nil) and (string.byte(string.sub(text, i - 1, i - 1)) ~= 0) then
+	if (string.sub(text, i, i) == "~") then
+		if (nameTable[1] ~= nil) and (string.sub(text, i - 1, i - 1) ~= "~") then
 			iterator = iterator + 1
 		end
-	elseif (string.byte(string.sub(text, i, i)) ~= 0) then
+	elseif (string.sub(text, i, i) ~= "~") then
 		if (nameTable[iterator] == nil) then
 			nameTable[iterator] = ""
 		end
 		nameTable[iterator] = nameTable[iterator] .. string.sub(text, i, i)
 	end
 end
-rom:close()
-missingTable = {
-	[3] = "[K] Builder",
-	[11] = "Castle",
-	[13] = "[K] Mine",
-	[14] = "Farm",
-	[15] = "[K] Barracks",
-	[16] = "Special Factory",
-	[17] = "[K] Tower I",
-	[23] = "[W] Builder",
-	[30] = "[W] Transport Ship",
-	[33] = "[W] Mine",
-	[37] = "[W] Tower I",
-	[38] = "[W] Tower II",
-	[39] = "[W] Tower III",
-	[40] = "[W] Shipyard",
-	[49] = "[P] Builder",
-	[56] = "[P] Transport Ship",
-	[58] = "[P] Lumber Shack",
-	[63] = "[P] Tower I",
-	[64] = "[P] Tower II",
-	[65] = "[P] Tower III",
-	[66] = "[P] Shipyard",
-	[69] = "[I] Builder",
-	[74] = "[I] Battleship",
-	[76] = "[I] Transport Ship",
-	[78] = "[I] Lumber Mill",
-	[79] = "[I] Mine",
-	[81] = "[I] Barracks",
-	[83] = "[I] Tower I",
-	[84] = "[I] Tower II",
-	[85] = "[I] Tower III",
-	[86] = "[I] Shipyard",
-	[96] = "[E] Builder",
-	[103] = "[E] Transport Ship",
-	[108] = "[E] Barracks",
-	[110] = "[E] Tower I",
-	[111] = "[E] Tower II",
-	[112] = "[E] Tower III",
-	[113] = "[E] Shipyard",
-	[116] = "[A] Builder",
-	[123] = "[A] Transport Ship",
-	[125] = "[A] Harvester",
-	[126] = "[A] Well Cap",
-	[133] = "[A] Shipyard"
-}
-for i = 1, 140 do
-	if (missingTable[i] ~= nil) then
-		table.insert(nameTable, i, missingTable[i])
-	end
-end
-nameTable[10] = "[K] Transport Ship"
-nameTable[12] = "[K] Lumber Mill"
-nameTable[18] = "[K] Tower II"
-nameTable[19] = "[K] Tower III"
-nameTable[20] = "[K] Shipyard"
-nameTable[32] = "[W] Lumber Shack"
-nameTable[54] = "[P] Battleship"
-nameTable[105] = "[E] Harvester"
-nameTable[106] = "[E] Well Cap"
-nameTable[130] = "Spire I"
-
-local conqName
-if (nameTable[60] == "Storehouse") then
-	nameTable[94] = "Gemma"
-	nameTable[95] = "Biff"
-	conqName = "Ancient Wolf"
-else
-	conqName = "Conquistador"
-end
-
-local temp = {}
-for i = 1, #nameTable do
-	if (i < 41) or ((i > 46) and (i < 87)) or ((i > 93) and (i < 134)) then
-		temp[#temp + 1] = nameTable[i]
-	end
-end
-nameTable = temp
-
-local newNames = { "Wall", "BridgeSmallH", "BridgeSmallV", "BridgeMediumH", "BridgeMediumV", "BridgeLargeH", "BridgeLargeV", "GateH", "GateV",
-	"SpacePoliceCaptain", "Space Police", "SpacePoliceCruiser", "SpacePoliceBase", "SpaceCriminalLeader", "Space Criminal",
-	"SpaceCriminalHotrod", "SpaceCriminalBase", "Falvour", "Robot", "SpaceCrimShipColor", "CrashedSupplyPod", "Crashed Mothership", "Meteorite",
-	"Crashed Transport", "Ancient Structure", "King Kahuka", "Islander", "Tiki Golem", "Islander Temple", "Ninja Master", "Ninja",
-	"Ninja Flying Ship", "Ninja Temple", "Monkey", "Trader Ship", "Shark", "Shipwreck Water", "Shipwreck Beach", "Forgotten Temple",
-	"Abandoned Outpost", "Hermitage", "Dwarf King", "Dwarf", "Dwarf Glider", "Dwarf Hall", "Troll King", "Troll", "Troll Blimp", "Troll Hall",
-	"Wolf", "Stonehenge", "Cairn", "Church", "Ruined Tower", "Ruined Castle", "Forestman", "Ghost", "Sheriff", conqName, "Agent Chase",
-	"Classic Space", "Santa" }
-for i = 1, #newNames do
-	table.insert(nameTable, #nameTable + 1, newNames[i])
-end
+doc:close()
 
 local function NothingICantHandle(inp, inp2)
 	local inputFile = assert(io.open("testD.bin", "rb"))
