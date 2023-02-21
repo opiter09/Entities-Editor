@@ -196,6 +196,8 @@ local function saveCallback(w)
 		end
 		if (a.WaterFlag == 1) and (a.LandFlag == 0) then
 			a.BoatAntiFlag = 0
+		else
+			a.BoatAntiFlag = 1
 		end
 		reading = string.sub(reading, 1, base + 25) .. IllHexYou(a.Byte22) .. string.sub(reading, base + 27, string.len(reading))
 		reading = string.sub(reading, 1, base + 26) .. IllHexYou(a.BoatAntiFlag) .. string.sub(reading, base + 28, string.len(reading))		
