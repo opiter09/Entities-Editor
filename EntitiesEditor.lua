@@ -26,7 +26,7 @@ end
 doc:close()
 
 local function NothingICantHandle(inp, inp2)
-	local inputFile = assert(io.open("testD.bin", "rb"))
+	local inputFile = assert(io.open(arg[1], "rb"))
 	local bytE = inputFile:read("*all")
 
 	local num = tonumber(string.byte(bytE, inp))
@@ -180,7 +180,7 @@ local function saveCallback(w)
 		end
 	end
 
-	local out = assert(io.open("testD.bin", "rb"))
+	local out = assert(io.open(arg[1], "rb"))
 	local reading = out:read("*all")
 	for i = 0, 181 do
 		local a = unitTable[i + 1]
@@ -240,7 +240,7 @@ local function saveCallback(w)
 		ThisLittleHexIsPayback(a.DamageMin) .. ThisLittleHexIsPayback(a.DamageMax) .. string.sub(reading, base + 22689, string.len(reading))
 	end
 	out:close()
-	out = assert(io.open("testD.bin", "wb"))
+	out = assert(io.open(arg[1], "wb"))
 	out:write(reading)
 	out:close()
 	fltk.fl_message("Save Complete!")

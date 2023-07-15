@@ -1,8 +1,12 @@
-This project is a GUI allowing for simple editing of the file Entities.ebp, from the NDS video game LEGO Battles. It runs using MurgaLua, found at 
-https://github.com/igame3dbill/murgaLua (RIP John Murga). Instructions on how to use this can be found in Instructions.txt.
+This project is a GUI allowing for simple editing of the file Entities.ebp, from the NDS video game
+LEGO Battles and its sequel. It runs using MurgaLua (RIP John Murga).
 
-This repo serves as a more bleending-edge version of, and additional preservation for, Entities Editor as it exists on RomHacking.net:
-https://www.romhacking.net/utilities/1682/
+It also unpacks and repacks the DS ROM using the excelled Carbonizer, made by simonomi. If
+you would like the see the source code, or use an updated version, it can be found at
+https://github.com/simonomi/carbonizer
 
-Finally, in the "Ninjago" folder you will find a similar GUI to edit this game's sequel, LEGO Battles: Ninjago. The instructions for it
-are the same as with the original.
+With the 3.0 rewrite, running this is ridiculously simple. Simply drag and drop your ROM onto
+wrapper.exe. Then choose whether you want to edit the file, or create a new ROM (i.e. after
+you've finished editing). The only small tricky thing to watch out for is that both when
+first unpacking a ROM, and when rebuilding it, you will at one point see a dark grey, empty
+window. You must close this out to complete the process.
