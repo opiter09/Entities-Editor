@@ -34,8 +34,8 @@ window.close()
 
 if (result == "edit"):
     if (os.path.exists(folder + "2") == False):
-        subprocess.run([ "carbonizer/carbonizer.exe", sys.argv[1] ])
-        os.rename(folder, folder + "2")
+        subprocess.run([ "dslazy.bat", "UNPACK", sys.argv[1] ])
+        os.rename("NDS_UNPACK", folder + "2")
         subprocess.run([ "HackedNitroPaint.exe", folder + "2" + "/data/BP/Entities.ebp" ])
         os.rename("testD.bin", folder + ".bin")
     if (game == "battles"):
@@ -59,6 +59,8 @@ Press OK, then close the resulting window, then close this.")]]
         except FileNotFoundError:
             pass
         os.rename("testC.bin", folder + "2" + "/data/BP/Entities.ebp")
-        subprocess.run([ "carbonizer/carbonizer.exe", folder + "2" ])
+        os.rename(folder + "2", "NDS_UNPACK")
+        subprocess.run([ "dslazy.bat", "PACK", folder + "2" + ".nds" ])
+        os.rename("NDS_UNPACK", folder + "2")
         
     

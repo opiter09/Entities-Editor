@@ -1,10 +1,9 @@
 *.bin
 *.nds
+*.sav
 drawSleepTest.lua
-LegoBattles.sav
 textfile.txt
 names.txt
-nitropaint.ini
 group_visibility.lua
 proj.py
 *.ebp

@@ -1,9 +1,13 @@
 This project is a GUI allowing for simple editing of the file Entities.ebp, from the NDS video game
 LEGO Battles and its sequel. It runs using MurgaLua (RIP John Murga).
 
-It also unpacks and repacks the DS ROM using the excelled Carbonizer, made by simonomi. If
-you would like the see the source code, or use an updated version, it can be found at
-https://github.com/simonomi/carbonizer
+To download this, please press the green "Code" button, then select "Download ZIP" from the
+drop-down menu.
+
+It also unpacks and repacks the DS ROM using the version of ndstool and batch file from DSLazy,
+which can be found at https://www.romhacking.net/utilities/793/. This utility comes without
+a license, however if you wish to see the source code for (a later version of) ndstool, it can be
+found at https://github.com/devkitPro/ndstool.
 
 With the 3.0 rewrite, running this is ridiculously simple. Simply drag and drop your ROM onto
 wrapper.exe. Then choose whether you want to edit the file, or create a new ROM (i.e. after
