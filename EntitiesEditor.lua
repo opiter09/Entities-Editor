@@ -26,7 +26,7 @@ end
 doc:close()
 
 local function NothingICantHandle(inp, inp2)
-	local inputFile = assert(io.open("testD.bin", "rb"))
+	local inputFile = assert(io.open(arg[1], "rb"))
 	local bytE = inputFile:read("*all")
 
 	local num = tonumber(string.byte(bytE, inp))
@@ -120,7 +120,6 @@ local function saveCallback(w)
 						else
 							value.Speed = tonumber(string.sub(speedTable[v.Speed:value() + 1], 1, 3))
 						end
-						value.Byte22 = v.Byte22:value()
 						value.LandFlag = v.LandFlag:value()
 						value.WaterFlag = v.WaterFlag:value()
 						value.TreeCrossFlag = v.TreeCrossFlag:value()
@@ -180,7 +179,7 @@ local function saveCallback(w)
 		end
 	end
 
-	local out = assert(io.open("testD.bin", "rb"))
+	local out = assert(io.open(arg[1], "rb"))
 	local reading = out:read("*all")
 	for i = 0, 181 do
 		local a = unitTable[i + 1]
@@ -199,7 +198,6 @@ local function saveCallback(w)
 		else
 			a.BoatAntiFlag = 1
 		end
-		reading = string.sub(reading, 1, base + 25) .. IllHexYou(a.Byte22) .. string.sub(reading, base + 27, string.len(reading))
 		reading = string.sub(reading, 1, base + 26) .. IllHexYou(a.BoatAntiFlag) .. string.sub(reading, base + 28, string.len(reading))		
 		reading = string.sub(reading, 1, base + 27) .. IllHexYou(a.LandFlag) .. string.sub(reading, base + 29, string.len(reading))
 		reading = string.sub(reading, 1, base + 28) .. IllHexYou(a.WaterFlag) .. string.sub(reading, base + 30, string.len(reading))
@@ -240,7 +238,7 @@ local function saveCallback(w)
 		ThisLittleHexIsPayback(a.DamageMin) .. ThisLittleHexIsPayback(a.DamageMax) .. string.sub(reading, base + 22689, string.len(reading))
 	end
 	out:close()
-	out = assert(io.open("testD.bin", "wb"))
+	out = assert(io.open(arg[1], "wb"))
 	out:write(reading)
 	out:close()
 	fltk.fl_message("Save Complete!")
@@ -498,17 +496,8 @@ local function switchCallback(w)
 			theValue = 12
 		end
 		b.Speed:value(theValue)
-		
-		tpos = tpos + 130
-		b.Byte22 = fltk:Fl_Value_Input(tpos, yPosition, 50, 25, "Byte 22")
-		b.Byte22:labelsize(14)
-		b.Byte22:textsize(14)
-		b.Byte22:minimum(0)
-		b.Byte22:maximum(255)
-		b.Byte22:step(5)
-		b.Byte22:value(a.Byte22)
 
-		tpos = tpos + 100
+		tpos = tpos + 120
 		b.LandFlag = fltk:Fl_Choice(tpos, yPosition, 50, 25, "Land")
 		b.LandFlag:down_box(fltk.FL_BORDER_BOX)
 		b.LandFlag:labelsize(14)
@@ -756,7 +745,6 @@ for i = 0, 181 do
 	a.ID = NothingICantHandle(base + 9, base + 10)
 	a.Speed = NothingICantHandle(base + 17, base + 18)
 	a.SideGraphic = NothingICantHandle(base + 25)
-	a.Byte22 = NothingICantHandle(base + 26)
 	a.BoatAntiFlag = NothingICantHandle(base + 27)
 	a.LandFlag = NothingICantHandle(base + 28)
 	a.WaterFlag = NothingICantHandle(base + 29)
