@@ -6,6 +6,7 @@ import sys
 rom = open(sys.argv[1], "rb")
 header = rom.read()[5]
 rom.close()
+x = 0
 if (header == 0x42):
     game = "battles"
 elif (header == 0x4E):
@@ -13,11 +14,11 @@ elif (header == 0x4E):
 else:
     game = ""
     psg.popup("This is not a valid ROM file!")
-    x == 2 # psgcompiler-friendly quit
+    x = 1
 folder = sys.argv[1].split("\\")[-1][0:-4]
 
 result = " "
-while (result != ""):
+while (result != "") and (x == 0):
     result = ""
     layout = [ [ psg.Button("Edit Entities") ], [ psg.Button("Rebuild ROM") ] ]
     window = psg.Window("", layout, grab_anywhere = True)
