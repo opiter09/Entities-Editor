@@ -9,6 +9,11 @@ which can be found at https://www.romhacking.net/utilities/793/. This utility co
 a license, however if you wish to see the source code for (a later version of) ndstool, it can be
 found at https://github.com/devkitPro/ndstool.
 
+Unfortunately, the exe version refuses to show the Command Line, so while the ROM is being
+unpacked it will just look like nothing is going on. Just be patient, and eventually a prompt
+will appear. If someone can tell me how to make the Command Line show up (I use PSGCompiler to
+make the exe), please let me know.
+
 With the 3.0 rewrite, running this is ridiculously simple. Simply move your ROM into the same
 folder as wrapper.exe, then drag and drop the former onto the latter. Then choose whether you want
 to edit the file, or create a new ROM (i.e. after you've finished editing). The only small tricky
