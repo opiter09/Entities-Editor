@@ -10,7 +10,7 @@ x = 0
 if (header == 0x42):
     game = "battles"
 elif (header == 0x4E):
-    game == "ninjago"
+    game = "ninjago"
 else:
     game = ""
     psg.popup("This is not a valid ROM file!")
