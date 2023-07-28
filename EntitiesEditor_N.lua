@@ -536,7 +536,7 @@ local function switchCallback(w)
 		b.Health:value(a.Health)
 		
 		tpos = tpos + 105
-		b.Mana = fltk:Fl_Value_Input(tpos, yPosition, 50, 25, "Mana")
+		b.Mana = fltk:Fl_Value_Input(tpos, yPosition, 50, 25, "Magic")
 		b.Mana:labelsize(14)
 		b.Mana:textsize(14)
 		b.Mana:minimum(0)

@@ -123,8 +123,6 @@ local function saveCallback(w)
 						value.LandFlag = v.LandFlag:value()
 						value.WaterFlag = v.WaterFlag:value()
 						value.TreeCrossFlag = v.TreeCrossFlag:value()
-						value.BuildingHitFlag = v.BuildingHitFlag:value()
-						value.BoundaryCrossFlag = v.BoundaryCrossFlag:value()
 						value.HitboxSize = v.HitboxSize:value()
 						value.UninteractableFlag = v.UninteractableFlag:value()
 						if (typeTable[v.Type:value() + 1] == "Other") then
@@ -195,8 +193,13 @@ local function saveCallback(w)
 		end
 		if (a.WaterFlag == 1) and (a.LandFlag == 0) then
 			a.BoatAntiFlag = 0
-		else
-			a.BoatAntiFlag = 1
+		end
+		if (a.WaterFlag == 1) and (a.LandFlag == 1) and (a.Speed ~= 65535) then
+			a.BoundaryCrossFlag = 1
+			a.BuildingHitFlag = 0
+		elseif (a.Speed ~= 65535) then
+			a.BoundaryCrossFlag = 0
+			a.BuildingHitFlag = 1		
 		end
 		reading = string.sub(reading, 1, base + 26) .. IllHexYou(a.BoatAntiFlag) .. string.sub(reading, base + 28, string.len(reading))		
 		reading = string.sub(reading, 1, base + 27) .. IllHexYou(a.LandFlag) .. string.sub(reading, base + 29, string.len(reading))
@@ -529,28 +532,6 @@ local function switchCallback(w)
 			b.TreeCrossFlag:add(theTable[j])
 		end
 		b.TreeCrossFlag:value(a.TreeCrossFlag)
-		
-		tpos = tpos + 150
-		b.BuildingHitFlag = fltk:Fl_Choice(tpos, yPosition, 50, 25, "Hits Buildings")
-		b.BuildingHitFlag:down_box(fltk.FL_BORDER_BOX)
-		b.BuildingHitFlag:labelsize(14)
-		b.BuildingHitFlag:textsize(14)
-		theTable = { "Off", "On" }
-		for j = 1, #theTable do
-			b.BuildingHitFlag:add(theTable[j])
-		end
-		b.BuildingHitFlag:value(a.BuildingHitFlag)
-		
-		tpos = tpos + 165
-		b.BoundaryCrossFlag = fltk:Fl_Choice(tpos, yPosition, 50, 25, "Crosses Terrain")
-		b.BoundaryCrossFlag:down_box(fltk.FL_BORDER_BOX)
-		b.BoundaryCrossFlag:labelsize(14)
-		b.BoundaryCrossFlag:textsize(14)
-		theTable = { "Off", "On" }
-		for j = 1, #theTable do
-			b.BoundaryCrossFlag:add(theTable[j])
-		end
-		b.BoundaryCrossFlag:value(a.BoundaryCrossFlag)
 
 		tpos = tpos + 130
 		b.HitboxSize = fltk:Fl_Value_Input(tpos, yPosition, 50, 25, "Hitbox Size")
@@ -615,7 +596,7 @@ local function switchCallback(w)
 		b.Health:value(a.Health)
 		
 		tpos = tpos + 105
-		b.Mana = fltk:Fl_Value_Input(tpos, yPosition, 50, 25, "Mana")
+		b.Mana = fltk:Fl_Value_Input(tpos, yPosition, 50, 25, "Magic")
 		b.Mana:labelsize(14)
 		b.Mana:textsize(14)
 		b.Mana:minimum(0)

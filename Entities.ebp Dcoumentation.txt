@@ -117,8 +117,9 @@ it seems to do is turn a water-only unit into a land-only unit if you don't set 
 properly. Byte 24 is whether a unit can walk on land, and Byte 25 is whether a unit can
 walk on water. Bytes 26 is whether a unit can cross over trees, Byte 27 is whether a unit has
 collision with buildings, and Byte 28 is whether a unit can cross from land to water and back.
-Finally, Byte 29 is 01 for bridges and whatever Gates are, and 00 for everything else; turning
-it to 00 for a bridge renders the bridge invisible (but stil able to be walked over).
+Do note that, strangely, you need Byte 27 off and Byte 28 on to cross, but Byte 27 works fine
+all by itself. Finally, Byte 29 is 01 for bridges and whatever Gates are, and 00 for everything
+else; turning it to 00 for a bridge renders the bridge invisible (but stil able to be walked over).
 
 Byte 30 represents the size of a unit's collision box (which is also their
 hurtbox and hitbox). Seeing as Towers and normal sprite units are both a 1,
