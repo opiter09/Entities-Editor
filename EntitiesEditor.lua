@@ -263,7 +263,7 @@ local function displayProjectiles()
 		"Fireball", "ImperialShot", "PirateShot", "TPirateShot", "ICannonBall", "PCannonBall", "Elaser", "ALaser", "TLaser",
 		"PlasmaBall", "LaserCannon", "ProjectileSpell", "AirBallistaBolt", "AirFireball", "AirLaser", "Sharkbite", "Gift", "ProjectileNoEffect" }
 
-	for i = 1, 14 do
+	for i = 1, 27 do
 		local a = projectileTable[i]
 		local b = {}
 		
@@ -285,31 +285,6 @@ local function displayProjectiles()
 		b.DamageMax:step(5)
 		b.DamageMax:value(a.DamageMax)
 		
-		widgetTable[i] = b
-	end
-	for i = 15, 27 do
-		local a = projectileTable[i]
-		local b = {}
-
-		fltk:Fl_Button(560, 45 * (i - 12) - 90, 130, 25, internalTable[i])
-		
-		b.DamageMin = fltk:Fl_Value_Input(780, 45 * (i - 12) - 90, 50, 25, "Damage Min")
-		b.DamageMin:labelsize(14)
-		b.DamageMin:textsize(14)
-		b.DamageMin:minimum(0)
-		b.DamageMin:maximum(65535)
-		b.DamageMin:step(5)
-		b.DamageMin:value(a.DamageMin)
-		
-		b.DamageMax = fltk:Fl_Value_Input(930, 45 * (i - 12) - 90, 50, 25, "Damage Max")
-		b.DamageMax:labelsize(14)
-		b.DamageMax:textsize(14)
-		b.DamageMax:minimum(0)
-		b.DamageMax:maximum(65535)
-		b.DamageMax:step(5)
-		b.DamageMax:value(a.DamageMax)
-		
-		b.ID = a.ID
 		widgetTable[i] = b
 	end
 	if (thisWindow == 1) then
@@ -759,8 +734,25 @@ for i = 0, 26 do
 	projectileTable[i + 1] = {}
 	local base = i * 116
 	projectileTable[i + 1].ID = NothingICantHandle(base + 22577, base + 22578)
-	projectileTable[i + 1].DamageMin = NothingICantHandle(base + 22681, base + 22682)
-	projectileTable[i + 1].DamageMax = NothingICantHandle(base + 22683, base + 22684)
+	projectileTable[i + 1].Unknown1 = NothingICantHandle(base + 22585)
+	projectileTable[i + 1].Unknown2 = NothingICantHandle(base + 22586)
+	projectileTable[i + 1].Constant1 = NothingICantHandle(base + 22593)
+	projectileTable[i + 1].Arc = NothingICantHandle(base + 22594)
+	projectileTable[i + 1].OverWalls1 = NothingICantHandle(base + 22670)
+	projectileTable[i + 1].Constant2 = NothingICantHandle(base + 22671)
+	projectileTable[i + 1].Piercing = NothingICantHandle(base + 22672)
+	projectileTable[i + 1].Constant3 = NothingICantHandle(base + 22673)
+	projectileTable[i + 1].OverTrees = NothingICantHandle(base + 22674)
+	projectileTable[i + 1].OverBuildings = NothingICantHandle(base + 22675)
+	projectileTable[i + 1].Constant4 = NothingICantHandle(base + 22676)
+	projectileTable[i + 1].OverUnits = NothingICantHandle(base + 22677)
+	projectileTable[i + 1].OverWalls2 = NothingICantHandle(base + 22678)
+	projectileTable[i + 1].Constant5 = NothingICantHandle(base + 22679)
+	projectileTable[i + 1].Explosive = NothingICantHandle(base + 22680)
+	projectileTable[i + 1].DamageMin1 = NothingICantHandle(base + 22681, base + 22682)
+	projectileTable[i + 1].DamageMax1 = NothingICantHandle(base + 22683, base + 22684)
+	projectileTable[i + 1].DamageMin2 = NothingICantHandle(base + 22685, base + 22686)
+	projectileTable[i + 1].DamageMax2 = NothingICantHandle(base + 22687, base + 22688)
 end
 
 local menuBar = fltk:Fl_Menu_Bar(0, 0, 600, 25)
