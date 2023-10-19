@@ -258,16 +258,26 @@ end
 
 local windowII
 
-local function displayProjectiles()
+local function displayProjectiles(col)
 	local internalTable = { "Arrow", "CrossbowBolt", "TBolt", "TBoulder", "TFireball", "BallistaBolt", "SiegeBolt", "Boulder", "OgreBoulder", 
 		"Fireball", "ImperialShot", "PirateShot", "TPirateShot", "ICannonBall", "PCannonBall", "Elaser", "ALaser", "TLaser",
 		"PlasmaBall", "LaserCannon", "ProjectileSpell", "AirBallistaBolt", "AirFireball", "AirLaser", "Sharkbite", "Gift", "ProjectileNoEffect" }
-
-	for i = 1, 27 do
-		local a = projectileTable[i]
+	for i = 1, (14 - col) do
+		fltk:Fl_Button(0, 45 * (i + 3) - 135, 130, 25, internalTable[(i + (col * 14))])
+	end
+		
+	local group = fltk:Fl_Scroll(140, 25, 1400, math.floor(screenHeight * 0.92), "")
+	group:box(fltk.FL_THIN_UP_BOX)
+	
+	local check = 1
+	for i = 1, (14 - col) do
+		local a = projectileTable[(i + (col * 14))]
 		local b = {}
 		
-		fltk:Fl_Button(20, 45 * (i + 2) - 90, 130, 25, internalTable[i])
+		check = check + 1
+		yPosition = 45 * (check + 2) - 135
+		b.FakeButton = fltk:Fl_Button(135, yPosition, 0, 25, "")
+		local tpos = 185
 		
 		b.DamageMin = fltk:Fl_Value_Input(240, 45 * (i + 2) - 90, 50, 25, "Damage Min")
 		b.DamageMin:labelsize(14)
@@ -285,7 +295,7 @@ local function displayProjectiles()
 		b.DamageMax:step(5)
 		b.DamageMax:value(a.DamageMax)
 		
-		widgetTable[i] = b
+		widgetTable[(i + (col * 14))] = b
 	end
 	if (thisWindow == 1) then
 		windowII:show()
@@ -359,13 +369,19 @@ local function switchCallback(w)
 	menuBar:add("Buildings/Tower 2", nil, switchCallback, "Tower 2")
 	menuBar:add("Buildings/Tower 3", nil, switchCallback, "Tower 3")
 	menuBar:add("Extras", nil, switchCallback, "Extras")
-	menuBar:add("Projectiles", nil, switchCallback, "Projectiles")
+	menuBar:add("Projectiles/Part 1", nil, switchCallback, "Projectiles1")
+	menuBar:add("Projectiles/Part 2", nil, switchCallback, "Projectiles2")
 	
 	local quitButton = fltk:Fl_Button(screenWidth - 50, 0, 50, 25, "Exit")
 	quitButton:callback(quitCallback)
 
-	if (switchType == "Projectiles") then
-		displayProjectiles()
+	if (switchType == "Projectiles1") then
+		displayProjectiles(0)
+		return
+	end
+	
+	if (switchType == "Projectiles2") then
+		displayProjectiles(1)
 		return
 	end
 
@@ -780,7 +796,8 @@ menuBar:add("Buildings/Tower 1", nil, switchCallback, "Tower 1")
 menuBar:add("Buildings/Tower 2", nil, switchCallback, "Tower 2")
 menuBar:add("Buildings/Tower 3", nil, switchCallback, "Tower 3")
 menuBar:add("Extras", nil, switchCallback, "Extras")
-menuBar:add("Projectiles", nil, switchCallback, "Projectiles")
+menuBar:add("Projectiles/Part 1", nil, switchCallback, "Projectiles1")
+menuBar:add("Projectiles/Part 2", nil, switchCallback, "Projectiles2")
 
 local quitButton = fltk:Fl_Button(screenWidth - 50, 0, 50, 25, "Exit")
 quitButton:callback(quitCallback)
