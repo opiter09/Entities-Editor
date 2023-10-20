@@ -112,7 +112,7 @@ local switchType = 0
 local function saveCallback(w)
 	if (switchType ~= 0) and (widgetTable ~= nil) then
 		for k, v in pairs(widgetTable) do
-			if (switchType ~= "Projectiles") then
+			if ((switchType ~= "Projectiles1") and (switchType ~= "Projectiles2")) then
 				for key, value in pairs(unitTable) do
 					if (v.ID == value.ID) then
 						if (speedTable[v.Speed:value() + 1] == "NONE") then
@@ -168,11 +168,36 @@ local function saveCallback(w)
 				end
 			end
 		end
-		if (switchType == "Projectiles") then
-			for i = 1, 27 do
-				projectileTable[i].DamageMin = widgetTable[i].DamageMin:value()
-				widgetTable[i].DamageMax:value(math.max(widgetTable[i].DamageMax:value(), widgetTable[i].DamageMin:value()))
-				projectileTable[i].DamageMax = widgetTable[i].DamageMax:value()
+		if ((switchType == "Projectiles1") or (switchType == "Projectiles2")) then
+			if (switchType == "Projectiles1") then
+				col = 0
+			else
+				col = 1
+			end
+
+			for i = 1, (col - 1) do
+				projectileTable[i + (14 * col)].Unknown1 = widgetTable[i].Unknown1:value()
+				projectileTable[i + (14 * col)].Unknown2 = widgetTable[i].Unknown2:value()
+				projectileTable[i + (14 * col)].Constant1 = widgetTable[i].Constant1:value()
+				projectileTable[i + (14 * col)].Arc = widgetTable[i].Arc:value() + 6
+				projectileTable[i + (14 * col)].OverWalls1 = widgetTable[i].OverWalls1:value()
+				projectileTable[i + (14 * col)].Constant2 = widgetTable[i].Constant2:value()
+				projectileTable[i + (14 * col)].Piercing = widgetTable[i].Piercing:value()
+				projectileTable[i + (14 * col)].Constant3 = widgetTable[i].Constant3:value()
+				projectileTable[i + (14 * col)].OverTrees = widgetTable[i].OverTrees:value()
+				projectileTable[i + (14 * col)].OverBuildings = widgetTable[i].OverBuildings:value()
+				projectileTable[i + (14 * col)].Constant4 = widgetTable[i].Constant4:value()
+				projectileTable[i + (14 * col)].OverUnits = widgetTable[i].OverUnits:value()
+				projectileTable[i + (14 * col)].OverWalls2 = widgetTable[i].OverWalls2:value()
+				projectileTable[i + (14 * col)].Constant5 = widgetTable[i].Constant5:value()
+				projectileTable[i + (14 * col)].Explosive = widgetTable[i].Explosive:value()
+
+				widgetTable[i].DamageMax1:value(math.max(widgetTable[i].DamageMax1:value(), widgetTable[i].DamageMin1:value()))
+				projectileTable[i + (14 * col)].DamageMax1 = widgetTable[i].DamageMax1:value()
+
+				projectileTable[i + (14 * col)].DamageMin2 = widgetTable[i].DamageMin2:value()
+				widgetTable[i].DamageMax2:value(math.max(widgetTable[i].DamageMax2:value(), widgetTable[i].DamageMin2:value()))
+				projectileTable[i + (14 * col)].DamageMax2 = widgetTable[i].DamageMax2:value()
 			end
 		end
 	end
@@ -237,8 +262,23 @@ local function saveCallback(w)
 	for i = 0, 26 do
 		local a = projectileTable[i + 1]
 		local base = i * 116
-		reading = string.sub(reading, 1, base + 22680) .. ThisLittleHexIsPayback(a.DamageMin) .. ThisLittleHexIsPayback(a.DamageMax) ..
-		ThisLittleHexIsPayback(a.DamageMin) .. ThisLittleHexIsPayback(a.DamageMax) .. string.sub(reading, base + 22689, string.len(reading))
+		reading = string.sub(reading, 1, base + 22584) .. IllHexYou(a.Unknown1) .. string.sub(reading, base + 22586, string.len(reading))
+		reading = string.sub(reading, 1, base + 22585) .. IllHexYou(a.Unknown2) .. string.sub(reading, base + 22587, string.len(reading))
+		reading = string.sub(reading, 1, base + 22592) .. IllHexYou(a.Constant1) .. string.sub(reading, base + 22594, string.len(reading))
+		reading = string.sub(reading, 1, base + 22593) .. IllHexYou(a.Arc) .. string.sub(reading, base + 22595, string.len(reading))
+		reading = string.sub(reading, 1, base + 22669) .. IllHexYou(a.OverWalls1) .. string.sub(reading, base + 22671, string.len(reading))
+		reading = string.sub(reading, 1, base + 22670) .. IllHexYou(a.Constant2) .. string.sub(reading, base + 22672, string.len(reading))
+		reading = string.sub(reading, 1, base + 22671) .. IllHexYou(a.Piercing) .. string.sub(reading, base + 22673, string.len(reading))
+		reading = string.sub(reading, 1, base + 22672) .. IllHexYou(a.Constant3) .. string.sub(reading, base + 22674, string.len(reading))
+		reading = string.sub(reading, 1, base + 22673) .. IllHexYou(a.OverTrees) .. string.sub(reading, base + 22675, string.len(reading))
+		reading = string.sub(reading, 1, base + 22674) .. IllHexYou(a.OverBuildings) .. string.sub(reading, base + 22676, string.len(reading))
+		reading = string.sub(reading, 1, base + 22675) .. IllHexYou(a.Constant4) .. string.sub(reading, base + 22677, string.len(reading))
+		reading = string.sub(reading, 1, base + 22676) .. IllHexYou(a.OverUnits) .. string.sub(reading, base + 22678, string.len(reading))
+		reading = string.sub(reading, 1, base + 22677) .. IllHexYou(a.OverWalls2) .. string.sub(reading, base + 22679, string.len(reading))
+		reading = string.sub(reading, 1, base + 22678) .. IllHexYou(a.Constant5) .. string.sub(reading, base + 22680, string.len(reading))
+		reading = string.sub(reading, 1, base + 22679) .. IllHexYou(a.Explosive) .. string.sub(reading, base + 22681, string.len(reading))
+		reading = string.sub(reading, 1, base + 22680) .. ThisLittleHexIsPayback(a.DamageMin1) .. ThisLittleHexIsPayback(a.DamageMax1) ..
+		ThisLittleHexIsPayback(a.DamageMin2) .. ThisLittleHexIsPayback(a.DamageMax2) .. string.sub(reading, base + 22689, string.len(reading))
 	end
 	out:close()
 	out = assert(io.open(arg[1], "wb"))
@@ -277,23 +317,206 @@ local function displayProjectiles(col)
 		check = check + 1
 		yPosition = 45 * (check + 2) - 135
 		b.FakeButton = fltk:Fl_Button(135, yPosition, 0, 25, "")
-		local tpos = 185
+		local tpos = 220
 		
-		b.DamageMin = fltk:Fl_Value_Input(240, 45 * (i + 2) - 90, 50, 25, "Damage Min")
-		b.DamageMin:labelsize(14)
-		b.DamageMin:textsize(14)
-		b.DamageMin:minimum(0)
-		b.DamageMin:maximum(65535)
-		b.DamageMin:step(5)
-		b.DamageMin:value(a.DamageMin)
+		b.Unknown1 = fltk:Fl_Value_Input(tpos, yPosition, 50, 25, "Unknown 1")
+		b.Unknown1:labelsize(14)
+		b.Unknown1:textsize(14)
+		b.Unknown1:minimum(0)
+		b.Unknown1:maximum(255)
+		b.Unknown1:step(5)
+		b.Unknown1:value(a.Unknown1)
 		
-		b.DamageMax = fltk:Fl_Value_Input(390, 45 * (i + 2) - 90, 50, 25, "Damage Max")
-		b.DamageMax:labelsize(14)
-		b.DamageMax:textsize(14)
-		b.DamageMax:minimum(0)
-		b.DamageMax:maximum(65535)
-		b.DamageMax:step(5)
-		b.DamageMax:value(a.DamageMax)
+		tpos = tpos + 140
+		b.Unknown2 = fltk:Fl_Value_Input(tpos, yPosition, 50, 25, "Unknown 2")
+		b.Unknown2:labelsize(14)
+		b.Unknown2:textsize(14)
+		b.Unknown2:minimum(0)
+		b.Unknown2:maximum(255)
+		b.Unknown2:step(5)
+		b.Unknown2:value(a.Unknown2)
+		
+		tpos = tpos + 140
+		b.Constant1 = fltk:Fl_Value_Input(tpos, yPosition, 50, 25, "Constant 1")
+		b.Constant1:labelsize(14)
+		b.Constant1:textsize(14)
+		b.Constant1:minimum(0)
+		b.Constant1:maximum(255)
+		b.Constant1:step(5)
+		b.Constant1:value(a.Constant1)
+		
+		tpos = tpos + 100
+		b.Arc = fltk:Fl_Choice(tpos, yPosition, 100, 25, "Arc")
+		b.Arc:down_box(fltk.FL_BORDER_BOX)
+		b.Arc:labelsize(14)
+		b.Arc:textsize(14)
+		theTable = { "Straight", "Unknown", "Lob" }
+		for j = 1, #theTable do
+			b.Arc:add(theTable[j])
+			if (a.Arc == (j + 5)) then
+				theValue = j - 1
+			end
+		end
+		b.Arc:value(theValue)
+		
+		tpos = tpos + 200
+		b.OverWalls1 = fltk:Fl_Choice(tpos, yPosition, 50, 25, "Over Walls 1")
+		b.OverWalls1:down_box(fltk.FL_BORDER_BOX)
+		b.OverWalls1:labelsize(14)
+		b.OverWalls1:textsize(14)
+		theTable = { "On", "Off" }
+		for j = 1, #theTable do
+			b.OverWalls1:add(theTable[j])
+		end
+		b.OverWalls1:value(a.OverWalls1)
+		
+		tpos = tpos + 150
+		b.Constant2 = fltk:Fl_Choice(tpos, yPosition, 50, 25, "Constant 2")
+		b.Constant2:down_box(fltk.FL_BORDER_BOX)
+		b.Constant2:labelsize(14)
+		b.Constant2:textsize(14)
+		theTable = { "On", "Off" }
+		for j = 1, #theTable do
+			b.Constant2:add(theTable[j])
+		end
+		b.Constant2:value(a.Constant2)
+		
+		tpos = tpos + 140
+		b.Piercing = fltk:Fl_Choice(tpos, yPosition, 50, 25, "Piercing")
+		b.Piercing:down_box(fltk.FL_BORDER_BOX)
+		b.Piercing:labelsize(14)
+		b.Piercing:textsize(14)
+		theTable = { "On", "Off" }
+		for j = 1, #theTable do
+			b.Piercing:add(theTable[j])
+		end
+		b.Piercing:value(a.Piercing)
+		
+		tpos = tpos + 150
+		b.Constant3 = fltk:Fl_Choice(tpos, yPosition, 50, 25, "Constant 3")
+		b.Constant3:down_box(fltk.FL_BORDER_BOX)
+		b.Constant3:labelsize(14)
+		b.Constant3:textsize(14)
+		theTable = { "On", "Off" }
+		for j = 1, #theTable do
+			b.Constant3:add(theTable[j])
+		end
+		b.Constant3:value(a.Constant3)
+		
+		tpos = tpos + 160
+		b.OverTrees = fltk:Fl_Choice(tpos, yPosition, 50, 25, "Over Trees")
+		b.OverTrees:down_box(fltk.FL_BORDER_BOX)
+		b.OverTrees:labelsize(14)
+		b.OverTrees:textsize(14)
+		theTable = { "On", "Off" }
+		for j = 1, #theTable do
+			b.OverTrees:add(theTable[j])
+		end
+		b.OverTrees:value(a.OverTrees)
+		
+		tpos = tpos + 180
+		b.OverBuildings = fltk:Fl_Choice(tpos, yPosition, 50, 25, "Over Buildings")
+		b.OverBuildings:down_box(fltk.FL_BORDER_BOX)
+		b.OverBuildings:labelsize(14)
+		b.OverBuildings:textsize(14)
+		theTable = { "On", "Off" }
+		for j = 1, #theTable do
+			b.OverBuildings:add(theTable[j])
+		end
+		b.OverBuildings:value(a.OverBuildings)
+		
+		tpos = tpos + 160
+		b.Constant4 = fltk:Fl_Choice(tpos, yPosition, 50, 25, "Constant 4")
+		b.Constant4:down_box(fltk.FL_BORDER_BOX)
+		b.Constant4:labelsize(14)
+		b.Constant4:textsize(14)
+		theTable = { "On", "Off" }
+		for j = 1, #theTable do
+			b.Constant4:add(theTable[j])
+		end
+		b.Constant4:value(a.Constant4)
+		
+		tpos = tpos + 140
+		b.OverUnits = fltk:Fl_Choice(tpos, yPosition, 50, 25, "Over Units")
+		b.OverUnits:down_box(fltk.FL_BORDER_BOX)
+		b.OverUnits:labelsize(14)
+		b.OverUnits:textsize(14)
+		theTable = { "On", "Off" }
+		for j = 1, #theTable do
+			b.OverUnits:add(theTable[j])
+		end
+		b.OverUnits:value(a.OverUnits)
+		
+		tpos = tpos + 160
+		b.OverWalls2 = fltk:Fl_Choice(tpos, yPosition, 50, 25, "Over Walls 2")
+		b.OverWalls2:down_box(fltk.FL_BORDER_BOX)
+		b.OverWalls2:labelsize(14)
+		b.OverWalls2:textsize(14)
+		theTable = { "On", "Off" }
+		for j = 1, #theTable do
+			b.OverWalls2:add(theTable[j])
+		end
+		b.OverWalls2:value(a.OverWalls2)
+		
+		tpos = tpos + 140
+		b.Constant5 = fltk:Fl_Choice(tpos, yPosition, 50, 25, "Constant 5")
+		b.Constant5:down_box(fltk.FL_BORDER_BOX)
+		b.Constant5:labelsize(14)
+		b.Constant5:textsize(14)
+		theTable = { "On", "Off" }
+		for j = 1, #theTable do
+			b.Constant5:add(theTable[j])
+		end
+		b.Constant5:value(a.Constant5)
+
+		tpos = tpos + 140
+		b.Explosive = fltk:Fl_Choice(tpos, yPosition, 50, 25, "Explosive")
+		b.Explosive:down_box(fltk.FL_BORDER_BOX)
+		b.Explosive:labelsize(14)
+		b.Explosive:textsize(14)
+		theTable = { "Off", "On" }
+		for j = 1, #theTable do
+			b.Explosive:add(theTable[j])
+		end
+		b.Explosive:value(a.Explosive)
+		
+		tpos = tpos + 160
+		b.DamageMin1 = fltk:Fl_Value_Input(tpos, yPosition, 50, 25, "Damage Min 1")
+		b.DamageMin1:labelsize(14)
+		b.DamageMin1:textsize(14)
+		b.DamageMin1:minimum(0)
+		b.DamageMin1:maximum(65535)
+		b.DamageMin1:step(5)
+		b.DamageMin1:value(a.DamageMin1)
+		
+		tpos = tpos + 160
+		b.DamageMax1 = fltk:Fl_Value_Input(tpos, yPosition, 50, 25, "Damage Max 1")
+		b.DamageMax1:labelsize(14)
+		b.DamageMax1:textsize(14)
+		b.DamageMax1:minimum(0)
+		b.DamageMax1:maximum(65535)
+		b.DamageMax1:step(5)
+		b.DamageMax1:value(a.DamageMax1)
+		
+		tpos = tpos + 160
+		b.DamageMin2 = fltk:Fl_Value_Input(tpos, yPosition, 50, 25, "Damage Min 2")
+		b.DamageMin2:labelsize(14)
+		b.DamageMin2:textsize(14)
+		b.DamageMin2:minimum(0)
+		b.DamageMin2:maximum(65535)
+		b.DamageMin2:step(5)
+		b.DamageMin2:value(a.DamageMin2)
+		
+		tpos = tpos + 160
+		b.DamageMax2 = fltk:Fl_Value_Input(tpos, yPosition, 50, 25, "Damage Max 2")
+		b.DamageMax2:labelsize(14)
+		b.DamageMax2:textsize(14)
+		b.DamageMax2:minimum(0)
+		b.DamageMax2:maximum(65535)
+		b.DamageMax2:step(5)
+		b.DamageMax2:value(a.DamageMax2)
+		
+		b.FakeButton2 = fltk:Fl_Button(tpos + 150 + math.floor((3 + (1536 - screenWidth) / 55) * 140), yPosition, 0, 25, "")
 		
 		widgetTable[(i + (col * 14))] = b
 	end
