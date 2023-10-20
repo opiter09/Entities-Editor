@@ -175,7 +175,7 @@ local function saveCallback(w)
 				col = 1
 			end
 
-			for i = 1, (col - 1) do
+			for i = 1, (14 - col) do
 				projectileTable[i + (14 * col)].Unknown1 = widgetTable[i].Unknown1:value()
 				projectileTable[i + (14 * col)].Unknown2 = widgetTable[i].Unknown2:value()
 				projectileTable[i + (14 * col)].Constant1 = widgetTable[i].Constant1:value()
@@ -518,7 +518,7 @@ local function displayProjectiles(col)
 		
 		b.FakeButton2 = fltk:Fl_Button(tpos + 150 + math.floor((3 + (1536 - screenWidth) / 55) * 140), yPosition, 0, 25, "")
 		
-		widgetTable[(i + (col * 14))] = b
+		widgetTable[i] = b
 	end
 	if (thisWindow == 1) then
 		windowII:show()
