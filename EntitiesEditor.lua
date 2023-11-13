@@ -192,6 +192,7 @@ local function saveCallback(w)
 				projectileTable[i + (14 * col)].Constant5 = widgetTable[i].Constant5:value()
 				projectileTable[i + (14 * col)].Explosive = widgetTable[i].Explosive:value()
 
+				projectileTable[i + (14 * col)].DamageMin1 = widgetTable[i].DamageMin1:value()
 				widgetTable[i].DamageMax1:value(math.max(widgetTable[i].DamageMax1:value(), widgetTable[i].DamageMin1:value()))
 				projectileTable[i + (14 * col)].DamageMax1 = widgetTable[i].DamageMax1:value()
 
