@@ -1,3 +1,5 @@
+NOTE: This project edits unit statistics. If you would rather edit the game's maps, please see https://github.com/LiruJ/LegoBattlesMapTool
+
 This project is a GUI allowing for simple editing of the file Entities.ebp, from the NDS video game
 LEGO Battles and its sequel. It runs using MurgaLua (RIP John Murga).
 
