@@ -17,7 +17,7 @@ to edit the file, or create a new ROM (i.e. after you've finished editing). The 
 thing to watch out for is that both when first unpacking a ROM, and when rebuilding it, you will
 at one point see a dark grey, empty window. You must close this out to complete the process.
 
-NOTE: The 3.0 rewrite makes use of NDSTool. This does not play nice with CrystalTile2 for some
+NOTE 2: The 3.0 rewrite makes use of NDSTool. This does not play nice with CrystalTile2 for some
 reason, so to use individually edited non-text files, please insert them into the folder
 NDS_UNPACK here before rebuilding (it will appear afte you drag the ROM onto wrapper.exe
 for the first time).
