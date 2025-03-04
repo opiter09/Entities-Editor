@@ -50,7 +50,14 @@ while (result != "") and (x == 0):
             else:
                 os.rename(folder + "2" + ePath, folder + ".bin")
         if (game == "battles"):
-            subprocess.run([ "murgaLua.exe", "EntitiesEditor.lua", folder + ".bin" ])
+            if (os.path.exists(folder + "2" + "/data/Data/banner.bnr") == True):
+                ePath = "/data/Data/BP/Entities.ebp"
+            else:
+                ePath = "/data/BP/Entities.ebp"
+            if (ePath == "/data/BP/Entities.ebp"):
+                subprocess.run([ "murgaLua.exe", "EntitiesEditor.lua", folder + ".bin" ])
+            else:
+                subprocess.run([ "murgaLua.exe", "EntitiesEditor_B.lua", folder + ".bin" ])
         else:
             subprocess.run([ "murgaLua.exe", "EntitiesEditor_N.lua", folder + ".bin" ])
     elif (result == "build"):
