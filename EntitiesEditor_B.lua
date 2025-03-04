@@ -144,7 +144,7 @@ local function saveCallback(w)
 						value.BuildTime = v.BuildTime:value()
 						value.Health = v.Health:value()
 						value.Mana = v.Mana:value()
-						if (v.ProjectileID:value() == 27) then
+						if (v.ProjectileID:value() == 25) then
 							value.ProjectileID = 65535
 						else
 							value.ProjectileID = v.ProjectileID:value() + 182
@@ -825,14 +825,14 @@ local function switchCallback(w)
 		b.ProjectileID:labelsize(14)
 		b.ProjectileID:textsize(14)
 		theTable = { "Arrow", "CrossbowBolt", "TBolt", "TBoulder", "TFireball", "BallistaBolt", "SiegeBolt", "Boulder", "OgreBoulder", 
-		"Fireball", "ImperialShot", "PirateShot", "TPirateShot", "ICannonBall", "PCannonBall", "Elaser", "ALaser", "TLaser",
-		"PlasmaBall", "LaserCannon", "ProjectileSpell", "AirBallistaBolt", "AirFireball", "AirLaser", "Sharkbite", "Gift", "ProjectileNoEffect", "NONE" }
+		"Fireball", "ImperialShot", "PirateShot", "TPirateShot", "ICannonBall", "PCannonBall", "Elaser", "ALaser", "PlasmaBall",
+		"LaserCannon", "ProjectileSpell", "AirBallistaBolt", "AirFireball", "AirLaser", "Gift", "ProjectileNoEffect", "NONE" }
 		for j = 1, #theTable do
 			b.ProjectileID:add(theTable[j])
 		end
 		b.ProjectileID:value(a.ProjectileID - 182)
 		if (a.ProjectileID == 65535) then
-			b.ProjectileID:value(27)
+			b.ProjectileID:value(25)
 		end
 
 		tpos = tpos + 165
