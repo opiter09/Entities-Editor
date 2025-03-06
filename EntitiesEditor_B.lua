@@ -922,7 +922,7 @@ local function switchCallback(w)
 				"Area Damage Boost", "Unit Armor Boost", "Area Armor Boost", "Forest Spawn", "Crystal Cache", "Jungle Growth", "Earthquake",
 				"Fireball", "Lightning", "Thunder Hammer", "Mining Buff", "Roar", "Logging Buff", "Monkey Swarm", "Crab Swarm", "Coconut Storm",
 				"Artillery", "Trade Winds", "Arrow Volley", "Teleport", "EMP", "Space Laser", "ESP", "Tracking", "Cluster Bomb", "Hot Wire",
-				"Unit Heal [500]", "Unit Heal 255" }
+				"Unit Heal [500]", "Unit Heal [Broken]" }
 			for x, y in pairs(theTable) do
 				b[string.format("Power%s", j)]:add(theTable[x])
 			end
