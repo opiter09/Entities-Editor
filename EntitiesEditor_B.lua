@@ -160,10 +160,25 @@ local function saveCallback(w)
 						value.Priority = v.Priority:value()
 						value.FogDispel = v.FogDispel:value()
 						value.Power1 = v.Power1:value()
+						if (v.Power1:value() == 34) then
+							value.Power1 = 255
+						end
 						value.Power2 = v.Power2:value()
+						if (v.Power2:value() == 34) then
+							value.Power2 = 255
+						end
 						value.Power3 = v.Power3:value()
+						if (v.Power3:value() == 34) then
+							value.Power3 = 255
+						end
 						value.Power4 = v.Power4:value()
+						if (v.Power4:value() == 34) then
+							value.Power4 = 255
+						end
 						value.Power5 = v.Power5:value()
+						if (v.Power5:value() == 34) then
+							value.Power5 = 255
+						end
 					end
 				end
 			end
@@ -907,11 +922,14 @@ local function switchCallback(w)
 				"Area Damage Boost", "Unit Armor Boost", "Area Armor Boost", "Forest Spawn", "Crystal Cache", "Jungle Growth", "Earthquake",
 				"Fireball", "Lightning", "Thunder Hammer", "Mining Buff", "Roar", "Logging Buff", "Monkey Swarm", "Crab Swarm", "Coconut Storm",
 				"Artillery", "Trade Winds", "Arrow Volley", "Teleport", "EMP", "Space Laser", "ESP", "Tracking", "Cluster Bomb", "Hot Wire",
-				"Unit Heal [500]" }
+				"Unit Heal [500]", "Unit Heal 255" }
 			for x, y in pairs(theTable) do
 				b[string.format("Power%s", j)]:add(theTable[x])
 			end
 			b[string.format("Power%s", j)]:value(a[string.format("Power%s", j)])
+			if (a[string.format("Power%s", j)] == 255) then
+				b[string.format("Power%s", j)]:value(34)
+			end
 		end
 
 		b.FakeButton2 = fltk:Fl_Button(tpos + 150 + math.floor((3 + (1536 - screenWidth) / 55) * 140), yPosition, 0, 25, "")
