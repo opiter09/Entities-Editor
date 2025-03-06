@@ -257,7 +257,7 @@ local function saveCallback(w)
 		reading = string.sub(reading, 1, base + 116) .. IllHexYou(a.Priority) .. string.sub(reading, base + 118, string.len(reading))
 		reading = string.sub(reading, 1, base + 117) .. IllHexYou(a.FogDispel) .. string.sub(reading, base + 119, string.len(reading))
 		for j = 1, 5 do
-			reading = string.sub(reading, 1, base + 117 + j) .. IllHexYou(a[string.format("Power%s", j)]) .. string.sub(reading, base + 119 + j, string.len(reading))
+			reading = string.sub(reading, 1, base + 118 + j) .. IllHexYou(a[string.format("Power%s", j)]) .. string.sub(reading, base + 120 + j, string.len(reading))
 		end
 	end
 	for i = 0, 24 do
@@ -963,11 +963,11 @@ for i = 0, 181 do
 	a.Range = NothingICantHandle(base + 116)
 	a.Priority = NothingICantHandle(base + 117)
 	a.FogDispel = NothingICantHandle(base + 118)
-	a.Power1 = NothingICantHandle(base + 119)
-	a.Power2 = NothingICantHandle(base + 120)
-	a.Power3 = NothingICantHandle(base + 121)
-	a.Power4 = NothingICantHandle(base + 122)
-	a.Power5 = NothingICantHandle(base + 123)
+	a.Power1 = NothingICantHandle(base + 120)
+	a.Power2 = NothingICantHandle(base + 121)
+	a.Power3 = NothingICantHandle(base + 122)
+	a.Power4 = NothingICantHandle(base + 123)
+	a.Power5 = NothingICantHandle(base + 124)
 	unitTable[i + 1] = a
 end
 for i = 0, 24 do
