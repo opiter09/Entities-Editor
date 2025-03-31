@@ -17,6 +17,10 @@ to edit the file, or create a new ROM (i.e. after you've finished editing). The 
 thing to watch out for is that both when first unpacking a ROM, and when rebuilding it, you will
 at one point see a dark grey, empty window. You must close this out to complete the process.
 
+NOTE 1: This tool is only designed for Windows. For Mac and Linux, I can only point you to WINE:
+https://www.winehq.org. When running this through WINE, please use the command
+``wine wrapper.exe "ROMNAME.NDS"``, not ``wine wrapper.exe`` alone.
+
 NOTE 2: The 3.0 rewrite makes use of NDSTool. This does not play nice with CrystalTile2 for some
 reason, so to use individually edited non-entities files, please insert them into the folder
 NDS_UNPACK here before rebuilding (it will appear afte you drag the ROM onto wrapper.exe
